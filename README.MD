@@ -1,0 +1,1 @@
+This project aims at setting up a linux desktop in an automated fashion.
