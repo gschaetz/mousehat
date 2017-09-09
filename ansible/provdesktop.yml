@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+    - shell: echo "hello world"
+  roles:
+    - { role: gschaetz.desktopsetup, 
+        gnomeSettings:
+        [
+          'org.gnome.desktop.background show-desktop-icons true',
+          'org.gnome.shell enabled-extensions ''["apps-menu@gnome-shell-extensions.gcampax.github.com","dash-to-dock@micxgx.gmail.com"]''',
+          'org.gnome.shell.extensions.dash-to-dock dock-position "BOTTOM"'
+        ]
+      }
