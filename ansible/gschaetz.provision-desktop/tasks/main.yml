@@ -1,0 +1,24 @@
+---
+# tasks file for gschaetz.provision-desktop
+
+- name: install shell-extension dashtodock
+  apt:
+    name: gnome-shell-extension-dashtodock
+    state: present
+  become: true
+
+
+
+# implementaton_type: 'docker',
+#        file_location: '/home/vagrant/devdesktop/',
+#        docker_repository: 'registry.hub.docker.io',
+#        docker_repository_username: 'test',
+#        docker_repository_password: 'test',
+#        docker_image: 'tramasoli/firefox-image:latest',
+#        docker_ports: '22:22,443:443',
+#        docker_volumes: '/home/vagrant/devdestkop/nexus3/:/test',
+#       desktop_type: 'gnome',
+#        desktop_name: 'Nexus 3 Latest',
+#        desktop_exec: '/home/vagrant/devdesktop/nexus3/start.sh',
+#        desktop_icon: 'http://iosicongallery.com/img/512/firefox-web-browser-2015.png',
+#        gui_app: true

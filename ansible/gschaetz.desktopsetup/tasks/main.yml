@@ -3,12 +3,12 @@
   apt:
     name: gnome-shell-extension-dashtodock
     state: present
+  become: true
     
 - name: move extension to gsetting locations
   shell: cp /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/schemas/org.gnome.shell.extensions.dash-to-dock.gschema.xml /usr/share/glib-2.0/schemas/ && glib-compile-schemas /usr/share/glib-2.0/schemas/
   become: true
     
-  become: true
 - name: gnome-terminal show-desktop-icons
   shell: gsettings set {{ item }}
   with_items: '{{ gnomeSettings }}'

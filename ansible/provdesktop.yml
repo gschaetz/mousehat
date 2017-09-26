@@ -1,7 +1,7 @@
 ---
 - hosts: all
   tasks:
-    - shell: echo "hello world"
+    - apt: name=curl state=present
   roles:
     - { role: gschaetz.desktopsetup, 
         gnomeSettings:
@@ -13,6 +13,25 @@
           'org.gnome.shell.extensions.dash-to-dock custom-theme-shrink true',
           'org.gnome.nautilus.icon-view default-zoom-level "small" ',
           'org.gnome.shell.extensions.dash-to-dock show-show-apps-button false',
+          'org.gnome.desktop.wm.preferences button-layout ''appmenu:minimize,maximize,close''',
           'org.gnome.shell favorite-apps ''["firefox-esr.desktop", "rhythmbox.desktop", "org.gnome.Nautilus.desktop", "org.gnome.Software.desktop", "org.gnome.Terminal.desktop","yelp.desktop"]'''
         ]
       }
+    - { role: gschaetz.install-docker,
+        non_root_user: 'vagrant'
+      }
+#    - { role: gschaetz.provision-desktop,
+#        implementaton_type: 'docker',
+#        file_location: '/home/vagrant/devdesktop/',
+#        docker_repository: 'registry.hub.docker.io',
+#        docker_repository_username: 'test',
+#        docker_repository_password: 'test',
+#        docker_image: 'tramasoli/firefox-image:latest',
+#        docker_ports: '22:22,443:443',
+#        docker_volumes: '/home/vagrant/devdestkop/nexus3/:/test',
+#        desktop_type: 'gnome',
+#        desktop_name: 'Nexus 3 Latest',
+#        desktop_exec: '/home/vagrant/devdesktop/nexus3/start.sh',
+#        desktop_icon: 'http://iosicongallery.com/img/512/firefox-web-browser-2015.png',
+#        gui_app: true
+#      }

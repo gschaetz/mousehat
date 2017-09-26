@@ -1,1 +1,1 @@
-ansible-playbook -i "localhost," -c local provdesktop.yml 
+ansible-playbook -v -i "localhost," -c local provdesktop.yml 
