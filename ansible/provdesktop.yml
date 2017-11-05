@@ -1,17 +1,19 @@
 ---
 - hosts: all
   vars:
-    gnome_settings_json: "{{lookup('file','/home/vagrant/ansible/desktop-ansible-settings/gnome-settings.json')}}"
-  
+    packages_list_json: "{{lookup('file','/home/vagrant/ansible/desktop-ansible-settings/packages.json')}}"
+    gnome_settings_json: "{{lookup('file','/home/vagrant/ansible/desktop-ansible-settings/gnome-settings.json')}}"  
   tasks:
-    - apt: name=curl state=present  
-  roles:
-    - { role: gschaetz.desktopsetup, 
-        gnomeSettings: "{{ gnome_settings_json }}"
-      }
-    - { role: gschaetz.install-docker,
-        non_root_user: 'vagrant'
-      }
+    - apt: name={{ item }} state=present
+      with_items: "{{ packages_list_json }}"  
+      become: true
+#  roles:
+#    - { role: gschaetz.desktopsetup, 
+#        gnomeSettings: "{{ gnome_settings_json }}"
+#      }
+#    - { role: gschaetz.install-docker,
+#        non_root_user: 'vagrant'
+#      }
 #    - { role: gschaetz.provision-desktop,
 #        implementaton_type: 'docker',
 #        file_location: '/home/vagrant/devdesktop/',
