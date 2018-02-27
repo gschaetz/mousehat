@@ -4,17 +4,13 @@
     local_home: "{{ lookup('env','HOME') }}"
     gnome_settings_yaml: '/home/vagrant/ansible/desktop-ansible-settings/gnome-settings.yml'     
     applications_yaml:  '/home/vagrant/ansible/desktop-ansible-settings/applications.yml'
-    packages_list_yaml: '/home/vagrant/ansible/desktop-ansible-settings/packages.yml'
+    packages_yaml: '/home/vagrant/ansible/desktop-ansible-settings/packages.yml'
 
-  tasks:
-    - include_vars:
-      file: "{{ gnomeSettings }}"
-      name: settings
-
-    - apt: name={{ item.value.package_name }} state=present
-      with_dict: "{{ packages_list_yaml.packages }}"  
-      become: true
   roles:
+    - { role: gschaetz.packages, 
+        packages: "{{ packages_yaml }}"
+      }
+      
     # - { role: gschaetz.desktopsetup, 
     #     gnomeSettings: "{{ gnome_settings_yaml }}"
     #   }

@@ -1,0 +1,9 @@
+---
+- include_vars:
+    file: "{{ packages }}"
+    name: packages_file
+
+- apt: name={{ item.value.package_name }} state=present
+  with_dict: "{{ packages_file.packages }}"  
+  become: true
+
