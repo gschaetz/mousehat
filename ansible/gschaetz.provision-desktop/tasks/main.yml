@@ -1,12 +1,26 @@
 ---
 # tasks file for gschaetz.provision-desktop
+- include_vars:
+    file: "{{ application_setup }}"
+    name: apps
 
-- name: install shell-extension dashtodock
-  apt:
-    name: gnome-shell-extension-dashtodock
-    state: present
-  become: true
+- debug:
+    msg: "gary1 {{ item.key }} and {{ item.value.file_location }}"
+  with_dict: "{{ apps.applications }}"
 
+# create desktop icon 
+- template:
+    src: "{{ local_home }}/ansible/templates/gnome-desktop-template.j2"
+    dest: "{{ local_home }}/Desktop/{{ item.value.desktop_name }}"
+    mode: 0777
+  with_dict: "{{ apps.applications }}"
+
+
+
+# copy 
+
+
+# create 
 
 
 # implementaton_type: 'docker',

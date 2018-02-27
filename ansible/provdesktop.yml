@@ -1,31 +1,26 @@
 ---
 - hosts: all
   vars:
-    packages_list_json: "{{lookup('file','/home/vagrant/ansible/desktop-ansible-settings/packages.json')}}"
-    gnome_settings_json: "{{lookup('file','/home/vagrant/ansible/desktop-ansible-settings/gnome-settings.json')}}"  
+    local_home: "{{ lookup('env','HOME') }}"
+    gnome_settings_yaml: '/home/vagrant/ansible/desktop-ansible-settings/gnome-settings.yml'     
+    applications_yaml:  '/home/vagrant/ansible/desktop-ansible-settings/applications.yml'
+    packages_list_yaml: '/home/vagrant/ansible/desktop-ansible-settings/packages.yml'
+
   tasks:
-    - apt: name={{ item }} state=present
-      with_items: "{{ packages_list_json }}"  
+    - include_vars:
+      file: "{{ gnomeSettings }}"
+      name: settings
+
+    - apt: name={{ item.value.package_name }} state=present
+      with_dict: "{{ packages_list_yaml.packages }}"  
       become: true
-#  roles:
-#    - { role: gschaetz.desktopsetup, 
-#        gnomeSettings: "{{ gnome_settings_json }}"
-#      }
-#    - { role: gschaetz.install-docker,
-#        non_root_user: 'vagrant'
-#      }
-#    - { role: gschaetz.provision-desktop,
-#        implementaton_type: 'docker',
-#        file_location: '/home/vagrant/devdesktop/',
-#        docker_repository: 'registry.hub.docker.io',
-#        docker_repository_username: 'test',
-#        docker_repository_password: 'test',
-#        docker_image: 'tramasoli/firefox-image:latest',
-#        docker_ports: '22:22,443:443',
-#        docker_volumes: '/home/vagrant/devdestkop/nexus3/:/test',
-#        desktop_type: 'gnome',
-#        desktop_name: 'Nexus 3 Latest',
-#        desktop_exec: '/home/vagrant/devdesktop/nexus3/start.sh',
-#        desktop_icon: 'http://iosicongallery.com/img/512/firefox-web-browser-2015.png',
-#        gui_app: true
-#      }
+  roles:
+    # - { role: gschaetz.desktopsetup, 
+    #     gnomeSettings: "{{ gnome_settings_yaml }}"
+    #   }
+    # - { role: gschaetz.install-docker,
+    #     non_root_user: 'vagrant'
+    #   }
+    # - { role: gschaetz.provision-desktop,
+    #     application_setup: "{{ applications_yaml }}" 
+    #   }

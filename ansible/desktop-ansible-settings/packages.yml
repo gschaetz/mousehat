@@ -1,0 +1,6 @@
+---
+packages:
+    curl:
+        package_name: curl
+    tmux:
+        package_name: tmux
