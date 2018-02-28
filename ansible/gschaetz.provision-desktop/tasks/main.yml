@@ -26,10 +26,16 @@
   with_dict: "{{ apps.applications }}"
 
 # create desktop icon 
-- template:
+- name: Create desktop icon
+  template:
     src: "{{ local_home }}/ansible/templates/gnome-desktop-template.j2"
     dest: "{{ local_home }}/Desktop/{{ item.value.desktop_name }}.desktop"
     mode: 0777
+  with_dict: "{{ apps.applications }}"
+
+# gio those aps
+- name: gio the apps to remove untrusted
+  shell: gio set {{ local_home }}/Desktop/{{ item.value.desktop_name }}.desktop "metadata::trusted" yes
   with_dict: "{{ apps.applications }}"
 
 # create docker files 
@@ -39,24 +45,3 @@
     mode: 0777
   with_dict: "{{ apps.applications }}"
 
-
-
-# copy 
-
-
-# create 
-
-
-# implementaton_type: 'docker',
-#        file_location: '/home/vagrant/devdesktop/',
-#        docker_repository: 'registry.hub.docker.io',
-#        docker_repository_username: 'test',
-#        docker_repository_password: 'test',
-#        docker_image: 'tramasoli/firefox-image:latest',
-#        docker_ports: '22:22,443:443',
-#        docker_volumes: '/home/vagrant/devdestkop/nexus3/:/test',
-#       desktop_type: 'gnome',
-#        desktop_name: 'Nexus 3 Latest',
-#        desktop_exec: '/home/vagrant/devdesktop/nexus3/start.sh',
-#        desktop_icon: 'http://iosicongallery.com/img/512/firefox-web-browser-2015.png',
-#        gui_app: true

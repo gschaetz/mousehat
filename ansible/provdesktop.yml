@@ -11,13 +11,13 @@
     # - { role: gschaetz.packages, 
     #     packages: "{{ packages_yaml }}"
     #   }
-    # - { role: gschaetz.desktopsetup, 
-    #     gnomeSettings: "{{ gnome_settings_yaml }}"
-    #   }
     # - { role: gschaetz.install-docker,
     #     non_root_user: 'vagrant'
     #   }
     - { role: gschaetz.provision-desktop,
         application_setup: "{{ applications_yaml }}",
         desktop_dir: "{{ desktop_directory }}"
+      }
+    - { role: gschaetz.desktopsetup, 
+        gnomeSettings: "{{ gnome_settings_yaml }}"
       }

@@ -17,4 +17,4 @@ gnome:
   button_layout: 
     setting: org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
   favorite_apps: 
-    setting: org.gnome.shell favorite-apps '["firefox-esr.desktop", "rhythmbox.desktop", "org.gnome.Nautilus.desktop", "org.gnome.Software.desktop", "org.gnome.Terminal.desktop","yelp.desktop"]'
+    setting: org.gnome.shell favorite-apps '["Firefox.desktop", "Chrome.desktop", "rhythmbox.desktop", "org.gnome.Nautilus.desktop", "org.gnome.Software.desktop", "org.gnome.Terminal.desktop","yelp.desktop"]'

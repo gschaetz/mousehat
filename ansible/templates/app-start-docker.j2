@@ -1,14 +1,19 @@
 docker pull {{ item.value.docker_image }}
 
+docker rm {{ item.key }} 
+
 docker run \
 -d \
 --name {{ item.key }} \
 {% if item.value.gui_app == true %}
 -v /tmp/.X11-unix:/tmp/.X11-unix \
--v /dev/snd:/dev/snd \ 
 -e DISPLAY=$DISPLAY \
 {% endif %}
--v {{ item.value.docker_volumes }} \
--p {{ item.value.docker_ports }} \ 
+{% if item.value.docker_volumes != None %}
+{{ item.value.docker_volumes }} \
+{% endif %}
+{% if item.value.docker_ports != None %}
+{{ item.value.docker_ports }} \ 
+{% endif %}
 {{ item.value.docker_image }}
 
