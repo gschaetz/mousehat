@@ -1,0 +1,14 @@
+docker pull {{ item.value.docker_image }}
+
+docker run \
+-d \
+--name {{ item.key }} \
+{% if item.value.gui_app == true %}
+-v /tmp/.X11-unix:/tmp/.X11-unix \
+-v /dev/snd:/dev/snd \ 
+-e DISPLAY=$DISPLAY \
+{% endif %}
+-v {{ item.value.docker_volumes }} \
+-p {{ item.value.docker_ports }} \ 
+{{ item.value.docker_image }}
+
