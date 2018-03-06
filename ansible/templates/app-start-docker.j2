@@ -1,6 +1,6 @@
 docker pull {{ item.value.docker_image }}
-
 docker rm {{ item.key }} 
+docker network create {{ item.value.docker_network }}
 
 docker run \
 -d \
@@ -12,8 +12,14 @@ docker run \
 {% if item.value.docker_volumes != None %}
 {{ item.value.docker_volumes }} \
 {% endif %}
+{% if item.value.extra_docker_flags != None %}
+{{ item.value.extra_docker_flags }} \
+{% endif %}
 {% if item.value.docker_ports != None %}
 {{ item.value.docker_ports }} \ 
+{% endif %}
+{% if item.value.docker_network != None %}
+--net {{ item.value.docker_network }} \
 {% endif %}
 {{ item.value.docker_image }}
 

@@ -2,7 +2,7 @@
 applications:
     firefox:
         implementation_type: docker
-        docker_image: tramasoli/firefox-image:latest
+        docker_image: jess/firefox:latest
         docker_ports: 
         docker_volumes: -v /:/host_drive
         desktop_name: Firefox
@@ -10,13 +10,17 @@ applications:
         desktop_icon_download_url: https://findicons.com/files/icons/1070/software/128/mozilla_firefox.png
         desktop_icon: firefox.png
         gui_app: true
+        extra_docker_flags: 
+        docker_network: dev
     chrome:
         implementation_type: docker
         docker_image: jess/chrome:latest
         docker_ports: 
-        docker_volumes: /:/host_drive
+        docker_volumes: -v /:/host_drive
         desktop_name: Chrome
         desktop_exec: start.sh
         desktop_icon_download_url: http://icons.iconarchive.com/icons/google/chrome/128/Google-Chrome-icon.png
         desktop_icon: chrome.png
-        gui_app: false
+        gui_app: true
+        extra_docker_flags: --privileged
+        docker_network: dev

@@ -5,30 +5,34 @@
     name: apps
 
 # delete desktop entries
-- name: Creates main directory
+- name: Delete all desktop files 
   shell: "rm -rf {{ local_home }}/Desktop/*.desktop"
 
 # create main directory
+- name: Remove main directory
+  file: path={{ desktop_dir }}/apps/ state=absent
+
+# create main directory
 - name: Creates main directory
-  file: path={{ desktop_dir }} state=directory
+  file: path={{ desktop_dir }}/apps/ state=directory
 
 # create directories for applications
 - name: Creates application directories
-  file: path={{ desktop_dir }}{{ item.key }} state=directory
+  file: path={{ desktop_dir }}/apps/{{ item.key }} state=directory
   with_dict: "{{ apps.applications }}"
 
 # download app icons
 - name: Download app icons
   get_url:
     url: "{{ item.value.desktop_icon_download_url }}"
-    dest: "{{ desktop_dir }}{{ item.key }}/{{ item.value.desktop_icon }}"
+    dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_icon }}"
     mode: 0440
   with_dict: "{{ apps.applications }}"
 
 # create desktop icon 
 - name: Create desktop icon
   template:
-    src: "{{ local_home }}/ansible/templates/gnome-desktop-template.j2"
+    src: "{{ project_home }}/templates/gnome-desktop-template.j2"
     dest: "{{ local_home }}/Desktop/{{ item.value.desktop_name }}.desktop"
     mode: 0777
   with_dict: "{{ apps.applications }}"
@@ -40,7 +44,7 @@
 
 # create docker files 
 - template:
-    src: "{{ local_home }}/ansible/templates/app-start-docker.j2"
+    src: "{{ project_home }}/templates/app-start-docker.j2"
     dest: "{{ desktop_dir }}{{ item.key }}/start.sh"
     mode: 0777
   with_dict: "{{ apps.applications }}"
