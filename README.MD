@@ -97,4 +97,4 @@ Tests haven't been added yet, but we are looking to these using molecule.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the LICENSE.MD file for details
