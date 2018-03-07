@@ -8,7 +8,7 @@
 - name: Delete all desktop files 
   shell: "rm -rf {{ local_home }}/Desktop/*.desktop"
 
-# create main directory
+# remove main directory
 - name: Remove main directory
   file: path={{ desktop_dir }}/apps/ state=absent
 
@@ -37,15 +37,19 @@
     mode: 0777
   with_dict: "{{ apps.applications }}"
 
-# gio those aps
+# gio those apps
 - name: gio the apps to remove untrusted
   shell: gio set {{ local_home }}/Desktop/{{ item.value.desktop_name }}.desktop "metadata::trusted" yes
   with_dict: "{{ apps.applications }}"
 
+# add xhost + to ensure x can run 
+- name: xhost +
+  shell: xhost +
+
 # create docker files 
 - template:
     src: "{{ project_home }}/templates/app-start-docker.j2"
-    dest: "{{ desktop_dir }}{{ item.key }}/start.sh"
+    dest: "{{ desktop_dir }}/apps/{{ item.key }}/start.sh"
     mode: 0777
   with_dict: "{{ apps.applications }}"
 
