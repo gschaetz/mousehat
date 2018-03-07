@@ -2,23 +2,25 @@
 - hosts: all
   vars:
     current_path: "{{ lookup('env','PWD') }}"
-
     local_home: "{{ lookup('env','HOME') }}"
-    project_home: "{{ DESKTOP_PROJECT_DIR | default(current_path) }}"
 
-    gnome_settings_yaml: "{{ project_home }}/desktop-ansible-settings/gnome-settings.yml"     
-    applications_yaml:  "{{ project_home }}/desktop-ansible-settings/applications.yml"
-    packages_yaml: "{{ project_home }}/desktop-ansible-settings/packages.yml"
+    project_home: "{{ lookup('env','DESKTOP_PROJECT_DIR') | default(current_path,true) }}"
+    default_settings_sub: "{{current_path}}/desktop-ansible-settings"
+    settings_home: "{{ lookup('env','DESKTOP_SETTINGS_DIR') | default(default_settings_sub, true) }}"
+
+    gnome_settings_yaml: "{{ settings_home }}/gnome-settings.yml"     
+    applications_yaml:  "{{ settings_home }}/applications.yml"
+    packages_yaml: "{{ settings_home }}/packages.yml"
 
     desktop_directory: "{{ local_home }}/.desktop/"
 
   roles:
-    # - { role: gschaetz.packages, 
-    #     packages: "{{ packages_yaml }}"
-    #   }
-    # - { role: gschaetz.install-docker,
-    #     non_root_user: 'vagrant'
-    #   }
+    - { role: gschaetz.packages, 
+        packages: "{{ packages_yaml }}"
+      }
+    - { role: gschaetz.install-docker,
+        non_root_user: 'vagrant'
+      }
     - { role: gschaetz.provision-desktop,
         application_setup: "{{ applications_yaml }}",
         desktop_dir: "{{ desktop_directory }}"
