@@ -8,6 +8,15 @@
 - name: Delete all desktop files 
   shell: "rm -rf {{ local_home }}/Desktop/*.desktop"
 
+# remove custom menu dir
+- name: Remove menu directory
+  file: path={{ local_home }}/.local/share/applications/mymenu/ state=absent
+
+# add custom menu dir
+- name: Add custom menu directory
+  file: path={{ local_home }}/.local/share/applications/mymenu/ state=directory
+
+
 # remove main directory
 - name: Remove main directory
   file: path={{ desktop_dir }}/apps/ state=absent
@@ -35,11 +44,21 @@
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
     dest: "{{ local_home }}/Desktop/{{ item.value.desktop_name }}.desktop"
     mode: 0777
+  when: item.value.show_on_desktop == true 
+  with_dict: "{{ apps.applications }}"
+
+# create menu item 
+- name: Create menu item
+  template:
+    src: "{{ project_home }}/templates/gnome-desktop-template.j2"
+    dest: "{{ local_home }}/.local/share/applications/mymenu/{{ item.value.desktop_name }}.desktop"
+    mode: 0777
   with_dict: "{{ apps.applications }}"
 
 # gio those apps
 - name: gio the apps to remove untrusted
   shell: gio set {{ local_home }}/Desktop/{{ item.value.desktop_name }}.desktop "metadata::trusted" yes
+  when: item.value.show_on_desktop == true 
   with_dict: "{{ apps.applications }}"
 
 # add xhost + to ensure x can run 
@@ -52,4 +71,3 @@
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/start.sh"
     mode: 0777
   with_dict: "{{ apps.applications }}"
-
