@@ -8,13 +8,10 @@
 - name: Delete all desktop files 
   shell: "rm -rf {{ local_home }}/Desktop/*.desktop"
 
-# remove custom menu dir
-- name: Remove menu directory
-  file: path={{ local_home }}/.local/share/applications/mymenu/ state=absent
-
-# add custom menu dir
-- name: Add custom menu directory
-  file: path={{ local_home }}/.local/share/applications/mymenu/ state=directory
+# # remove custom menu items
+- name: Delete all desktop files 
+  shell: "rm -rf /usr/share/applications/*-myapps.desktop"
+  become: true
 
 # remove main directory
 - name: Remove main directory
@@ -56,12 +53,13 @@
   when: item.value.show_on_desktop == true 
   with_dict: "{{ apps.applications }}"
 
-# create menu item 
+# # create menu item 
 - name: Create menu item
   template:
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
-    dest: "{{ local_home }}/.local/share/applications/mymenu/{{ item.value.desktop_name }}.desktop"
+    dest: "/usr/share/applications/{{ item.value.desktop_name }}-myapps.desktop"
     mode: 0777
+  become: true
   with_dict: "{{ apps.applications }}"
 
 # gio those apps
