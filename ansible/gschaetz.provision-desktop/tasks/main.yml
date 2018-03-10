@@ -16,7 +16,6 @@
 - name: Add custom menu directory
   file: path={{ local_home }}/.local/share/applications/mymenu/ state=directory
 
-
 # remove main directory
 - name: Remove main directory
   file: path={{ desktop_dir }}/apps/ state=absent
@@ -24,6 +23,16 @@
 # create main directory
 - name: Creates main directory
   file: path={{ desktop_dir }}/apps/ state=directory
+
+# remove fast links directory
+- name: Remove links directory
+  file: path=/usr/local/bin/myapps/ state=absent
+  become: true
+
+# create fast links directory
+- name: Create links directory
+  file: path=/usr/local/bin/myapps/ state=directory
+  become: true
 
 # create directories for applications
 - name: Creates application directories
@@ -66,8 +75,25 @@
   shell: xhost +
 
 # create docker files 
-- template:
+- name: create docker file
+  template:
     src: "{{ project_home }}/templates/app-start-docker.j2"
-    dest: "{{ desktop_dir }}/apps/{{ item.key }}/start.sh"
+    dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
     mode: 0777
   with_dict: "{{ apps.applications }}"
+
+# create link for command line runfile:
+- name: create link for bin
+  file: 
+    src: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
+    dest: "/usr/local/bin/myapps/{{ item.key }}"
+    state: link
+  become: true
+  with_dict: "{{ apps.applications }}"
+
+# create a file in /etc/profile.d
+- name: create file in path for env 
+  copy: 
+    content: "PATH=$PATH:/usr/local/bin/myapps/ \n xhost +" 
+    dest: "/etc/profile.d/custom-path.sh"
+  become: true
