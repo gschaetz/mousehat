@@ -1,0 +1,9 @@
+{{ item.value.compose_version }}
+{{ item.value.compose_definition | to_nice_yaml }}
+
+{% if item.value.compose_network != None %}
+networks:
+  default:
+    external:
+      name: {{ item.value.compose_network }}
+{% endif %}

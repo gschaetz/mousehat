@@ -72,12 +72,31 @@
 - name: xhost +
   shell: xhost +
 
-# create docker files 
-- name: create docker file
+# create docker start files 
+- name: create docker start file
   template:
     src: "{{ project_home }}/templates/app-start-docker.j2"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
     mode: 0777
+  when: item.value.implementation_type == "docker" 
+  with_dict: "{{ apps.applications }}"
+
+# create docker_compose file
+- name: create docker_compose file
+  template:
+    src: "{{ project_home }}/templates/app-dockercompose.j2"
+    dest: "{{ desktop_dir }}/apps/{{ item.key }}/docker-compose.yml"
+    mode: 0777
+  when: item.value.implementation_type == "docker_compose" 
+  with_dict: "{{ apps.applications }}"
+
+# create docker_compose files 
+- name: create docker_compose run file
+  template:
+    src: "{{ project_home }}/templates/app-start-dockercompose.j2"
+    dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
+    mode: 0777
+  when: item.value.implementation_type == "docker_compose" 
   with_dict: "{{ apps.applications }}"
 
 # create link for command line runfile:
