@@ -19,7 +19,7 @@
         packages: "{{ packages_yaml }}"
       }
     - { role: gschaetz.install-docker,
-        non_root_user: {{ ansible_user_id }} 
+        non_root_user: "{{ ansible_user_id }}" 
       }
     - { role: gschaetz.provision-desktop,
         application_setup: "{{ applications_yaml }}",
