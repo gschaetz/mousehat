@@ -15,16 +15,16 @@
     desktop_directory: "{{ local_home }}/.desktop/"
 
   roles:
-    - { role: gschaetz.packages, 
+    - { role: unix-packages, 
         packages: "{{ packages_yaml }}"
       }
-    - { role: gschaetz.install-docker,
+    - { role: install-docker,
         non_root_user: "{{ ansible_user_id }}" 
       }
-    - { role: gschaetz.provision-desktop,
+    - { role: configure-applications,
         application_setup: "{{ applications_yaml }}",
         desktop_dir: "{{ desktop_directory }}"
       }
-    - { role: gschaetz.desktopsetup, 
+    - { role: desktop-settings, 
         gnomeSettings: "{{ gnome_settings_yaml }}"
       }

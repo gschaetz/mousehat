@@ -12,6 +12,9 @@ docker run \
 {% if item.value.docker_volumes != None %}
 {{ item.value.docker_volumes }} \
 {% endif %}
+{% if item.value.app_persistent_dir != None %}
+-v {{ desktop_directory }}persistent/{{ item.key }}:{{ item.value.app_persistent_dir }} \
+{% endif %}
 {% if item.value.extra_docker_flags != None %}
 {{ item.value.extra_docker_flags }} \
 {% endif %}

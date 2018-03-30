@@ -21,6 +21,12 @@
 - name: Creates main directory
   file: path={{ desktop_dir }}/apps/ state=directory
 
+# create persistent directories for applications
+- name: Creates persistent app directories
+  file: path={{ desktop_dir }}/persistent/{{ item.key }} state=directory
+  with_dict: "{{ apps.applications }}"
+
+
 # remove fast links directory
 - name: Remove links directory
   file: path=/usr/local/bin/myapps/ state=absent

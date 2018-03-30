@@ -14,6 +14,7 @@ applications:
         gui_app: true
         extra_docker_flags: 
         docker_network: dev
+        app_persistent_dir:
     chrome:
         implementation_type: docker
         docker_image: jess/chrome:latest
@@ -28,6 +29,7 @@ applications:
         gui_app: true
         extra_docker_flags: --privileged
         docker_network: dev
+        app_persistent_dir:
     wordpress_compose:
         implementation_type: docker_compose
         show_on_desktop: true
