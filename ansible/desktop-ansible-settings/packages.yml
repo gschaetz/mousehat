@@ -4,3 +4,5 @@ packages:
         package_name: curl
     tmux:
         package_name: tmux
+    docker_compose:
+        package_name: docker-compose
