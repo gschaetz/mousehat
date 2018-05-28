@@ -12,7 +12,15 @@
 - name: move extension to gsetting locations
   shell: cp /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/schemas/org.gnome.shell.extensions.dash-to-dock.gschema.xml /usr/share/glib-2.0/schemas/ && glib-compile-schemas /usr/share/glib-2.0/schemas/
   become: true
-    
+
+- name: download files if needed  
+  get_url:
+    url: "{{ item.value.download.url }}"
+    dest: "{{ item.value.download.dest}}"
+    mode: 0440
+  when: item.value.download.exists == true 
+  with_dict: '{{ settings.gnome }}'
+
 - name: gnome-terminal show-desktop-icons
   shell: gsettings set {{ item.value.setting }}
   with_dict: '{{ settings.gnome }}'

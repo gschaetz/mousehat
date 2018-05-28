@@ -26,5 +26,6 @@
         desktop_dir: "{{ desktop_directory }}"
       }
     - { role: desktop-settings, 
-        gnomeSettings: "{{ gnome_settings_yaml }}"
+        gnomeSettings: "{{ gnome_settings_yaml }}",
+        desktop_dir: "{{ desktop_directory }}"
       }
