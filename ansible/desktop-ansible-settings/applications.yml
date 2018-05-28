@@ -4,8 +4,8 @@ applications:
         implementation_type: docker
         docker_image: jess/firefox:latest
         docker_ports: 
-        docker_volumes: -v /:/host_drive
-        show_on_desktop: false
+        docker_volumes: -v /:/host_drive 
+        show_on_desktop: true
         desktop_name: Firefox
         desktop_exec: firefox
         desktop_icon_download_url: https://findicons.com/files/icons/1070/software/128/mozilla_firefox.png
@@ -14,7 +14,9 @@ applications:
         gui_app: true
         extra_docker_flags: 
         docker_network: dev
-        app_persistent_dir:
+        docker_sec_comp: false
+        app_persistent_dir: /root
+        app_persistent_dir1:
     chrome:
         implementation_type: docker
         docker_image: jess/chrome:latest
@@ -27,9 +29,29 @@ applications:
         desktop_icon: chrome.png
         menu_category: Network;WebBrowser;
         gui_app: true
-        extra_docker_flags: --privileged
+        extra_docker_flags: --privileged --cpuset-cpus 0 --memory 512mb --device /dev/dri -v /dev/shm:/dev/shm
         docker_network: dev
+        docker_sec_comp: true
+        docker_sec_comp_download_url: https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json
+        app_persistent_dir: /data
+        app_persistent_dir1: /home/chrome/
+    vscode:
+        implementation_type: docker
+        docker_image: jess/vscode:latest
+        docker_ports:
+        docker_volumes: -v /:/host_drive
+        show_on_desktop: true
+        desktop_name: VScode 
+        desktop_exec: vscode
+        desktop_icon_download_url: https://upload.wikimedia.org/wikipedia/commons/f/f3/Visual_Studio_Code_0.10.1_icon.png
+        desktop_icon: vscode.png
+        menu_category: Development;IDE;
+        gui_app: true
+        extra_docker_flags: 
+        docker_network: dev
+        docker_sec_comp: false
         app_persistent_dir:
+        app_persistent_dir1:
     wordpress_compose:
         implementation_type: docker_compose
         show_on_desktop: true

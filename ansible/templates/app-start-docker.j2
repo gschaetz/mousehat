@@ -7,6 +7,7 @@ docker run \
 --name {{ item.key }} \
 {% if item.value.gui_app == true %}
 -v /tmp/.X11-unix:/tmp/.X11-unix \
+--device /dev/snd \
 -e DISPLAY=$DISPLAY \
 {% endif %}
 {% if item.value.docker_volumes != None %}
@@ -14,6 +15,9 @@ docker run \
 {% endif %}
 {% if item.value.app_persistent_dir != None %}
 -v {{ desktop_directory }}persistent/{{ item.key }}:{{ item.value.app_persistent_dir }} \
+{% endif %}
+{% if item.value.app_persistent_dir1 != None %}
+-v {{ desktop_directory }}persistent/{{ item.key }}:{{ item.value.app_persistent_dir1 }} \
 {% endif %}
 {% if item.value.extra_docker_flags != None %}
 {{ item.value.extra_docker_flags }} \
@@ -24,5 +28,7 @@ docker run \
 {% if item.value.docker_network != None %}
 --net {{ item.value.docker_network }} \
 {% endif %}
+{% if item.value.docker_sec_comp == true %}
+--security-opt seccomp={{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}.json \
+{% endif %}
 {{ item.value.docker_image }}
-

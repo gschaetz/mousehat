@@ -23,9 +23,13 @@
 
 # create persistent directories for applications
 - name: Creates persistent app directories
-  file: path={{ desktop_dir }}/persistent/{{ item.key }} state=directory
+  file: path={{ desktop_dir }}/persistent/{{ item.key }} state=directory owner=root group=root mode=0777
+  become: true
   with_dict: "{{ apps.applications }}"
 
+# create resources directory
+- name: Creates resource directory
+  file: path={{ desktop_dir }}/resources state=directory
 
 # remove fast links directory
 - name: Remove links directory
@@ -48,6 +52,15 @@
     url: "{{ item.value.desktop_icon_download_url }}"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_icon }}"
     mode: 0440
+  with_dict: "{{ apps.applications }}"
+
+# download sec comps
+- name: Download sec comps
+  get_url:
+    url: "{{ item.value.docker_sec_comp_download_url }}"
+    dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}.json"
+    mode: 0440
+  when: item.value.docker_sec_comp == true
   with_dict: "{{ apps.applications }}"
 
 # create desktop icon 
