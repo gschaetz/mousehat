@@ -4,7 +4,7 @@ applications:
         implementation_type: docker
         docker_image: jess/firefox:latest
         docker_ports: 
-        docker_volumes: -v /:/host_drive 
+        docker_volumes: -v /:/host_drive -v /dev/shm:/dev/shm
         show_on_desktop: true
         desktop_name: Firefox
         desktop_exec: firefox
@@ -12,7 +12,7 @@ applications:
         desktop_icon: firefox.png
         menu_category: Network;WebBrowser;
         gui_app: true
-        extra_docker_flags: 
+        extra_docker_flags: --cpuset-cpus 0 --memory 512mb --device /dev/dri
         docker_network: dev
         docker_sec_comp: false
         app_persistent_dir: /root
@@ -21,7 +21,7 @@ applications:
         implementation_type: docker
         docker_image: jess/chrome:latest
         docker_ports: 
-        docker_volumes: -v /:/host_drive
+        docker_volumes: -v /:/host_drive -v /dev/shm:/dev/shm
         show_on_desktop: true
         desktop_name: Chrome
         desktop_exec: chrome
@@ -29,7 +29,7 @@ applications:
         desktop_icon: chrome.png
         menu_category: Network;WebBrowser;
         gui_app: true
-        extra_docker_flags: --privileged --cpuset-cpus 0 --memory 512mb --device /dev/dri -v /dev/shm:/dev/shm
+        extra_docker_flags: --privileged --cpuset-cpus 0 --memory 512mb --device /dev/dri 
         docker_network: dev
         docker_sec_comp: true
         docker_sec_comp_download_url: https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json
@@ -50,7 +50,75 @@ applications:
         extra_docker_flags: 
         docker_network: dev
         docker_sec_comp: false
-        app_persistent_dir:
+        app_persistent_dir: /home/user/
+        app_persistent_dir1:
+    slack:
+        implementation_type: docker
+        docker_image: jess/slack:latest
+        docker_ports: 
+        docker_volumes: -v /:/host_drive -v /etc/localtime:/etc/localtime:ro 
+        show_on_desktop: false
+        desktop_name: Slack
+        desktop_exec: slack
+        desktop_icon_download_url: https://upload.wikimedia.org/wikipedia/commons/7/76/Slack_Icon.png
+        desktop_icon: slack.png
+        menu_category: GNOME;Development;
+        gui_app: true
+        extra_docker_flags: --device /dev/dri --group-add audio --group-add video
+        docker_network: dev
+        docker_sec_comp: falzse
+        app_persistent_dir: /root/
+        app_persistent_dir1:
+    audacity:
+        implementation_type: docker
+        docker_image: jess/audacity:latest
+        docker_ports: 
+        docker_volumes: -v /:/host_drive 
+        show_on_desktop: false 
+        desktop_name: Audacity
+        desktop_exec: audacity
+        desktop_icon_download_url: https://orig00.deviantart.net/19e6/f/2011/025/0/3/audacity_dock_icon_by_dakaap-d38161x.png
+        desktop_icon: audacity.png
+        menu_category: GNOME;AudioVideo
+        gui_app: true
+        extra_docker_flags: --device /dev/dri --group-add audio --group-add video
+        docker_network: dev
+        docker_sec_comp: false
+        app_persistent_dir: /root/.audacity-data
+        app_persistent_dir1:
+    awscli:
+        implementation_type: docker
+        docker_image: jess/awscli:latest
+        docker_ports: 
+        docker_volumes: -v /:/host_drive 
+        show_on_desktop: true
+        desktop_name: AWSCLI
+        desktop_exec: awscli
+        desktop_icon_download_url: https://flipitflop.files.wordpress.com/2016/01/terminal-icon-osx-300x262.png?w=640
+        desktop_icon: awscli.png
+        menu_category: GNOME;Development
+        gui_app: false
+        extra_docker_flags: --entrypoint sh
+        docker_network: dev
+        docker_sec_comp: false
+        app_persistent_dir:  /root/.aws/
+        app_persistent_dir1:
+    gimp:
+        implementation_type: docker
+        docker_image: jess/gimp:latest
+        docker_ports: 
+        docker_volumes: -v /:/host_drive -v /etc/localtime:/etc/localtime:ro
+        show_on_desktop: false 
+        desktop_name: Gimp
+        desktop_exec: gimp
+        desktop_icon_download_url: https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/The_GIMP_icon_-_gnome.svg/48px-The_GIMP_icon_-_gnome.svg.png
+        desktop_icon: gimp.png
+        menu_category: GNOME;AudioVideo
+        gui_app: true
+        extra_docker_flags:  
+        docker_network: dev
+        docker_sec_comp: false
+        app_persistent_dir: /root/Pictures
         app_persistent_dir1:
     wordpress_compose:
         implementation_type: docker_compose
