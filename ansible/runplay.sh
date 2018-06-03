@@ -1,6 +1,11 @@
 #!/bin/bash
-while getopts ":p:s:" opt; do
+verbosity="v"
+while getopts ":p:s:v:" opt; do
   case $opt in
+    v)
+      echo "verbosity being set to: $OPTARG"
+      verbosity="$OPTARG" 
+      ;; 
     p)
       echo "Using desktop directory: $OPTARG"
       export DESKTOP_PROJECT_DIR=$OPTARG 
@@ -20,4 +25,4 @@ while getopts ":p:s:" opt; do
   esac
 done
 
-ansible-playbook -v -i "localhost," -c local provdesktop.yml 
+ansible-playbook -$verbosity -i "localhost," -c local provdesktop.yml 

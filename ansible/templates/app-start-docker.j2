@@ -3,12 +3,15 @@ docker rm {{ item.key }}
 docker network create {{ item.value.docker_network }}
 
 docker run \
--d \
 --name {{ item.key }} \
 {% if item.value.gui_app == true %}
+-d \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 --device /dev/snd \
 -e DISPLAY=$DISPLAY \
+{% endif %}
+{% if item.value.gui_app != true %}
+-it \
 {% endif %}
 {% if item.value.docker_volumes != None %}
 {{ item.value.docker_volumes }} \
