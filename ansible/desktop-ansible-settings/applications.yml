@@ -1,4 +1,4 @@
----
+    ---
 applications:
     firefox:
         implementation_type: docker
@@ -13,7 +13,7 @@ applications:
         menu_category: Network;WebBrowser;
         gui_app: true
         extra_docker_flags: --cpuset-cpus 0 --memory 512mb --device /dev/dri
-        docker_network: dev
+        docker_network: host
         docker_sec_comp: false
         app_persistent_dir: /root
         app_persistent_dir1:
@@ -29,8 +29,8 @@ applications:
         desktop_icon: chrome.png
         menu_category: Network;WebBrowser;
         gui_app: true
-        extra_docker_flags: --privileged --cpuset-cpus 0 --memory 512mb --device /dev/dri 
-        docker_network: dev
+        extra_docker_flags: --privileged --cpuset-cpus 0 --memory 1024mb --device /dev/dri 
+        docker_network: host
         docker_sec_comp: true
         docker_sec_comp_download_url: https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json
         app_persistent_dir: /data
@@ -48,7 +48,7 @@ applications:
         menu_category: Development;IDE;
         gui_app: true
         extra_docker_flags: 
-        docker_network: dev
+        docker_network: host
         docker_sec_comp: false
         app_persistent_dir: /home/user/
         app_persistent_dir1:
@@ -65,7 +65,7 @@ applications:
         menu_category: GNOME;Development;
         gui_app: true
         extra_docker_flags: --device /dev/dri --group-add audio --group-add video
-        docker_network: dev
+        docker_network: host
         docker_sec_comp: falzse
         app_persistent_dir: /root/
         app_persistent_dir1:
@@ -82,7 +82,7 @@ applications:
         menu_category: GNOME;AudioVideo
         gui_app: true
         extra_docker_flags: --device /dev/dri --group-add audio --group-add video
-        docker_network: dev
+        docker_network: host
         docker_sec_comp: false
         app_persistent_dir: /root/.audacity-data
         app_persistent_dir1:
@@ -99,7 +99,7 @@ applications:
         menu_category: GNOME;Development
         gui_app: false
         extra_docker_flags: --entrypoint sh
-        docker_network: dev
+        docker_network: host
         docker_sec_comp: false
         app_persistent_dir:  /root/.aws/
         app_persistent_dir1:
@@ -116,9 +116,26 @@ applications:
         menu_category: GNOME;AudioVideo
         gui_app: true
         extra_docker_flags:  
-        docker_network: dev
+        docker_network: host
         docker_sec_comp: false
         app_persistent_dir: /root/Pictures
+        app_persistent_dir1:
+    mailspring:
+        implementation_type: docker
+        docker_image: mailspring
+        docker_ports: 
+        docker_volumes: -v /:/host_drive -v /etc/localtime:/etc/localtime:ro
+        show_on_desktop: true 
+        desktop_name: Mailspring
+        desktop_exec: mailspring
+        desktop_icon_download_url: http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/mailspring-icon.png
+        desktop_icon: mailspring1.png
+        menu_category: GNOME;Office
+        gui_app: true
+        extra_docker_flags: --privileged
+        docker_network: host
+        docker_sec_comp: false
+        app_persistent_dir: /root
         app_persistent_dir1:
     wordpress_compose:
         implementation_type: docker_compose

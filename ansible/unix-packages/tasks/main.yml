@@ -3,7 +3,7 @@
     file: "{{ packages }}"
     name: packages_file
 
-- apt: name={{ item.value.package_name }} state=present
+- apt: name={{ item.value.package_name }} state={{ item.value.package_state }}
   with_dict: "{{ packages_file.packages }}"  
   become: true
 
