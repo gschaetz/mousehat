@@ -1,5 +1,5 @@
 docker pull {{ item.value.docker_image }}
-docker rm {{ item.key }} 
+docker rm -f {{ item.key }} 
 docker network create {{ item.value.docker_network }}
 
 docker run \
