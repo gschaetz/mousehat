@@ -34,4 +34,8 @@ docker run \
 {% if item.value.docker_sec_comp == true %}
 --security-opt seccomp={{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}.json \
 {% endif %}
+{% if item.value.docker_entrypoint != None %}
+--entrypoint {{ item.value.docker_entrypoint }} \
+{% endif %}
 {{ item.value.docker_image }}
+

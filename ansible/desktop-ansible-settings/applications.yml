@@ -12,11 +12,12 @@ applications:
         desktop_icon: firefox.png
         menu_category: Network;WebBrowser;
         gui_app: true
-        extra_docker_flags: --cpuset-cpus 0 --memory 512mb --device /dev/dri
+        extra_docker_flags: --cpus 2 --device /dev/dri
         docker_network: host
         docker_sec_comp: false
         app_persistent_dir: /root
         app_persistent_dir1:
+        docker_entrypoint: 
     chrome:
         implementation_type: docker
         docker_image: jess/chrome:latest
@@ -35,6 +36,7 @@ applications:
         docker_sec_comp_download_url: https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json
         app_persistent_dir: /data
         app_persistent_dir1: /home/chrome/
+        docker_entrypoint: 
     vscode:
         implementation_type: docker
         docker_image: jess/vscode:latest
@@ -52,6 +54,7 @@ applications:
         docker_sec_comp: false
         app_persistent_dir: /home/user/
         app_persistent_dir1:
+        docker_entrypoint: 
     slack:
         implementation_type: docker
         docker_image: jess/slack:latest
@@ -69,6 +72,7 @@ applications:
         docker_sec_comp: falzse
         app_persistent_dir: /root/
         app_persistent_dir1:
+        docker_entrypoint: 
     audacity:
         implementation_type: docker
         docker_image: jess/audacity:latest
@@ -86,6 +90,7 @@ applications:
         docker_sec_comp: false
         app_persistent_dir: /root/.audacity-data
         app_persistent_dir1:
+        docker_entrypoint: 
     awscli:
         implementation_type: docker
         docker_image: jess/awscli:latest
@@ -103,6 +108,7 @@ applications:
         docker_sec_comp: false
         app_persistent_dir:  /root/.aws/
         app_persistent_dir1:
+        docker_entrypoint: 
     gimp:
         implementation_type: docker
         docker_image: jess/gimp:latest
@@ -120,6 +126,7 @@ applications:
         docker_sec_comp: false
         app_persistent_dir: /root/Pictures
         app_persistent_dir1:
+        docker_entrypoint: 
     mailspring:
         implementation_type: docker
         docker_image: mailspring
@@ -137,6 +144,7 @@ applications:
         docker_sec_comp: false
         app_persistent_dir: /root
         app_persistent_dir1:
+        docker_entrypoint: 
     wordpress_compose:
         implementation_type: docker_compose
         show_on_desktop: true
