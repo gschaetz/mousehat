@@ -44,7 +44,7 @@ vagrant up
 6) Go into the VM and go to /home/vagrant/ansible/
 ```
 cd /home/vagrant/ansible/
-```
+``
 
 7) Run the desktop setup config.  If you want to supply your own application setting files use the -s flag.  
 ```
@@ -61,6 +61,14 @@ vagrant reload
 ### Installing on Native Linux
 
 This section will help you get the project up and running on your Linux desktop.   
+
+1) Update ansible to the latest version some features are not available before 2.4 and debian is still on an older version
+```
+deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+sudo apt-get update
+sudo apt-get install ansible
+```
 
 1) Clone the repo to your local machine:  
 ```

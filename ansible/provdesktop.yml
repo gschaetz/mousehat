@@ -11,6 +11,7 @@
     gnome_settings_yaml: "{{ settings_home }}/gnome-settings.yml"     
     applications_yaml:  "{{ settings_home }}/applications.yml"
     packages_yaml: "{{ settings_home }}/packages.yml"
+    custom_roles_yaml: "{{ settings_home }}/customroles.yml"
 
     desktop_directory: "{{ local_home }}/.desktop/"
 
@@ -29,3 +30,8 @@
         gnomeSettings: "{{ gnome_settings_yaml }}",
         desktop_dir: "{{ desktop_directory }}"
       }
+    - { role: custom-roles,
+        customroles: "{{ custom_roles_yaml }}",
+        custom_roles_dir: "{{ settings_home }}/custom_roles/"
+      }
+

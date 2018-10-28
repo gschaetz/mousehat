@@ -11,6 +11,9 @@ docker run \
 -e DISPLAY=$DISPLAY \
 {% endif %}
 {% if item.value.gui_app != true %}
+-v /tmp/.X11-unix:/tmp/.X11-unix \
+--device /dev/snd \
+-e DISPLAY=$DISPLAY \
 -it \
 {% endif %}
 {% if item.value.docker_volumes != None %}

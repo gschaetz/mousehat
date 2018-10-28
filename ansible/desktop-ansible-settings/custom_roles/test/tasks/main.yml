@@ -1,0 +1,5 @@
+---
+# tasks file for test
+
+- name: Custom Roles!
+  shell: echo "Hi! Custom roles are working"
