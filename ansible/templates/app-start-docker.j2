@@ -22,8 +22,8 @@ docker run \
 {% if item.value.app_persistent_dir != None %}
 -v {{ desktop_directory }}persistent/{{ item.key }}:{{ item.value.app_persistent_dir }} \
 {% endif %}
-{% if item.value.app_persistent_dir1 != None %}
--v {{ desktop_directory }}persistent/{{ item.key }}:{{ item.value.app_persistent_dir1 }} \
+{% if item.value.app_persistent_download_dir != None %}
+-v {{ local_home }}/Downloads/:{{ item.value.app_persistent_download_dir }} \
 {% endif %}
 {% if item.value.extra_docker_flags != None %}
 {{ item.value.extra_docker_flags }} \

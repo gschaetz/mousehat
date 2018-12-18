@@ -16,7 +16,7 @@ applications:
         docker_network: host
         docker_sec_comp: false
         app_persistent_dir: /root
-        app_persistent_dir1:
+        app_persistent_download_dir:
         docker_entrypoint: 
     chrome:
         implementation_type: docker
@@ -35,7 +35,7 @@ applications:
         docker_sec_comp: true
         docker_sec_comp_download_url: https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json
         app_persistent_dir: /data
-        app_persistent_dir1: /home/chrome/
+        app_persistent_download_dir: /data/chrome/Downloads/
         docker_entrypoint: 
     vscode:
         implementation_type: docker
@@ -53,7 +53,7 @@ applications:
         docker_network: host
         docker_sec_comp: false
         app_persistent_dir: /home/user/
-        app_persistent_dir1:
+        app_persistent_download_dir:
         docker_entrypoint: 
     slack:
         implementation_type: docker
@@ -71,7 +71,7 @@ applications:
         docker_network: host
         docker_sec_comp: falzse
         app_persistent_dir: /root/
-        app_persistent_dir1:
+        app_persistent_download_dir:
         docker_entrypoint: 
     audacity:
         implementation_type: docker
@@ -89,7 +89,7 @@ applications:
         docker_network: host
         docker_sec_comp: false
         app_persistent_dir: /root/.audacity-data
-        app_persistent_dir1:
+        app_persistent_download_dir:
         docker_entrypoint: 
     awscli:
         implementation_type: docker
@@ -107,7 +107,7 @@ applications:
         docker_network: host
         docker_sec_comp: false
         app_persistent_dir:  /root/.aws/
-        app_persistent_dir1:
+        app_persistent_download_dir:
         docker_entrypoint: 
     gimp:
         implementation_type: docker
@@ -125,7 +125,7 @@ applications:
         docker_network: host
         docker_sec_comp: false
         app_persistent_dir: /root/Pictures
-        app_persistent_dir1:
+        app_persistent_download_dir:
         docker_entrypoint: 
     mailspring:
         implementation_type: docker
@@ -143,7 +143,7 @@ applications:
         docker_network: host
         docker_sec_comp: false
         app_persistent_dir: /root
-        app_persistent_dir1:
+        app_persistent_download_dir:
         docker_entrypoint: 
     wordpress_compose:
         implementation_type: docker_compose
