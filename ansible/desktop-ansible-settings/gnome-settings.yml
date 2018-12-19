@@ -1,9 +1,18 @@
 ---
+gnome_extensions:
+  dashtodock:
+    download_type: archive
+    extension_name: dash-to-dock@micxgx.gmail.com 
+    extension_url: https://extensions.gnome.org/review/download/8355.shell-extension.zip
+  gtile:
+    download_type: git
+    extension_name: gTile@vibou
+    extension_url: https://github.com/gTile/gTile.git
 gnome:
   desktop_icons:
     setting: org.gnome.desktop.background show-desktop-icons true
   shell_extensions:
-    setting: org.gnome.shell enabled-extensions '["apps-menu@gnome-shell-extensions.gcampax.github.com","dash-to-dock@micxgx.gmail.com"]'
+    setting: org.gnome.shell enabled-extensions '["gTile@vibou","apps-menu@gnome-shell-extensions.gcampax.github.com","dash-to-dock@micxgx.gmail.com"]'
   dock_position:
     setting: org.gnome.shell.extensions.dash-to-dock dock-position "BOTTOM"
   preferred_monitor:
@@ -17,7 +26,14 @@ gnome:
   button_layout: 
     setting: org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
   favorite_apps: 
-    setting: org.gnome.shell favorite-apps '["Firefox-myapps.desktop", "Chrome-myapps.desktop", "rhythmbox.desktop", "org.gnome.Nautilus.desktop", "org.gnome.Software.desktop", "org.gnome.Terminal.desktop","yelp.desktop"]'
+    setting: org.gnome.shell favorite-apps '["Thunderbird-myapps.desktop","Slack-myapps.desktop","Chromium-myapps.desktop","VScode-myapps.desktop","org.gnome.Terminal.desktop"]'
+  keyboard_show_desktop:
+    setting: org.gnome.desktop.wm.keybindings show-desktop '["<Primary><Super>d"]'
 gnome_background:
-    background: 
+    desktop_background:
+      type: background
       background_url: http://1.bp.blogspot.com/_Dob8rJ0PLZI/TQGwb7IZPhI/AAAAAAAAACY/rHz0TMmE2ts/s1600/grayLinux1280.jpg
+    screensaver_background:
+      type: screensaver 
+      background_url: https://wallpapertag.com/wallpaper/full/f/1/2/776629-free-download-linux-desktop-backgrounds-1920x1080.jpg
+    

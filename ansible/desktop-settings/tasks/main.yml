@@ -3,27 +3,68 @@
     file: "{{ gnomeSettings }}"
     name: settings
 
-- name: install shell-extension dashtodock
-  apt:
-    name: gnome-shell-extension-dashtodock
-    state: present
-  become: true
+# remove plugins
 
-- name: move extension to gsetting locations
-  shell: cp /usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/schemas/org.gnome.shell.extensions.dash-to-dock.gschema.xml /usr/share/glib-2.0/schemas/ && glib-compile-schemas /usr/share/glib-2.0/schemas/
-  become: true
+- name: removes directory for plugins
+  file: 
+    path: "{{ local_home }}/.local/share/gnome-shell/extensions/"
+    state: absent
+    
+# create main directory 
+- name: Creates directory for plugins
+  file: 
+    path: "{{ local_home }}/.local/share/gnome-shell/extensions/{{ item.value.extension_name }}/"
+    state: directory
+  with_dict: '{{ settings.gnome_extensions }}'
 
+- name: install shell-extensions when archive
+  unarchive:
+    src: "{{ item.value.extension_url }}"
+    dest: "{{ local_home }}/.local/share/gnome-shell/extensions/{{ item.value.extension_name }}/"
+    remote_src: yes
+  when: item.value.download_type == "archive"
+  with_dict: '{{ settings.gnome_extensions }}'
+
+- name: install shell-extensions when git
+  git:
+    repo: "{{ item.value.extension_url }}"
+    dest: "{{ local_home }}/.local/share/gnome-shell/extensions/{{ item.value.extension_name }}/"
+  when: item.value.download_type == "git"
+  with_dict: '{{ settings.gnome_extensions }}'
+  
 - name: set gnome settings
   shell: gsettings set {{ item.value.setting }}
   with_dict: '{{ settings.gnome }}'
+
+- name: delete background
+  shell: rm {{ desktop_dir }}/resources/background.jpg
+
+- name: delete screensaver background
+  shell: rm {{ desktop_dir }}/resources/screensaver_background.jpg
 
 - name: download background image
   get_url:
     url: "{{ item.value.background_url }}"
     dest: "{{ desktop_dir }}/resources/background.jpg"
     mode: 0440
+  when: item.value.type == "background"
+  with_dict: '{{ settings.gnome_background }}'
+
+- name: download screensaver image
+  get_url:
+    url: "{{ item.value.background_url }}"
+    dest: "{{ desktop_dir }}/resources/screensaver_background.jpg"
+    mode: 0440
+  when: item.value.type == "screensaver"
   with_dict: '{{ settings.gnome_background }}'
 
 - name: set background image
   shell: gsettings set org.gnome.desktop.background picture-uri file:///{{ desktop_dir }}/resources/background.jpg    
-  
+  when: item.value.type == "background"
+  with_dict: '{{ settings.gnome_background }}'
+
+- name: set screensaver background image
+  shell: gsettings set org.gnome.desktop.screensaver picture-uri file:///{{ desktop_dir }}/resources/screensaver_background.jpg    
+  when: item.value.type == "screensaver"
+  with_dict: '{{ settings.gnome_background }}'
+

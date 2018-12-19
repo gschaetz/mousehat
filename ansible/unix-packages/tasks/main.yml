@@ -3,6 +3,26 @@
     file: "{{ packages }}"
     name: packages_file
 
+# On apt-get target
+- name: Add an apt key by id from a keyserver
+  apt_key:
+    keyserver: "{{ item.value.keyserver_url }}"
+    id: "{{ item.value.keyserver_id }}"
+  with_dict: "{{ packages_file.repositories }}"  
+  become: true
+
+# On apt-get target
+- apt_repository: repo={{ item.value.repository_url }} state=present
+  with_dict: "{{ packages_file.repositories }}"  
+  become: true
+
+# apt-get update
+- name: apt-get update
+  apt:
+    update_cache: yes
+  become: true
+
+# install packages
 - apt: name={{ item.value.package_name }} state={{ item.value.package_state }}
   with_dict: "{{ packages_file.packages }}"  
   become: true
