@@ -3,8 +3,13 @@
     file: "{{ customroles }}"
     name: customroles_file
 
+- include_vars:
+    file: "{{ settings_home }}/{{ item.value.variable_file }}"
+  when: item.value.variable_file is undefined
+  with_dict: "{{ customroles_file.roles }}"
+     
 - name: Custom Roles
   include_role:
-    name: "{{ custom_roles_dir }}{{ item.value.name }}"
+    name: "{{ custom_roles_dir }}{{ item.value.name }}"  
   with_dict: "{{ customroles_file.roles }}"
   
