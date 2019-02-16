@@ -33,7 +33,7 @@
   with_dict: '{{ settings.gnome_extensions }}'
   
 - name: set gnome settings
-  shell: gsettings set {{ item.value.setting }}
+  shell: dconf write {{ item.value.setting }}
   with_dict: '{{ settings.gnome }}'
 
 - name: delete background
