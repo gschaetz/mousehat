@@ -10,25 +10,25 @@ gnome_extensions:
     extension_url: https://github.com/gTile/gTile.git
 gnome:
   desktop_icons:
-    setting: org.gnome.desktop.background show-desktop-icons true
+    setting: /org/gnome/desktop/background/show-desktop-icons true
   shell_extensions:
-    setting: org.gnome.shell enabled-extensions '["gTile@vibou","apps-menu@gnome-shell-extensions.gcampax.github.com","dash-to-dock@micxgx.gmail.com"]'
+    setting: /org/gnome/shell/enabled-extensions '["gTile@vibou","apps-menu@gnome-shell-extensions.gcampax.github.com","dash-to-dock@micxgx.gmail.com"]'
   dock_position:
-    setting: org.gnome.shell.extensions.dash-to-dock dock-position "BOTTOM"
+    setting: /org/gnome/shell/extensions/dash-to-dock/dock-position "'BOTTOM'"
   preferred_monitor:
-    setting: org.gnome.shell.extensions.dash-to-dock preferred-monitor 0
+    setting: /org/gnome/shell/extensions/dash-to-dock/preferred-monitor 0
   custom_theme_shrink:
-    setting: org.gnome.shell.extensions.dash-to-dock custom-theme-shrink true
+    setting: /org/gnome/shell/extensions/dash-to-dock/custom-theme-shrink true
   default_zoom_level:
-    setting: org.gnome.nautilus.icon-view default-zoom-level "small"
+    setting: /org/gnome/nautilus/icon-view/default-zoom-level "'small'"
   show_apps_button:
-    setting: org.gnome.shell.extensions.dash-to-dock show-show-apps-button false
+    setting: /org/gnome/shell/extensions/dash-to-dock/show-show-apps-button false
   button_layout: 
-    setting: org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
+    setting: /org/gnome/desktop/wm/preferences/button-layout "'appmenu:minimize,maximize,close'"
   favorite_apps: 
-    setting: org.gnome.shell favorite-apps '["Thunderbird-myapps.desktop","Slack-myapps.desktop","Chromium-myapps.desktop","VScode-myapps.desktop","org.gnome.Terminal.desktop"]'
+    setting: /org/gnome/shell/favorite-apps '["Thunderbird-myapps.desktop","Slack-myapps.desktop","Chromium-myapps.desktop","Firefox-myapps.desktop","VScode-myapps.desktop","org.gnome.Terminal.desktop"]'
   keyboard_show_desktop:
-    setting: org.gnome.desktop.wm.keybindings show-desktop '["<Primary><Super>d"]'
+    setting: /org/gnome/desktop/wm/keybindings/show-desktop '["<Primary><Super>d"]'
 gnome_background:
     desktop_background:
       type: background
