@@ -68,3 +68,17 @@
   when: item.value.type == "screensaver"
   with_dict: '{{ settings.gnome_background }}'
 
+- name: Create start script in tmp
+  template:
+    src: "{{ project_home }}/templates/start-script-gnome.j2"
+    dest: "/usr/local/bin/startup.sh"
+    mode: 0777
+  become: true
+
+- name: Create start desktop entry
+  template:
+    src: "{{ project_home }}/templates/gnome-start-entry.j2"
+    dest: "{{ local_home }}/.config/autostart/startup.desktop"
+    mode: 0777
+  become: true
+    

@@ -7,14 +7,20 @@ docker run \
 {% if item.value.gui_app == true %}
 -d \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
---device /dev/snd \
 -e DISPLAY=$DISPLAY \
 {% endif %}
 {% if item.value.gui_app != true %}
--v /tmp/.X11-unix:/tmp/.X11-unix \
---device /dev/snd \
--e DISPLAY=$DISPLAY \
 -it \
+{% endif %}
+{% if item.value.pulse_audio == true %}
+-e PULSE_SERVER=unix:/tmp/pulseaudio.socket \
+-e PULSE_COOKIE=/tmp/pulseaudio.cookie \
+-v /tmp/pulseaudio.socket:/tmp/pulseaudio.socket \
+-v /tmp/pulseaudio.client.conf:/etc/pulse/client.conf \
+--user $(id -u):$(id -g) \
+{% endif %}
+{% if item.value.pulse_audio != true %}
+--device /dev/snd \
 {% endif %}
 {% if item.value.docker_volumes != None %}
 {{ item.value.docker_volumes }} \

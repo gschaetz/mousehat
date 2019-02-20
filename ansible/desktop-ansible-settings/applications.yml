@@ -1,148 +1,80 @@
-    ---
+---
 applications:
     firefox:
         implementation_type: docker
-        docker_image: jess/firefox:latest
+        docker_image: gschaetz/firefox:latest
         docker_ports: 
         docker_volumes: -v /:/host_drive -v /dev/shm:/dev/shm
-        show_on_desktop: true
+        show_on_desktop: false
         desktop_name: Firefox
         desktop_exec: firefox
         desktop_icon_download_url: https://findicons.com/files/icons/1070/software/128/mozilla_firefox.png
         desktop_icon: firefox.png
         menu_category: Network;WebBrowser;
         gui_app: true
+        pulse_audio: true
         extra_docker_flags: --cpus 2 --device /dev/dri
         docker_network: host
         docker_sec_comp: false
-        app_persistent_dir: /root
-        app_persistent_download_dir:
+        app_persistent_dir: /home/user
+        app_persistent_download_dir: /home/user/Downloads
+        docker_entrypoint: 
+    wargames:
+        implementation_type: docker
+        docker_image: gschaetz/wargames:latest
+        docker_ports: 
+        docker_volumes: 
+        show_on_desktop: false
+        desktop_name: War Games
+        desktop_exec: wargames
+        desktop_icon_download_url: https://cdn.iconscout.com/icon/free/png-256/wargaming-1-283119.png
+        desktop_icon: wargames.png
+        menu_category: Network;Game;
+        gui_app: false
+        pulse_audio: false
+        extra_docker_flags: 
+        docker_network: host
+        docker_sec_comp: false
+        app_persistent_dir: 
+        app_persistent_download_dir: 
         docker_entrypoint: 
     chrome:
         implementation_type: docker
-        docker_image: jess/chrome:latest
+        docker_image: gschaetz/chrome:latest
         docker_ports: 
         docker_volumes: -v /:/host_drive -v /dev/shm:/dev/shm
-        show_on_desktop: true
+        show_on_desktop: false
         desktop_name: Chrome
         desktop_exec: chrome
         desktop_icon_download_url: http://icons.iconarchive.com/icons/google/chrome/128/Google-Chrome-icon.png
         desktop_icon: chrome.png
         menu_category: Network;WebBrowser;
         gui_app: true
-        extra_docker_flags: --privileged --cpuset-cpus 0 --memory 1024mb --device /dev/dri 
+        pulse_audio: false
+        extra_docker_flags: --cpus 1 --memory 1024mb --device /dev/dri 
         docker_network: host
         docker_sec_comp: true
         docker_sec_comp_download_url: https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json
         app_persistent_dir: /data
-        app_persistent_download_dir: /data/chrome/Downloads/
+        app_persistent_download_dir: /home/chrome/Downloads/
         docker_entrypoint: 
     vscode:
         implementation_type: docker
-        docker_image: jess/vscode:latest
+        docker_image: gschaetz/vscode:latest
         docker_ports:
-        docker_volumes: -v /:/host_drive
-        show_on_desktop: true
+        docker_volumes: -v /:/host_drive -v /var/run/docker.sock:/var/run/docker.sock
+        show_on_desktop: false
         desktop_name: VScode 
         desktop_exec: vscode
         desktop_icon_download_url: https://upload.wikimedia.org/wikipedia/commons/f/f3/Visual_Studio_Code_0.10.1_icon.png
         desktop_icon: vscode.png
         menu_category: Development;IDE;
         gui_app: true
-        extra_docker_flags: 
+        pulse_audio: false
+        extra_docker_flags: --cpus 1 --memory 1024mb 
         docker_network: host
         docker_sec_comp: false
         app_persistent_dir: /home/user/
-        app_persistent_download_dir:
-        docker_entrypoint: 
-    slack:
-        implementation_type: docker
-        docker_image: jess/slack:latest
-        docker_ports: 
-        docker_volumes: -v /:/host_drive -v /etc/localtime:/etc/localtime:ro 
-        show_on_desktop: false
-        desktop_name: Slack
-        desktop_exec: slack
-        desktop_icon_download_url: https://upload.wikimedia.org/wikipedia/commons/7/76/Slack_Icon.png
-        desktop_icon: slack.png
-        menu_category: GNOME;Development;
-        gui_app: true
-        extra_docker_flags: --device /dev/dri --group-add audio --group-add video
-        docker_network: host
-        docker_sec_comp: falzse
-        app_persistent_dir: /root/
-        app_persistent_download_dir:
-        docker_entrypoint: 
-    audacity:
-        implementation_type: docker
-        docker_image: jess/audacity:latest
-        docker_ports: 
-        docker_volumes: -v /:/host_drive 
-        show_on_desktop: false 
-        desktop_name: Audacity
-        desktop_exec: audacity
-        desktop_icon_download_url: https://orig00.deviantart.net/19e6/f/2011/025/0/3/audacity_dock_icon_by_dakaap-d38161x.png
-        desktop_icon: audacity.png
-        menu_category: GNOME;AudioVideo
-        gui_app: true
-        extra_docker_flags: --device /dev/dri --group-add audio --group-add video
-        docker_network: host
-        docker_sec_comp: false
-        app_persistent_dir: /root/.audacity-data
-        app_persistent_download_dir:
-        docker_entrypoint: 
-    awscli:
-        implementation_type: docker
-        docker_image: jess/awscli:latest
-        docker_ports: 
-        docker_volumes: -v /:/host_drive 
-        show_on_desktop: true
-        desktop_name: AWSCLI
-        desktop_exec: awscli
-        desktop_icon_download_url: https://flipitflop.files.wordpress.com/2016/01/terminal-icon-osx-300x262.png?w=640
-        desktop_icon: awscli.png
-        menu_category: GNOME;Development
-        gui_app: false
-        extra_docker_flags: --entrypoint sh
-        docker_network: host
-        docker_sec_comp: false
-        app_persistent_dir:  /root/.aws/
-        app_persistent_download_dir:
-        docker_entrypoint: 
-    gimp:
-        implementation_type: docker
-        docker_image: jess/gimp:latest
-        docker_ports: 
-        docker_volumes: -v /:/host_drive -v /etc/localtime:/etc/localtime:ro
-        show_on_desktop: false 
-        desktop_name: Gimp
-        desktop_exec: gimp
-        desktop_icon_download_url: https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/The_GIMP_icon_-_gnome.svg/48px-The_GIMP_icon_-_gnome.svg.png
-        desktop_icon: gimp.png
-        menu_category: GNOME;AudioVideo
-        gui_app: true
-        extra_docker_flags:  
-        docker_network: host
-        docker_sec_comp: false
-        app_persistent_dir: /root/Pictures
-        app_persistent_download_dir:
-        docker_entrypoint: 
-    mailspring:
-        implementation_type: docker
-        docker_image: mailspring
-        docker_ports: 
-        docker_volumes: -v /:/host_drive -v /etc/localtime:/etc/localtime:ro
-        show_on_desktop: true 
-        desktop_name: Mailspring
-        desktop_exec: mailspring
-        desktop_icon_download_url: http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/mailspring-icon.png
-        desktop_icon: mailspring1.png
-        menu_category: GNOME;Office
-        gui_app: true
-        extra_docker_flags: --privileged
-        docker_network: host
-        docker_sec_comp: false
-        app_persistent_dir: /root
         app_persistent_download_dir:
         docker_entrypoint: 
     wordpress_compose:
@@ -154,6 +86,7 @@ applications:
         desktop_icon: wordpress_compose.png
         menu_category: Network;WebBrowser;
         gui_app: true
+        pulse_audio: false
         compose_version: "version: '2'"
         compose_network: dev
         compose_definition:
