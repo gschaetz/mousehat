@@ -1,0 +1,7 @@
+sudo rm -rf /tmp/pulseaudio.socket
+sudo pactl load-module module-native-protocol-unix socket=/tmp/pulseaudio.socket
+sudo rm -f /tmp/pulseaudio.client.conf 
+echo 'default-server = unix:/tmp/pulseaudio.socket' > /tmp/pulseaudio.client.conf
+echo 'autospawn = no' >> /tmp/pulseaudio.client.conf
+echo 'daemon-binary = /bin/true' >> /tmp/pulseaudio.client.conf
+echo 'enable-shm = false' >> /tmp/pulseaudio.client.conf
