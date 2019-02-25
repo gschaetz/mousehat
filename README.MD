@@ -1,4 +1,4 @@
-# Desktop Ansible
+# Mousehat
 
 This project aims at setting up a linux desktop in an automated fashion.  It is 
 currently focused on Debian Linux and GNOME 3 desktop.  
