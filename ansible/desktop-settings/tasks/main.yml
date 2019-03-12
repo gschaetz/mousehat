@@ -75,10 +75,50 @@
     mode: 0777
   become: true
 
-- name: Create start desktop entry
+# - name: Create start desktop entry
+#   template:
+#     src: "{{ project_home }}/templates/gnome-start-entry.j2"
+#     dest: "{{ local_home }}/.config/autostart/startup.desktop"
+#     mode: 0777
+#   become: true
+
+# added .xinit for all window managers
+- name: Create .xinit file
   template:
-    src: "{{ project_home }}/templates/gnome-start-entry.j2"
-    dest: "{{ local_home }}/.config/autostart/startup.desktop"
+    src: "{{ project_home }}/templates/xinit.j2"
+    dest: "{{ local_home }}/.xinit"
     mode: 0777
   become: true
-    
+
+- name: Create symbolic link for .xsession
+  file:
+    src: "{{ local_home }}/.xinit"
+    dest: "{{ local_home }}/.xsession"
+    state: link
+
+- name: Create symbolic link for .xsessionrc
+  file:
+    src: "{{ local_home }}/.xinit"
+    dest: "{{ local_home }}/.xsessionrc"
+    state: link
+
+# add touchpad support if using i3
+# create main directory 
+- name: Creates directory for x11 touchpad
+  file: 
+    path: /etc/X11/xorg.conf.d
+    state: directory
+  become: true
+
+- name: Create 90-touchpad file
+  template:
+    src: "{{ project_home }}/templates/90-touchpad.j2"
+    dest: "/etc/X11/xorg.conf.d/90-touchpad.conf"
+  become: true
+
+# add intel video brightness if i3
+- name: Create 20-intel
+  template:
+    src: "{{ project_home }}/templates/20-intel.j2"
+    dest: "/etc/X11/xorg.conf.d/20-intel.conf"
+  become: true

@@ -22,6 +22,10 @@ docker run \
 {% if item.value.pulse_audio != true %}
 --device /dev/snd \
 {% endif %}
+{% if item.value.share_themes == true %}
+-v /usr/share/themes/:/usr/share/themes/ 
+-v ~/.gtkrc-2.0:{{ container_home }}.gtkrc-2.0
+{% endif %}
 {% if item.value.docker_volumes != None %}
 {{ item.value.docker_volumes }} \
 {% endif %}

@@ -19,6 +19,8 @@ applications:
         app_persistent_dir: /home/user
         app_persistent_download_dir: /home/user/Downloads
         docker_entrypoint: 
+        share_themes: true
+        container_home: /home/user/
     wargames:
         implementation_type: docker
         docker_image: gschaetz/wargames:latest
@@ -38,45 +40,8 @@ applications:
         app_persistent_dir: 
         app_persistent_download_dir: 
         docker_entrypoint: 
-    chrome:
-        implementation_type: docker
-        docker_image: gschaetz/chrome:latest
-        docker_ports: 
-        docker_volumes: -v /:/host_drive -v /dev/shm:/dev/shm
-        show_on_desktop: false
-        desktop_name: Chrome
-        desktop_exec: chrome
-        desktop_icon_download_url: http://icons.iconarchive.com/icons/google/chrome/128/Google-Chrome-icon.png
-        desktop_icon: chrome.png
-        menu_category: Network;WebBrowser;
-        gui_app: true
-        pulse_audio: false
-        extra_docker_flags: --cpus 1 --memory 1024mb --device /dev/dri 
-        docker_network: host
-        docker_sec_comp: true
-        docker_sec_comp_download_url: https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json
-        app_persistent_dir: /data
-        app_persistent_download_dir: /home/chrome/Downloads/
-        docker_entrypoint: 
-    vscode:
-        implementation_type: docker
-        docker_image: gschaetz/vscode:latest
-        docker_ports:
-        docker_volumes: -v /:/host_drive -v /var/run/docker.sock:/var/run/docker.sock
-        show_on_desktop: false
-        desktop_name: VScode 
-        desktop_exec: vscode
-        desktop_icon_download_url: https://upload.wikimedia.org/wikipedia/commons/f/f3/Visual_Studio_Code_0.10.1_icon.png
-        desktop_icon: vscode.png
-        menu_category: Development;IDE;
-        gui_app: true
-        pulse_audio: false
-        extra_docker_flags: --cpus 1 --memory 1024mb 
-        docker_network: host
-        docker_sec_comp: false
-        app_persistent_dir: /home/user/
-        app_persistent_download_dir:
-        docker_entrypoint: 
+        share_themes: false
+        container_home: 
     wordpress_compose:
         implementation_type: docker_compose
         show_on_desktop: true
