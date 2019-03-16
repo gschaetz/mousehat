@@ -25,7 +25,8 @@
 - name: Creates persistent app directories
   file: path={{ desktop_dir }}/persistent/{{ item.key }} state=directory owner=root group=root mode=0777
   become: true
-  with_dict: "{{ apps.applications }}"
+  with_dict: "{{ apps.applications | default({}) }}"
+  when: apps.applications is defined
 
 # create resources directory
 - name: Creates resource directory
@@ -44,7 +45,8 @@
 # create directories for applications
 - name: Creates application directories
   file: path={{ desktop_dir }}/apps/{{ item.key }} state=directory
-  with_dict: "{{ apps.applications }}"
+  with_dict: "{{ apps.applications | default({}) }}"
+  when: apps.applications is defined
 
 # download app icons
 - name: Download app icons
@@ -52,7 +54,8 @@
     url: "{{ item.value.desktop_icon_download_url }}"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_icon }}"
     mode: 0440
-  with_dict: "{{ apps.applications }}"
+  with_dict: "{{ apps.applications | default({}) }}"
+  when: apps.applications is defined
 
 # download sec comps
 - name: Download sec comps
@@ -60,32 +63,33 @@
     url: "{{ item.value.docker_sec_comp_download_url }}"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}.json"
     mode: 0440
-  when: item.value.docker_sec_comp == true
-  with_dict: "{{ apps.applications }}"
+  when: apps.applications is defined and item.value.docker_sec_comp == true
+  with_dict: "{{ apps.applications | default({}) }}"
 
 # create desktop icon 
 - name: Create desktop icon
   template:
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
     dest: "{{ local_home }}/Desktop/{{ item.value.desktop_name }}.desktop"
-    mode: 0777
-  when: item.value.show_on_desktop == true 
-  with_dict: "{{ apps.applications }}"
+    mode: 0770
+  when: apps.applications is defined and item.value.show_on_desktop == true
+  with_dict: "{{ apps.applications | default({}) }}"
 
 # # create menu item 
 - name: Create menu item
   template:
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
     dest: "/usr/share/applications/{{ item.value.desktop_name }}-myapps.desktop"
-    mode: 0777
+    mode: 0770
   become: true
-  with_dict: "{{ apps.applications }}"
+  with_dict: "{{ apps.applications | default({}) }}"
+  when: apps.applications is defined
 
 # gio those apps
 - name: gio the apps to remove untrusted
   shell: gio set {{ local_home }}/Desktop/{{ item.value.desktop_name }}.desktop "metadata::trusted" yes
-  when: item.value.show_on_desktop == true 
-  with_dict: "{{ apps.applications }}"
+  when: apps.applications is defined and item.value.show_on_desktop == true
+  with_dict: "{{ apps.applications | default({}) }}"
 
 # add xhost + to ensure x can run 
 - name: xhost +
@@ -96,27 +100,27 @@
   template:
     src: "{{ project_home }}/templates/app-start-docker.j2"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
-    mode: 0777
-  when: item.value.implementation_type == "docker" 
-  with_dict: "{{ apps.applications }}"
+    mode: 0770
+  when: item.value.implementation_type == "docker" and apps.applications is defined 
+  with_dict: "{{ apps.applications | default({}) }}"
 
 # create docker_compose file
 - name: create docker_compose file
   template:
     src: "{{ project_home }}/templates/app-dockercompose.j2"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/docker-compose.yml"
-    mode: 0777
-  when: item.value.implementation_type == "docker_compose" 
-  with_dict: "{{ apps.applications }}"
+    mode: 0770
+  when: item.value.implementation_type == "docker_compose" and apps.applications is defined 
+  with_dict: "{{ apps.applications | default({}) }}"
 
 # create docker_compose files 
 - name: create docker_compose run file
   template:
     src: "{{ project_home }}/templates/app-start-dockercompose.j2"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
-    mode: 0777
-  when: item.value.implementation_type == "docker_compose" 
-  with_dict: "{{ apps.applications }}"
+    mode: 0770
+  when: item.value.implementation_type == "docker_compose" and apps.applications is defined  
+  with_dict: "{{ apps.applications | default({}) }}"
 
 # create link for command line runfile:
 - name: create link for bin
@@ -125,8 +129,8 @@
     dest: "/usr/local/bin/myapps/{{ item.key }}"
     state: link
   become: true
-  with_dict: "{{ apps.applications }}"
-
+  with_dict: "{{ apps.applications | default({}) }}"
+  
 # create a file in /etc/profile.d
 - name: create file in path for env 
   copy: 

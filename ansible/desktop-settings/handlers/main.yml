@@ -1,6 +1,0 @@
----
-- name: restart gdm
-  service:
-    name: gdm3
-    state: restarted
-  become: true

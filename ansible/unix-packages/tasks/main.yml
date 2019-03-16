@@ -5,7 +5,8 @@
 
 # On apt-get target
 - apt_repository: repo={{ item.value.repository_url }} state=present
-  with_dict: "{{ packages_file.repositories }}"  
+  with_dict: "{{ packages_file.repositories | default({}) }}" 
+  when: packages_file.package is defined   
   become: true
 
 # On apt-get target
@@ -13,7 +14,8 @@
   apt_key:
     keyserver: "{{ item.value.keyserver_url }}"
     id: "{{ item.value.keyserver_id }}"
-  with_dict: "{{ packages_file.repositories }}"  
+  with_dict: "{{ packages_file.repositories | default({}) }}"  
+  when: packages_file.package is defined  
   become: true
 
 # apt-get update
@@ -24,6 +26,7 @@
 
 # install packages
 - apt: name={{ item.value.package_name }} state={{ item.value.package_state }}
-  with_dict: "{{ packages_file.packages }}"  
+  with_dict: "{{ packages_file.packages  | default({}) }}"
+  when: packages_file.package is defined  
   become: true
 

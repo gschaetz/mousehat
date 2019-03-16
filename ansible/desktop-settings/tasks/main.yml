@@ -4,7 +4,6 @@
     name: settings
 
 # remove plugins
-
 - name: removes directory for plugins
   file: 
     path: "{{ local_home }}/.local/share/gnome-shell/extensions/"
@@ -15,79 +14,77 @@
   file: 
     path: "{{ local_home }}/.local/share/gnome-shell/extensions/{{ item.value.extension_name }}/"
     state: directory
-  with_dict: '{{ settings.gnome_extensions }}'
+  with_dict: '{{ settings.gnome_extensions | default({}) }}'
+  when: settings.gnome_extensions is defined
 
 - name: install shell-extensions when archive
   unarchive:
     src: "{{ item.value.extension_url }}"
     dest: "{{ local_home }}/.local/share/gnome-shell/extensions/{{ item.value.extension_name }}/"
     remote_src: yes
-  when: item.value.download_type == "archive"
-  with_dict: '{{ settings.gnome_extensions }}'
+  when: item.value.download_type == "archive" and settings.gnome_extensions is defined 
+  with_dict: '{{ settings.gnome_extensions | default({}) }}'
 
 - name: install shell-extensions when git
   git:
     repo: "{{ item.value.extension_url }}"
     dest: "{{ local_home }}/.local/share/gnome-shell/extensions/{{ item.value.extension_name }}/"
-  when: item.value.download_type == "git"
-  with_dict: '{{ settings.gnome_extensions }}'
+  when: item.value.download_type == "git" and settings.gnome_extensions is defined
+  with_dict: '{{ settings.gnome_extensions | default({}) }}' 
   
 - name: set gnome settings
   shell: dconf write {{ item.value.setting }}
-  with_dict: '{{ settings.gnome }}'
+  with_dict: '{{ settings.gnome | default({}) }}'
 
 - name: delete background
-  shell: rm {{ desktop_dir }}/resources/background.jpg
+  file:
+    path: "{{ desktop_dir }}/resources/background.jpg"
+    state: absent
 
 - name: delete screensaver background
-  shell: rm {{ desktop_dir }}/resources/screensaver_background.jpg
+  file:
+    path: "{{ desktop_dir }}/resources/screensaver_background.jpg"
+    state: absent
 
 - name: download background image
   get_url:
     url: "{{ item.value.background_url }}"
     dest: "{{ desktop_dir }}/resources/background.jpg"
     mode: 0440
-  when: item.value.type == "background"
-  with_dict: '{{ settings.gnome_background }}'
+  when: item.value.type == "background" and settings.gnome_background is defined
+  with_dict: '{{ settings.gnome_background | default({}) }}'
 
 - name: download screensaver image
   get_url:
     url: "{{ item.value.background_url }}"
     dest: "{{ desktop_dir }}/resources/screensaver_background.jpg"
     mode: 0440
-  when: item.value.type == "screensaver"
-  with_dict: '{{ settings.gnome_background }}'
+  when: item.value.type == "screensaver" and settings.gnome_background is defined
+  with_dict: '{{ settings.gnome_background | default({}) }}'
 
 - name: set background image
   shell: gsettings set org.gnome.desktop.background picture-uri file:///{{ desktop_dir }}/resources/background.jpg    
-  when: item.value.type == "background"
-  with_dict: '{{ settings.gnome_background }}'
+  when: item.value.type == "background" and settings.gnome_background is defined
+  with_dict: '{{ settings.gnome_background | default({}) }}'
 
 - name: set screensaver background image
   shell: gsettings set org.gnome.desktop.screensaver picture-uri file:///{{ desktop_dir }}/resources/screensaver_background.jpg    
-  when: item.value.type == "screensaver"
-  with_dict: '{{ settings.gnome_background }}'
+  when: item.value.type == "screensaver" and settings.gnome_background is defined 
+  with_dict: '{{ settings.gnome_background | default({}) }}'
 
 - name: Create start script in tmp
   template:
     src: "{{ project_home }}/templates/start-script-gnome.j2"
     dest: "/usr/local/bin/startup.sh"
-    mode: 0777
+    mode: 0770
   become: true
-
-# - name: Create start desktop entry
-#   template:
-#     src: "{{ project_home }}/templates/gnome-start-entry.j2"
-#     dest: "{{ local_home }}/.config/autostart/startup.desktop"
-#     mode: 0777
-#   become: true
 
 # added .xinit for all window managers
 - name: Create .xinit file
   template:
     src: "{{ project_home }}/templates/xinit.j2"
     dest: "{{ local_home }}/.xinit"
-    mode: 0777
+    mode: 0770
   become: true
 
 - name: Create symbolic link for .xsession
@@ -101,24 +98,3 @@
     src: "{{ local_home }}/.xinit"
     dest: "{{ local_home }}/.xsessionrc"
     state: link
-
-# add touchpad support if using i3
-# create main directory 
-- name: Creates directory for x11 touchpad
-  file: 
-    path: /etc/X11/xorg.conf.d
-    state: directory
-  become: true
-
-- name: Create 90-touchpad file
-  template:
-    src: "{{ project_home }}/templates/90-touchpad.j2"
-    dest: "/etc/X11/xorg.conf.d/90-touchpad.conf"
-  become: true
-
-# add intel video brightness if i3
-- name: Create 20-intel
-  template:
-    src: "{{ project_home }}/templates/20-intel.j2"
-    dest: "/etc/X11/xorg.conf.d/20-intel.conf"
-  become: true
