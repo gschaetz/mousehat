@@ -4,15 +4,15 @@
     name: packages_file
 
 # On apt-get target
-- name: Add an apt key by id from a keyserver
-  apt_key:
-    keyserver: "{{ item.value.keyserver_url }}"
-    id: "{{ item.value.keyserver_id }}"
+- apt_repository: repo={{ item.value.repository_url }} state=present
   with_dict: "{{ packages_file.repositories }}"  
   become: true
 
 # On apt-get target
-- apt_repository: repo={{ item.value.repository_url }} state=present
+- name: Add an apt key by id from a keyserver
+  apt_key:
+    keyserver: "{{ item.value.keyserver_url }}"
+    id: "{{ item.value.keyserver_id }}"
   with_dict: "{{ packages_file.repositories }}"  
   become: true
 
