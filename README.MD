@@ -7,15 +7,27 @@ currently focused on Debian Linux and GNOME 3 desktop.
 
 These instructions will get you a copy of the project up and running on your local machine. The project contains a /testvm directory that will help you setup this project for testing and/or working out of a virtualbox vm.  
 
-### Prerequisites
+### Native Install
+
+1) You will need to install ansible.  On debian the default repo has an older version of ansible that will not work with the custom_role feature.  If you want this feature you will need to install a newer feature.  I tested it on 2.7.9.  
+
+2) Docker will be installed when you run this project.  However you will need to reboot to get it to work with your user.
+
+3) Run the desktop setup config.  If you want to supply your own application setting files use the -s flag.  
+```
+./runplay.sh
+
+./runplay.sh -s /home/.desktop/mysettings
+```
+Your application settings can be created by copying the files in the folder under /ansible/desktop-ansible-settings.  
+
+### Installing in a VM
 
 If you are going to run this in virtualbox you will need to run the following command:
 
 ```
 vagrant plugin install vagrant-vbguest
 ```
-
-### Installing in a VM
 
 This section will help you get the project up and running in your VM.   
 
