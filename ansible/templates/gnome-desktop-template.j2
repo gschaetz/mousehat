@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name={{ item.value.desktop_name }}
-Exec={{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_exec }}
-Icon={{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_icon }}
+Name={{ item.value.desktop_name | default(item.key) }}
+Exec={{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_exec | default(item.key) }}
+Icon={{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_icon | default(item.key + '.png') }}
 Terminal=true
-Categories={{ item.value.menu_category}}
+Categories={{ item.value.menu_category }}

@@ -52,7 +52,7 @@
 - name: Download app icons
   get_url:
     url: "{{ item.value.desktop_icon_download_url }}"
-    dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_icon }}"
+    dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_icon | default(item.key + '.png') }}"
     mode: 0440
   with_dict: "{{ apps.applications | default({}) }}"
   when: apps.applications is defined
@@ -63,32 +63,32 @@
     url: "{{ item.value.docker_sec_comp_download_url }}"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}.json"
     mode: 0440
-  when: apps.applications is defined and item.value.docker_sec_comp == true
+  when: apps.applications is defined and item.value.docker_sec_comp|default(false) == true
   with_dict: "{{ apps.applications | default({}) }}"
 
 # create desktop icon 
 - name: Create desktop icon
   template:
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
-    dest: "{{ local_home }}/Desktop/{{ item.value.desktop_name }}.desktop"
-    mode: 0770
-  when: apps.applications is defined and item.value.show_on_desktop == true
+    dest: "{{ local_home }}/Desktop/{{ item.value.desktop_name | default(item.key) }}.desktop"
+    mode: 0777
+  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true
   with_dict: "{{ apps.applications | default({}) }}"
 
 # # create menu item 
 - name: Create menu item
   template:
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
-    dest: "/usr/share/applications/{{ item.value.desktop_name }}-myapps.desktop"
-    mode: 0770
+    dest: "/usr/share/applications/{{ item.value.desktop_name | default(item.key) }}-myapps.desktop"
+    mode: 0777
   become: true
   with_dict: "{{ apps.applications | default({}) }}"
   when: apps.applications is defined
 
 # gio those apps
 - name: gio the apps to remove untrusted
-  shell: gio set {{ local_home }}/Desktop/{{ item.value.desktop_name }}.desktop "metadata::trusted" yes
-  when: apps.applications is defined and item.value.show_on_desktop == true
+  shell: gio set {{ local_home }}/Desktop/{{ item.value.desktop_name | default(item.key) }}.desktop "metadata::trusted" yes
+  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true
   with_dict: "{{ apps.applications | default({}) }}"
 
 # add xhost + to ensure x can run 
@@ -119,7 +119,7 @@
     src: "{{ project_home }}/templates/app-start-dockercompose.j2"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
     mode: 0770
-  when: item.value.implementation_type == "docker_compose" and apps.applications is defined  
+  when: item.value.implementation_type == "dockershow_on_desktop_compose" and apps.applications is defined  
   with_dict: "{{ apps.applications | default({}) }}"
 
 # create link for command line runfile:

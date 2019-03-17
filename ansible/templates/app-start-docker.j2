@@ -1,54 +1,127 @@
+{# DEFAULTS #}
+{#guiapp#}
+{% if item.value.gui_app is defined  %}
+{% set guiapp = item.value.gui_app %}
+{% else %}
+{% set guiapp = true %}
+{% endif %}
+{#pulseaudio#}
+{% if item.value.pulse_audio is defined  %}
+{% set pulseaudio = item.value.pulse_audio %}
+{% else %}
+{% set pulseaudio = true %}
+{% endif %}
+{#dockernetwork#}
+{% if item.value.docker_network is defined  %}
+{% set dockernetwork = item.value.docker_network %}
+{% else %}
+{% set dockernetwork = 'host' %}
+{% endif %}
+{#sharethemes#}
+{% if item.value.share_themes is defined  %}
+{% set sharethemes = item.value.share_themes %}
+{% else %}
+{% set sharethemes = true %}
+{% endif %}
+{#dockervolumes#}
+{% if item.value.docker_volumes is defined  %}
+{% set dockervolumes = item.value.docker_volumes %}
+{% else %}
+{% set dockervolumes = None %}
+{% endif %}
+{#apppersistentdir#}
+{% if item.value.app_persistent_dir is defined  %}
+{% set apppersistentdir = item.value.app_persistent_dir %}
+{% else %}
+{% set apppersistentdir = None %}
+{% endif %}
+{#apppersistentdownloaddir#}
+{% if item.value.app_persistent_download_dir is defined  %}
+{% set apppersistentdownloaddir = item.value.app_persistent_download_dir %}
+{% else %}
+{% set apppersistentdownloaddir = None %}
+{% endif %}
+{#extradockerflags#}
+{% if item.value.extra_docker_flags is defined  %}
+{% set extradockerflags = item.value.extra_docker_flags %}
+{% else %}
+{% set extradockerflags = None %}
+{% endif %}
+{#dockerports#}
+{% if item.value.docker_ports is defined  %}
+{% set dockerports = item.value.docker_ports %}
+{% else %}
+{% set dockerports = None %}
+{% endif %}
+{#dockerseccomp#}
+{% if item.value.docker_sec_comp is defined  %}
+{% set dockerseccomp = item.value.docker_sec_comp %}
+{% else %}
+{% set dockerseccomp = false %}
+{% endif %}
+{#dockerentrypoint#}
+{% if item.value.docker_entrypoint is defined  %}
+{% set dockerentrypoint = item.value.docker_entrypoint %}
+{% else %}
+{% set dockerentrypoint = None %}
+{% endif %}
+{#container_home#}
+{% if item.value.container_home is defined  %}
+{% set containerhome = item.value.container_home %}
+{% else %}
+{% set containerhome = '/home/user' %}
+{% endif %}
+{#END DEFAULTS#}
+
 docker pull {{ item.value.docker_image }}
 docker rm -f {{ item.key }} 
-docker network create {{ item.value.docker_network }}
+docker network create {{ dockernetwork }}
 
 docker run \
 --name {{ item.key }} \
-{% if item.value.gui_app == true %}
+{% if guiapp == true %}
 -d \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 -e DISPLAY=$DISPLAY \
 {% endif %}
-{% if item.value.gui_app != true %}
+{% if guiapp != true %}
 -it \
 {% endif %}
-{% if item.value.pulse_audio == true %}
+{% if pulseaudio == true %}
 -e PULSE_SERVER=unix:/tmp/pulseaudio.socket \
 -e PULSE_COOKIE=/tmp/pulseaudio.cookie \
 -v /tmp/pulseaudio.socket:/tmp/pulseaudio.socket \
 -v /tmp/pulseaudio.client.conf:/etc/pulse/client.conf \
 --user $(id -u):$(id -g) \
 {% endif %}
-{% if item.value.pulse_audio != true %}
+{% if pulseaudio != true %}
 --device /dev/snd \
 {% endif %}
-{% if item.value.share_themes == true %}
+{% if sharethemes == true %}
 -v /usr/share/themes/:/usr/share/themes/ \
--v ~/.gtkrc-2.0:{{ item.value.container_home }}.gtkrc-2.0 \
+-v ~/.gtkrc-2.0:{{ containerhome }}.gtkrc-2.0 \
 {% endif %}
-{% if item.value.docker_volumes != None %}
-{{ item.value.docker_volumes }} \
+{% if dockervolumes != None %}
+{{ dockervolumes }} \
 {% endif %}
-{% if item.value.app_persistent_dir != None %}
--v {{ desktop_directory }}persistent/{{ item.key }}:{{ item.value.app_persistent_dir }} \
+{% if apppersistentdir != None %}
+-v {{ desktop_directory }}persistent/{{ item.key }}:{{ apppersistentdir }} \
 {% endif %}
-{% if item.value.app_persistent_download_dir != None %}
--v {{ local_home }}/Downloads/:{{ item.value.app_persistent_download_dir }} \
+{% if apppersistentdownloaddir != None %}
+-v {{ local_home }}/Downloads/:{{ apppersistentdownloaddir }} \
 {% endif %}
-{% if item.value.extra_docker_flags != None %}
-{{ item.value.extra_docker_flags }} \
+{% if extradockerflags != None %}
+{{ extradockerflags }} \
 {% endif %}
-{% if item.value.docker_ports != None %}
-{{ item.value.docker_ports }} \ 
+{% if dockerports != None %}
+{{ dockerports }} \ 
 {% endif %}
-{% if item.value.docker_network != None %}
---net {{ item.value.docker_network }} \
-{% endif %}
-{% if item.value.docker_sec_comp == true %}
+--net {{ dockernetwork }} \
+{% if dockerseccomp == true %}
 --security-opt seccomp={{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}.json \
 {% endif %}
-{% if item.value.docker_entrypoint != None %}
---entrypoint {{ item.value.docker_entrypoint }} \
+{% if dockerentrypoint != None %}
+--entrypoint {{ dockerentrypoint }} \
 {% endif %}
 {{ item.value.docker_image }}
 
