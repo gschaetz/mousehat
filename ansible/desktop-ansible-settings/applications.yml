@@ -1,47 +1,72 @@
+#OPTION                     VALUE                                       DEFAULT
+#implementation_type            docker|docker_compose                       Required    
+#docker_image                   'string: image location'                    Required
+#desktop_icon_download_url      'string: image url for download'            Required
+#menu_category                  'string: Gnome category for app'            Required
+#docker_ports                   'string: -p port1:port1 -p port2:port2'     defaults to none
+#docker_volumes                 'string: -v volume1 -v  volume2'            defaults to none
+#show_on_desktop                true|false                                  defaults to false
+#desktop_exec                   'string: executable name'                   defaults to key (e.g. firefox:)
+#desktop_name                   'string: name on desktop'                   defaults to key (e.g. firefox:)
+#desktop_icon                   'string: name of app icon'                  defaults to key with a png extension (e.g. firefox.png)
+#gui_app                        true|false                                  defaults true
+#pulse_audio                    true|false                                  defaults true
+#docker_network                 'string: docker network'                    defaults to host
+#share_themes                   true|false                                  defaults to true
+#container_home                 'string: home path in container'            defaults to /home/user
+#app_persistent_dir             'string: container path to persist'         defaults to none
+#app_persistent_download_dir    'string: container download path persist'   defaults to none
+#extra_docker_flags             'string: any extra docker flags'            defaults to none
+#docker_sec_comp                true|false                                  defaults to false
+#docker_sec_comp_download_url   'string: url to download sec_comp'          defaults to none|required if docker_sec_comp is true
+#docker_entrypoint              'string: override docker entrypoint'        defaults to none
+#container_home defaults to /home/user
 ---
 applications:
     firefox:
         implementation_type: docker
         docker_image: gschaetz/firefox:latest
-        docker_ports: 
         docker_volumes: -v /:/host_drive -v /dev/shm:/dev/shm
-        show_on_desktop: false
-        desktop_name: Firefox
-        desktop_exec: firefox
         desktop_icon_download_url: https://findicons.com/files/icons/1070/software/128/mozilla_firefox.png
-        desktop_icon: firefox.png
         menu_category: Network;WebBrowser;
-        gui_app: true
-        pulse_audio: true
         extra_docker_flags: --cpus 2 --device /dev/dri
-        docker_network: host
-        docker_sec_comp: false
         app_persistent_dir: /home/user
         app_persistent_download_dir: /home/user/Downloads
-        docker_entrypoint: 
-        share_themes: true
-        container_home: /home/user/
     wargames:
         implementation_type: docker
         docker_image: gschaetz/wargames:latest
-        docker_ports: 
-        docker_volumes: 
-        show_on_desktop: false
-        desktop_name: War Games
-        desktop_exec: wargames
         desktop_icon_download_url: https://cdn.iconscout.com/icon/free/png-256/wargaming-1-283119.png
-        desktop_icon: wargames.png
         menu_category: Network;Game;
         gui_app: false
-        pulse_audio: false
-        extra_docker_flags: 
-        docker_network: host
-        docker_sec_comp: false
-        app_persistent_dir: 
-        app_persistent_download_dir: 
-        docker_entrypoint: 
         share_themes: false
-        container_home: 
+    chrome:
+        implementation_type: docker
+        docker_image: gschaetz/chrome:latest
+        docker_volumes: -v /:/host_drive -v /dev/shm:/dev/shm
+        desktop_icon_download_url: http://icons.iconarchive.com/icons/google/chrome/128/Google-Chrome-icon.png
+        menu_category: Network;WebBrowser;
+        extra_docker_flags: --cpus 1 --memory 1024mb --device /dev/dri 
+        docker_sec_comp: true
+        docker_sec_comp_download_url: https://raw.githubusercontent.com/jfrazelle/dotfiles/master/etc/docker/seccomp/chrome.json
+        app_persistent_dir: /data
+        app_persistent_download_dir: /home/chrome/Downloads/
+        container_home: /home/chrome/ 
+    vscode:
+        implementation_type: docker
+        docker_image: gschaetz/vscode:latest
+        docker_volumes: -v /:/host_drive -v /var/run/docker.sock:/var/run/docker.sock
+        desktop_icon_download_url: https://upload.wikimedia.org/wikipedia/commons/f/f3/Visual_Studio_Code_0.10.1_icon.png
+        menu_category: Development;IDE;
+        extra_docker_flags: --cpus 1 --memory 1024mb 
+        app_persistent_dir: /home/user/
+    slack:
+        implementation_type: docker
+        docker_image: gschaetz/slack:latest
+        docker_volumes: -v /:/host_drive -v /etc/localtime:/etc/localtime:ro 
+        desktop_icon_download_url: https://upload.wikimedia.org/wikipedia/commons/7/76/Slack_Icon.png
+        menu_category: GNOME;Development;
+        extra_docker_flags: --ipc="host" --device /dev/snd --device /dev/dri --device /dev/video0 --group-add audio --group-add video
+        app_persistent_dir: /home/user
     wordpress_compose:
         implementation_type: docker_compose
         show_on_desktop: true

@@ -29,6 +29,11 @@ gnome:
     setting: /org/gnome/shell/favorite-apps '["Thunderbird-myapps.desktop","Slack-myapps.desktop","Chromium-myapps.desktop","Firefox-myapps.desktop","VScode-myapps.desktop","org.gnome.Terminal.desktop"]'
   keyboard_show_desktop:
     setting: /org/gnome/desktop/wm/keybindings/show-desktop '["<Primary><Super>d"]'
+  system_sounds:
+    setting: /org/gnome/desktop/sound/event-sounds false
+  touchpad:
+    setting: /org/gnome/desktop/peripherals/touchpad/tap-to-click true
+    
 gnome_background:
     desktop_background:
       type: background
