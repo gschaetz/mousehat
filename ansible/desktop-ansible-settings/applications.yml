@@ -20,18 +20,20 @@
 #docker_sec_comp                true|false                                  defaults to false
 #docker_sec_comp_download_url   'string: url to download sec_comp'          defaults to none|required if docker_sec_comp is true
 #docker_entrypoint              'string: override docker entrypoint'        defaults to none
-#container_home defaults to /home/user
+#time_synchronization           true|false                                  defaults to true
+#share_host_memory              true|false                                  defaults to false
 ---
 applications:
     firefox:
         implementation_type: docker
         docker_image: gschaetz/firefox:latest
-        docker_volumes: -v /:/host_drive -v /dev/shm:/dev/shm
+        docker_volumes: -v /:/host_drive
         desktop_icon_download_url: https://findicons.com/files/icons/1070/software/128/mozilla_firefox.png
         menu_category: Network;WebBrowser;
         extra_docker_flags: --cpus 2 --device /dev/dri
         app_persistent_dir: /home/user
         app_persistent_download_dir: /home/user/Downloads
+        share_host_memory: true
     wargames:
         implementation_type: docker
         docker_image: gschaetz/wargames:latest
@@ -42,7 +44,7 @@ applications:
     chrome:
         implementation_type: docker
         docker_image: gschaetz/chrome:latest
-        docker_volumes: -v /:/host_drive -v /dev/shm:/dev/shm
+        docker_volumes: -v /:/host_drive
         desktop_icon_download_url: http://icons.iconarchive.com/icons/google/chrome/128/Google-Chrome-icon.png
         menu_category: Network;WebBrowser;
         extra_docker_flags: --cpus 1 --memory 1024mb --device /dev/dri 
@@ -51,6 +53,7 @@ applications:
         app_persistent_dir: /data
         app_persistent_download_dir: /home/chrome/Downloads/
         container_home: /home/chrome/ 
+        share_host_memory: true
     vscode:
         implementation_type: docker
         docker_image: gschaetz/vscode:latest
@@ -62,11 +65,20 @@ applications:
     slack:
         implementation_type: docker
         docker_image: gschaetz/slack:latest
-        docker_volumes: -v /:/host_drive -v /etc/localtime:/etc/localtime:ro 
+        docker_volumes: -v /:/host_drive 
         desktop_icon_download_url: https://upload.wikimedia.org/wikipedia/commons/7/76/Slack_Icon.png
         menu_category: GNOME;Development;
-        extra_docker_flags: --ipc="host" --device /dev/snd --device /dev/dri --device /dev/video0 --group-add audio --group-add video
+        extra_docker_flags: 
+        #--ipc="host" --device /dev/dri --device /dev/video0 --group-add audio --group-add video
         app_persistent_dir: /home/user
+    audacity:
+        implementation_type: docker
+        docker_image: gschaetz/audacity:latest
+        docker_volumes: -v /:/host_drive 
+        desktop_icon_download_url: https://orig00.deviantart.net/19e6/f/2011/025/0/3/audacity_dock_icon_by_dakaap-d38161x.png
+        menu_category: GNOME;AudioVideo
+        extra_docker_flags: --device /dev/dri --group-add audio --group-add video
+        app_persistent_dir: /home/user/.audacity-data
     wordpress_compose:
         implementation_type: docker_compose
         show_on_desktop: true

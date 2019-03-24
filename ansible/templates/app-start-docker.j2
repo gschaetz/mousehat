@@ -71,6 +71,18 @@
 {% else %}
 {% set containerhome = '/home/user' %}
 {% endif %}
+{#container_home#}
+{% if item.value.time_synchronization is defined  %}
+{% set timesynchronization = item.value.time_synchronization %}
+{% else %}
+{% set timesynchronization = true %}
+{% endif %}
+{#share_host_memory#}
+{% if item.value.share_host_memory is defined  %}
+{% set sharehostmemory = item.value.share_host_memory %}
+{% else %}
+{% set sharehostmemory = true %}
+{% endif %}
 {#END DEFAULTS#}
 
 docker pull {{ item.value.docker_image }}
@@ -86,6 +98,14 @@ docker run \
 {% endif %}
 {% if guiapp != true %}
 -it \
+{% endif %}
+{% if timesynchronization == true %}
+-v /etc/localtime:/etc/localtime:ro \
+-v /etc/timezone:/etc/timezone:ro \
+-e TZ=$TZ \
+{% endif %}
+{% if sharehostmemory == true %}
+-v /dev/shm/:/dev/shm/ \
 {% endif %}
 {% if pulseaudio == true %}
 -e PULSE_SERVER=unix:/tmp/pulseaudio.socket \

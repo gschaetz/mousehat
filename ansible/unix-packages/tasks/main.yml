@@ -3,10 +3,11 @@
     file: "{{ packages }}"
     name: packages_file
 
+### START APT
 # On apt-get target
 - apt_repository: repo={{ item.value.repository_url }} state=present
   with_dict: "{{ packages_file.repositories | default({}) }}" 
-  when: packages_file.package is defined and (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
+  when: packages_file.package is defined and (ansible_os_family == 'Debian')
   become: true
 
 # On apt-get target
@@ -15,19 +16,27 @@
     keyserver: "{{ item.value.keyserver_url }}"
     id: "{{ item.value.keyserver_id }}"
   with_dict: "{{ packages_file.repositories | default({}) }}"  
-  when: packages_file.package is defined  and (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
+  when: packages_file.package is defined  and (ansible_os_family == 'Debian')
   become: true
 
 # apt-get update
 - name: apt-get update
   apt:
     update_cache: yes
-  when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu')
+  when: (ansible_os_family == 'Debian')
   become: true
   
 # install packages
 - apt: name={{ item.value.package_name }} state={{ item.value.package_state }}
   with_dict: "{{ packages_file.packages  | default({}) }}"
-  when: packages_file.package is defined and (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') 
+  when: packages_file.package is defined and (ansible_os_family == 'Debian') 
   become: true
+### END APT
 
+### START PACMAN
+# install packages
+- pacman: name={{ item.value.package_name }} state={{ item.value.package_state }}
+  with_dict: "{{ packages_file.packages  | default({}) }}"
+  when: packages_file.package is defined and (ansible_os_family == 'ArchLinux') 
+  become: true
+### END PACMAN
