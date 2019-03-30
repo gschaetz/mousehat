@@ -33,6 +33,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ./runplay.sh -s /mysettings
 ```
+4) if you use my settings the ansible repo setup will have to ran twice.  The first time will fail.  Ignore and re-run.
 
 ## Built With
 
