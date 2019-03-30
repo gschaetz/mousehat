@@ -7,14 +7,17 @@ currently focused on Debian Linux and GNOME 3 desktop.
 
 These instructions will get you a copy of the project up and running on your local machine. The project contains a /testvm directory that will help you setup this project for testing and/or working out of a virtualbox vm.  
 
-## User Requirements
+## Requirements
 
-1) Add your user to sudo group `usermod -aG sudo username`
-2) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo.  
+1) su to root
+2) Install sudo `apt-get install sudo
+3) Install ansible.`apt-get install ansible`
+4) Add your user to sudo group `usermod -aG sudo username`
+5) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo. Add the following `username ALL=(ALL) NOPASSWD: ALL`
 
-### Native Install
+### Install
 
-1) You will need to install ansible.  On debian the default repo has an older version of ansible that will not work with the custom_role feature.  If you want this feature you will need to install a newer feature.  I tested it on 2.7.9.  
+1) You will need to install ansible > 2.7.  On debian the default repo has an older version of ansible that will not work with the custom_role feature.  If you want this feature you will need to install a newer feature.  I tested it on 2.7.9.  
 
 2) Docker will be installed when you run this project.  However you will need to reboot to get it to work with your user.
 
