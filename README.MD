@@ -34,6 +34,8 @@ These instructions will get you a copy of the project up and running on your loc
 ./runplay.sh -s /mysettings
 ```
 4) if you use my settings the ansible repo setup will have to ran twice.  The first time will fail.  Ignore and re-run.
+5) Again if you are running mine the ansible will fail on the custom role.  After it runs do the following: `sudo apt-get upgrade ansible`.  Then rerun the ansible.
+
 
 ## Built With
 
