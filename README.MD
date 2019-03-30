@@ -7,10 +7,10 @@ currently focused on Debian Linux and GNOME 3 desktop.
 
 These instructions will get you a copy of the project up and running on your local machine. The project contains a /testvm directory that will help you setup this project for testing and/or working out of a virtualbox vm.  
 
-## User 
+## User Requirements
 
 1) Add your user to sudo group `usermod -aG sudo username`
-2) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo. 
+2) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo.  
 
 ### Native Install
 
