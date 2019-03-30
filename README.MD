@@ -15,6 +15,12 @@ These instructions will get you a copy of the project up and running on your loc
 4) Add your user to sudo group `usermod -aG sudo username`
 5) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo. Add the following `username ALL=(ALL) NOPASSWD: ALL`
 
+## vmware
+
+1) install vmware tools: `sudo apt-get install open-vm-tools`
+2) install vmsare tools desktop: `sudo apt-get install open-vm-tools-desktop`
+3) reboot
+
 ### Install
 
 1) You will need to install ansible > 2.7.  On debian the default repo has an older version of ansible that will not work with the custom_role feature.  If you want this feature you will need to install a newer feature.  I tested it on 2.7.9.  
