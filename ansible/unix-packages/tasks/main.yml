@@ -3,7 +3,6 @@
     file: "{{ packages }}"
     name: packages_file
 
-- debug: var=ansible_facts
 
 ### START APT
 # On apt-get target
