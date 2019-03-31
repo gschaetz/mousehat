@@ -38,6 +38,6 @@
 # install packages
 - pacman: name={{ item.value.package_name }} state={{ item.value.package_state }}
   with_dict: "{{ packages_file.packages  | default({}) }}"
-  when: packages_file.packages is defined and (ansible_os_family == 'Arch Linux') 
+  when: packages_file.packages is defined and (ansible_os_family == 'Archlinux') 
   become: true
 ### END PACMAN

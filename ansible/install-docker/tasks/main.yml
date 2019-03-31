@@ -41,42 +41,42 @@
 
 ### pacman
 - pacman: name=curl state=present
-  when: (ansible_os_family == 'Arch Linux')  
+  when: (ansible_os_family == 'Archlinux')  
   become: true
 
 - apt: name=apt-transport-https state=present
-  when: (ansible_os_family == 'Arch Linux')  
+  when: (ansible_os_family == 'Archlinux')  
   become: true
 
 - apt: name=ca-certificates state=present
-  when: (ansible_os_family == 'Arch Linux')  
+  when: (ansible_os_family == 'Archlinux')  
   become: true
 
 - apt: name=gnupg2 state=present
-  when: (ansible_os_family == 'Arch Linux')  
+  when: (ansible_os_family == 'Archlinux')  
   become: true
 
 - apt: name=software-properties-common state=present
-  when: (ansible_os_family == 'Arch Linux')  
+  when: (ansible_os_family == 'Archlinux')  
   become: true
 
 - name: add docker gpg key
   shell: 'curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | sudo apt-key add -'
-  when: (ansible_os_family == 'Arch Linux')  
+  when: (ansible_os_family == 'Archlinux')  
   become: true
 
 - name: add docker apt repo
   shell: 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") $(lsb_release -cs) stable"'
-  when: (ansible_os_family == 'Arch Linux')  
+  when: (ansible_os_family == 'Archlinux')  
   become: true
 
 - name: apt update
   apt: update_cache=yes
-  when: (ansible_os_family == 'Arch Linux')  
+  when: (ansible_os_family == 'Archlinux')  
   become: true
 
 - apt: name=docker-ce state=present
-  when: (ansible_os_family == 'Arch Linux')  
+  when: (ansible_os_family == 'Archlinux')  
   become: true
 
 ## end env
