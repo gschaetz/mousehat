@@ -1,7 +1,7 @@
 # Mousehat
 
-This project aims at setting up a linux desktop in an automated fashion.  It is 
-currently focused on Debian Linux and GNOME 3 desktop.  
+This project aims at setting up a linux desktop in an automated fashion.  Supports GUI applications in docker containers.  It is 
+currently focused on Debian/Ubuntu/Arch Linux and GNOME 3/i3 desktop.  
 
 ## Getting Started
 
