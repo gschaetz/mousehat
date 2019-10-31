@@ -23,8 +23,8 @@
 
 # create persistent directories for applications
 - name: Creates persistent app directories
-  file: path={{ desktop_dir }}/persistent/{{ item.key }} state=directory owner=root group=root mode=0777
-  become: true
+  file: path={{ desktop_dir }}/persistent/{{ item.key }} state=directory mode=0777
+  #become: true
   with_dict: "{{ apps.applications | default({}) }}"
   when: apps.applications is defined
 
