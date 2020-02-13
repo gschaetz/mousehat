@@ -9,7 +9,7 @@
 {% if item.value.pulse_audio is defined  %}
 {% set pulseaudio = item.value.pulse_audio %}
 {% else %}
-{% set pulseaudio = true %}
+{% set pulseaudio = false %}
 {% endif %}
 {#dockernetwork#}
 {% if item.value.docker_network is defined  %}
@@ -83,6 +83,12 @@
 {% else %}
 {% set sharehostmemory = true %}
 {% endif %}
+{#snd#}
+{% if item.value.snd is defined %}
+{% set snd = item.value.snd %}
+{% else %}
+{% set snd = false %}
+{% endif %}
 {#END DEFAULTS#}
 
 docker pull {{ item.value.docker_image }}
@@ -114,7 +120,7 @@ docker run \
 -v /tmp/pulseaudio.client.conf:/etc/pulse/client.conf \
 --user $(id -u):$(id -g) \
 {% endif %}
-{% if pulseaudio != true %}
+{% if snd == true %}
 --device /dev/snd \
 {% endif %}
 {% if sharethemes == true %}

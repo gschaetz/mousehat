@@ -10,7 +10,8 @@
 #desktop_name                   'string: name on desktop'                   defaults to key (e.g. firefox:)
 #desktop_icon                   'string: name of app icon'                  defaults to key with a png extension (e.g. firefox.png)
 #gui_app                        true|false                                  defaults true
-#pulse_audio                    true|false                                  defaults true
+#pulse_audio                    true|false                                  defaults false
+#snd                            true|false                                  defaults false
 #docker_network                 'string: docker network'                    defaults to host
 #share_themes                   true|false                                  defaults to true
 #container_home                 'string: home path in container'            defaults to /home/user
@@ -34,6 +35,7 @@ applications:
         app_persistent_dir: /home/user
         app_persistent_download_dir: /home/user/Downloads
         share_host_memory: true
+        pulse_audio: true
     wargames:
         implementation_type: docker
         docker_image: gschaetz/wargames:latest
@@ -62,6 +64,7 @@ applications:
         menu_category: Development;IDE;
         extra_docker_flags: --cpus 1 --memory 1024mb 
         app_persistent_dir: /home/user/
+        pulse_audio: true
     slack:
         implementation_type: docker
         docker_image: gschaetz/slack:latest
@@ -79,6 +82,7 @@ applications:
         menu_category: GNOME;AudioVideo
         extra_docker_flags: --device /dev/dri --group-add audio --group-add video
         app_persistent_dir: /home/user/.audacity-data
+        pulse_audio: false
     wordpress_compose:
         implementation_type: docker_compose
         show_on_desktop: true
