@@ -134,6 +134,6 @@
 # create a file in /etc/profile.d
 - name: create file in path for env 
   copy: 
-    content: "PATH=/usr/local/bin/myapps/:$PATH \n xhost +" 
+    content: "PATH=/usr/local/bin/myapps/:$PATH" 
     dest: "/etc/profile.d/custom-path.sh"
   become: true
