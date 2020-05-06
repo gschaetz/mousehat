@@ -1,0 +1,55 @@
+---
+- include_vars:
+    file: "{{ macos_homebrew }}"
+    name: mhf
+
+### TAPS
+# Install taps
+- homebrew_tap: 
+    name: "{{ item }}"
+    state: present
+  loop: "{{ query('list', mhf.tap.installed | default([]) ) }}" 
+  when: mhf is defined  and item
+
+# Remove taps
+- homebrew_tap: 
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ query('list', mhf.tap.not_installed | default([]) ) }}" 
+  when: mhf is defined and item
+  become: true
+
+### BREWS
+# Install brews
+- homebrew: 
+    name: "{{ item }}"
+    state: present
+  loop: "{{ query('list', mhf.brew .installed  | default([]) ) }}" 
+  when: mhf is defined and item 
+  become: true
+
+# Remove brews
+- homebrew: 
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ query('list', mhf.brew.not_installed  | default([]) ) }}" 
+  when: mhf is defined and item 
+  become: true
+
+### BREW CASKS
+# Install brew_cask
+- homebrew_cask: 
+    name: "{{ item }}"
+    state: present
+  loop: "{{ lookup('list', mhf.brew_cask.installed | default([]) ) }}" 
+  when: mhf is defined
+  become: true
+
+# Remove brew-cask
+- homebrew_cask: 
+    msg: "{{ item }}"
+    state: absent
+  loop: "{{ lookup('list', mhf.brew_cask.not_installed | default([]) ) }}" 
+  when: mhf is defined
+  become: true
+
