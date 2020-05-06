@@ -1,13 +1,16 @@
 # Mousehat
 
-This project aims at setting up a linux desktop in an automated fashion.  Supports GUI applications in docker containers.  It is 
-currently focused on Debian/Ubuntu/Arch Linux and GNOME 3/i3 desktop.  
+This project aims at setting up a your computer in an automated fashion.  This started in for just linux but now has evolved into a solution for Windows WSL, MacOs and Linux.  In all the solutions it has support for docker based applications and can support GUI Docker images.
+
+Linux Supprt: Debian/Ubuntu/Arch Linux, Support GNOME 3/i3 desktop
+Windows WSL: Tested with Ubuntu WSL 2
+MacOS: Mojave
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine. The project contains a /testvm directory that will help you setup this project for testing and/or working out of a virtualbox vm.  
 
-## Requirements
+## Requirements - Linux/WSL 2
 
 1) su to root
 2) Install sudo `apt-get install sudo
@@ -16,6 +19,14 @@ These instructions will get you a copy of the project up and running on your loc
 4) Add your user to sudo group `usermod -aG sudo username`
 5) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo. Add the following `username ALL=(ALL) NOPASSWD: ALL`
 6) You will need to install ansible > 2.7.  On debian the default repo has an older version of ansible that will not work with the custom_role feature.  If you want this feature you will need to install a newer feature.  I tested it on 2.7.9.  
+
+## Requirements - MacOS
+
+1) Install brew `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
+2) Install ansible `brew install ansible`
+3) su to root `sudo su`
+4) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo. Add the following `username ALL=(ALL) NOPASSWD: ALL`
+
 
 ## vmware
 
