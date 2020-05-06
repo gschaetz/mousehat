@@ -5,57 +5,82 @@ dock:
 # folder_sort: name,dateadded,datemodified,datecreated,kind
     persistent_apps:
         - name: Launchpad
-            path: "/System/Applications/Launchpad.app" 
-            pos: 1
-            type: app
+          path: "/System/Applications/Launchpad.app" 
+          pos: 1
+          type: app
         - name: Safari
-            path: "/Applications/Safari.app" 
-            pos: 2
-            type: app
+          path: "/Applications/Safari.app" 
+          pos: 2
+          type: app
         - name: Firefox
-            path: "/Applications/Firefox.app" 
-            pos: 3
-            type: app
+          path: "/Applications/Firefox.app" 
+          pos: 3
+          type: app
         - name: Chrome
-            path: "/Applications/Chrome.app" 
-            pos: 4
-            type: app
+          path: "/Applications/Google Chrome.app" 
+          pos: 4
+          type: app
+        - name: iTerm
+          path: "/Applications/iTerm.app" 
+          pos: 5
+          type: app
+        - name: Visual Studio Code
+          path: "/Applications/Visual Studio Code.app" 
+          pos: 6
+          type: app
+        - name: Slack
+          path: "/Applications/Slack.app" 
+          pos: 7
+          type: app
+        - name: Microsoft One Note
+          path: "/Applications/Microsoft OneNote.app" 
+          pos: 8
+          type: app
+        - name: Steam
+          path: "/Applications/Steam.app" 
+          pos: 9
+          type: app
+        - name: 1Password
+          path: "/Applications/1Password 7.app" 
+          pos: 10
+          type: app
         - name: Mail
-            path: "/System/Applications/Mail.app" 
-            pos: 5
-            type: app
+          path: "/System/Applications/Mail.app" 
+          pos: 11
+          type: app
         - name: Photos
-            path: "/System/Applications/Photos.app" 
-            pos: 6
-            type: app
+          path: "/System/Applications/Photos.app" 
+          pos: 12
+          type: app
         - name: Music
-            path: "/System/Applications/Music.app" 
-            pos: 7
-            type: app
+          path: "/System/Applications/Music.app" 
+          pos: 13
+          type: app
         - name: TV
-            path: "/System/Applications/TV.app" 
-            pos: 8
-            type: app
+          path: "/System/Applications/TV.app" 
+          pos: 14
+          type: app
         - name: App Store
-            path: "/System/Applications/App Store.app" 
-            pos: 9
-            type: app
+          path: "/System/Applications/App Store.app" 
+          pos: 15
+          type: app
         - name: System Preferences
-            path: "/System/Applications/System Preferences.app" 
-            pos: 10
-            type: app
+          path: "/System/Applications/System Preferences.app" 
+          pos: 16
+          type: app
         - name: 'Development'
-            path: '~/development'
-            style: grid 
-            type: folder
-            pos: 11            
+          path: '~/development'
+          folder_style: grid 
+          folder_sort: name
+          type: folder
+          pos: 17            
     other_apps:
         - name: 'Downloads'
-            path: '~/Downloads'
-            folder_style: grid 
-            folder_sort: name
-            type: folder
-            pos: 1
+          path: '~/Downloads'
+          folder_style: grid 
+          folder_sort: dateadded
+          type: folder
+          pos: 1
 osx_defaults:
 ###############################################################################
 ## GENERAL CONFIGURATION
@@ -100,11 +125,11 @@ osx_defaults:
     # Three finger drag
     - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadThreeFingerDrag, type: bool, value: true, state: present}
     # Four finger horizontal left/right desktop change 
-    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadFourFingerHorizSwipeGesture, type: init, value: 2, state: present}
-    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadThreeFingerHorizSwipeGesture, type: init, value: 0, state: present}
+    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadFourFingerHorizSwipeGesture, type: int, value: 2, state: present}
+    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadThreeFingerHorizSwipeGesture, type: int, value: 0, state: present}
     # Four finger vertical app expose
-    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadFourFingerVertSwipeGesture, type: init, value: 2, state: present}
-    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadThreeFingerVertSwipeGesture, type: init, value: 0, state: present}
+    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadFourFingerVertSwipeGesture, type: int, value: 2, state: present}
+    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadThreeFingerVertSwipeGesture, type: int, value: 0, state: present}
 ###############################################################################
 ## FINDER 
 ###############################################################################

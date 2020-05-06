@@ -1,6 +1,6 @@
 ---
 - include_vars:
-    file: "{{ customroles }}"
+    file: "{{ custom_roles_yaml }}"
     name: customroles_file
 
 - include_vars:

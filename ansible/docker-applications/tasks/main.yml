@@ -83,17 +83,18 @@
     mode: 0777
   become: true
   with_dict: "{{ apps.applications | default({}) }}"
-  when: apps.applications is defined
+  when: apps.applications is defined and ansible_system == 'Linux'
 
 # gio those apps
 - name: gio the apps to remove untrusted
   shell: gio set {{ local_home }}/Desktop/{{ item.value.desktop_name | default(item.key) }}.desktop "metadata::trusted" yes
-  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true
-  with_dict: "{{ apps.applications | default({}) }}"
+  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_system == 'Linux'
+  with_dict: "{{ apps.applications | default({}) }}" 
 
 # add xhost + to ensure x can run 
 - name: xhost +
   shell: xhost +
+  when: ansible_system == 'Linux'
 
 # create docker start files 
 - name: create docker start file
@@ -130,7 +131,13 @@
     state: link
   become: true
   with_dict: "{{ apps.applications | default({}) }}"
-  
+
+# create /etc/profile.d/ directory on mac
+- name: Creates /etc/profile.d directory
+  file: path='/etc/profile.d/' state=directory
+  become: true
+  when: ansible_system == 'Darwin'
+
 # create a file in /etc/profile.d
 - name: create file in path for env 
   copy: 

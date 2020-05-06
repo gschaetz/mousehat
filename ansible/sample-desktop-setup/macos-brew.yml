@@ -6,12 +6,14 @@ tap:
         - homebrew/services
         - homebrew/cask
         - homebrew/cask-versions
+        - homebrew/cask-drivers
     
 brew:
     installed:
+        ## dockutil required
+        - dockutil
         - ack
         - bash-completion
-        - chromedriver
         - coreutils
         - dos2unix 
         - fzf
@@ -30,7 +32,7 @@ brew:
         - rust
         - sleepwatcher
         - ssh-copy-id
-        - the-silver-searcher
+        - the_silver_searcher
         - tmux
         - unrar
         - watchman
@@ -41,14 +43,14 @@ brew_cask:
     installed:
         - 1password
         - amethyst
-        - chrome
+        - google-chrome
         - cleanmymac
         - docker
         - firefox
         - iterm2
         - macvim
         - microsoft-office
-        - monit
         - slack
         - steam
         - visual-studio-code
+        
