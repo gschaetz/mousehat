@@ -1,0 +1,56 @@
+---
+tap:
+    installed:
+        - homebrew/bundle
+        - homebrew/core
+        - homebrew/services
+        - homebrew/cask
+        - homebrew/cask-versions
+        - homebrew/cask-drivers
+    
+brew:
+    installed:
+        ## dockutil required
+        - dockutil
+        - ack
+        - bash-completion
+        - coreutils
+        - dos2unix 
+        - fzf
+        - go
+        - graphviz
+        - htop
+        - imagemagick
+        - jq
+        - lua
+        - maven
+        - ngrep
+        - nmap
+        - node
+        - readline
+        - ripgrep
+        - rust
+        - sleepwatcher
+        - ssh-copy-id
+        - the_silver_searcher
+        - tmux
+        - unrar
+        - watchman
+        - wget
+        - zsh
+
+brew_cask:
+    installed:
+        - 1password
+        - amethyst
+        - google-chrome
+        - cleanmymac
+        - docker
+        - firefox
+        - iterm2
+        - macvim
+        - microsoft-office
+        - slack
+        - steam
+        - visual-studio-code
+        

@@ -5,33 +5,69 @@
     local_home: "{{ lookup('env','HOME') }}"
 
     project_home: "{{ lookup('env','DESKTOP_PROJECT_DIR') | default(current_path,true) }}"
-    default_settings_sub: "{{current_path}}/desktop-ansible-settings"
+    default_settings_sub: "{{current_path}}/sample-desktop-setup"
     settings_home: "{{ lookup('env','DESKTOP_SETTINGS_DIR') | default(default_settings_sub, true) }}"
 
-    gnome_settings_yaml: "{{ settings_home }}/gnome-settings.yml"     
-    applications_yaml:  "{{ settings_home }}/applications.yml"
-    packages_yaml: "{{ settings_home }}/packages.yml"
+    linux_gnome_settings_yaml: "{{ settings_home }}/linux-gnome-settings.yml"     
+    linux_packages_yaml: "{{ settings_home }}/linux-packages.yml"
+
+    macos_configure_os_settings_yaml: "{{ settings_home }}/macos-configure-os-settings.yml"     
+    macos_brew_yaml: "{{ settings_home }}/macos-brew.yml"
+
+    docker_applications_yaml:  "{{ settings_home }}/docker-applications.yml"
     custom_roles_yaml: "{{ settings_home }}/customroles.yml"
 
     desktop_directory: "{{ local_home }}/.desktop/"
 
-  roles:
-    - { role: unix-packages, 
-        packages: "{{ packages_yaml }}"
-      }
-    - { role: install-docker,
-        non_root_user: "{{ ansible_user_id }}" 
-      }
-    - { role: configure-applications,
-        application_setup: "{{ applications_yaml }}",
-        desktop_dir: "{{ desktop_directory }}"
-      }
-    - { role: desktop-settings, 
-        gnomeSettings: "{{ gnome_settings_yaml }}",
-        desktop_dir: "{{ desktop_directory }}"
-      }
-    - { role: custom-roles,
-        customroles: "{{ custom_roles_yaml }}",
-        custom_roles_dir: "{{ settings_home }}/custom_roles/"
-      }
+  tasks:
+    # LINUX
+    - include_role: 
+        name: linux-packages
+      when: ansible_system == 'Linux'
+      vars:
+        packages: "{{ linux_packages_yaml }}"
 
+    # LINUX
+    - include_role: 
+        name: install-docker
+      when: ansible_system == 'Linux'
+      vars:
+        non_root_user: "{{ ansible_user_id }}" 
+
+    # LINUX
+    - include_role:
+        name: linux-gnome-desktop-settings
+      when: ansible_system == 'Linux'
+      vars:
+        gnomeSettings: "{{ linux_gnome_settings_yaml }}"
+        desktop_dir: "{{ desktop_directory }}"
+
+    # MAC (Darwin)
+    - include_role:
+        name: macos-homebrew
+      when: ansible_system == 'Darwin'
+      vars:
+        macos_homebrew: "{{ macos_brew_yaml }}"
+        desktop_dir: "{{ desktop_directory }}"
+
+    # MAC (Darwin)
+    - include_role:
+        name: macos-configure-os-settings
+      when: ansible_system == 'Darwin'
+      vars:
+        macos_settings: "{{ macos_configure_os_settings_yaml }}"
+        desktop_dir: "{{ desktop_directory }}"
+
+    # LINUX AND MAC (Darwin) - docker required
+    - include_role:
+        name: docker-applications
+      when: (ansible_system == 'Linux') or (ansible_system == 'Darwin')
+      vars:
+        application_setup: "{{ docker_applications_yaml }}"
+        desktop_dir: "{{ desktop_directory }}"
+
+    # CUSTOM ROLE
+    - include_role: 
+        name: custom-roles
+      vars:
+        custom_roles_dir: "{{ settings_home }}/custom_roles/"

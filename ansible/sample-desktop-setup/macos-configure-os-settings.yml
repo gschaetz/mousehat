@@ -1,0 +1,262 @@
+---
+dock:
+# folder_style: grid,fan,list,auto
+# type: app,folder,stack
+# folder_sort: name,dateadded,datemodified,datecreated,kind
+    persistent_apps:
+        - name: Launchpad
+          path: "/System/Applications/Launchpad.app" 
+          pos: 1
+          type: app
+        - name: Safari
+          path: "/Applications/Safari.app" 
+          pos: 2
+          type: app
+        - name: Firefox
+          path: "/Applications/Firefox.app" 
+          pos: 3
+          type: app
+        - name: Chrome
+          path: "/Applications/Google Chrome.app" 
+          pos: 4
+          type: app
+        - name: iTerm
+          path: "/Applications/iTerm.app" 
+          pos: 5
+          type: app
+        - name: Visual Studio Code
+          path: "/Applications/Visual Studio Code.app" 
+          pos: 6
+          type: app
+        - name: Slack
+          path: "/Applications/Slack.app" 
+          pos: 7
+          type: app
+        - name: Microsoft One Note
+          path: "/Applications/Microsoft OneNote.app" 
+          pos: 8
+          type: app
+        - name: Steam
+          path: "/Applications/Steam.app" 
+          pos: 9
+          type: app
+        - name: 1Password
+          path: "/Applications/1Password 7.app" 
+          pos: 10
+          type: app
+        - name: Mail
+          path: "/System/Applications/Mail.app" 
+          pos: 11
+          type: app
+        - name: Photos
+          path: "/System/Applications/Photos.app" 
+          pos: 12
+          type: app
+        - name: Music
+          path: "/System/Applications/Music.app" 
+          pos: 13
+          type: app
+        - name: TV
+          path: "/System/Applications/TV.app" 
+          pos: 14
+          type: app
+        - name: App Store
+          path: "/System/Applications/App Store.app" 
+          pos: 15
+          type: app
+        - name: System Preferences
+          path: "/System/Applications/System Preferences.app" 
+          pos: 16
+          type: app
+        - name: 'Development'
+          path: '~/development'
+          folder_style: grid 
+          folder_sort: name
+          type: folder
+          pos: 17            
+    other_apps:
+        - name: 'Downloads'
+          path: '~/Downloads'
+          folder_style: grid 
+          folder_sort: dateadded
+          type: folder
+          pos: 1
+osx_defaults:
+###############################################################################
+## GENERAL CONFIGURATION
+###############################################################################
+    # restore default highlight color (blue)
+    - {domain: NSGlobalDomain, key: AppleHighlightColor, state: absent}
+    # restore default automatic termination of inactive apps 
+    - {domain: NSGlobalDomain, key: NSDisableAutomaticTermination, state: absent}
+    # Always show scrollbars. Possible values: `WhenScrolling`, `Automatic` and `Always`
+    - {domain: NSGlobalDomain, key: AppleShowScrollBars, type: string, value: 'Always', state: present}
+    # Disable smart quotes/dashes and spelling correction as they’re annoying when typing code
+    - {domain: NSGlobalDomain, key: NSAutomaticQuoteSubstitutionEnabled, type: bool, value: false, state: present}
+    - {domain: NSGlobalDomain, key: NSAutomaticDashSubstitutionEnabled, type: bool, value: false, state: present}
+    - {domain: NSGlobalDomain, key: NSAutomaticSpellingCorrectionEnabled, type: bool, value: false, state: present}
+    # Set sidebar icon size to small
+    - {domain: NSGlobalDomain, key: NSTableViewDefaultSizeMode, type: int, value: 1, state: present}
+    # Disable press-and-hold for keys in favor of key repeat
+    # and set a fast repeat rate
+    - {domain: NSGlobalDomain, key: ApplePressAndHoldEnabled, type: bool, value: false, state: present}
+    - {domain: NSGlobalDomain, key: InitialKeyRepeat, type: int, value: 25, state: present}
+    - {domain: NSGlobalDomain, key: KeyRepeat, type: int, value: 1, state: present}
+    # Set locale
+    - {domain: NSGlobalDomain, key: AppleLanguages, type: array, value: ["en"], state: present}
+    - {domain: NSGlobalDomain, key: AppleMeasurementUnits, type: string, value: "Inches", state: present}
+    - {domain: NSGlobalDomain, key: AppleMetricUnits, type: bool, value: false, state: present}
+    - {domain: NSGlobalDomain, key: AppleICUForce24HourTime, type: bool, value: true, state: present}
+    # Enable spring loading for directories
+    - {domain: NSGlobalDomain, key: com.apple.springing.enabled, type: bool, value: true, state: present}
+    # Remove the spring loading delay for directories
+    - {domain: NSGlobalDomain, key: com.apple.springing.delay, type: float, value: 0, state: present}
+    # Avoid creating .DS_Store files on network volumes
+    - {domain: com.apple.desktopservices, key: DSDontWriteNetworkStores, type: bool, value: true, state: present}
+    ### Trackpad
+    # tap to click (all these are related to tap to click)
+    - {domain: com.apple.AppleMultitouchTrackpad, key: Clicking, type: bool, value: true, state: present}
+    - {domain: com.apple.driver.AppleBluetoothMultitouch.trackpad, key: Clicking, type: bool, value: true, state: present}
+    - {domain: NSGlobalDomain, key: com.apple.mouse.tapBehavior, type: int, value: 1, state: present}
+    # force click
+    - {domain: NSGlobalDomain, key: com.apple.trackpad.forceClick, type: int, value: 1, state: present}
+    # Tracking speed
+    - {domain: NSGlobalDomain, key: com.apple.trackpad.scaling, type: float, value: 0.875, state: present}
+    # Three finger drag
+    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadThreeFingerDrag, type: bool, value: true, state: present}
+    # Four finger horizontal left/right desktop change 
+    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadFourFingerHorizSwipeGesture, type: int, value: 2, state: present}
+    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadThreeFingerHorizSwipeGesture, type: int, value: 0, state: present}
+    # Four finger vertical app expose
+    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadFourFingerVertSwipeGesture, type: int, value: 2, state: present}
+    - {domain: com.apple.AppleMultitouchTrackpad, key: TrackpadThreeFingerVertSwipeGesture, type: int, value: 0, state: present}
+###############################################################################
+## FINDER 
+###############################################################################
+    # Finder: allow quitting via ⌘ + Q; Quitting finder removes the desktop too
+    - {domain: com.apple.finder, key: QuitMenuItem, type: bool, value: true, state: present}
+    # Set Home as the default location for new Finder windows
+    - {domain: com.apple.finder, key: NewWindowTarget, type: string, value: PfHm, state: present}
+    - {domain: com.apple.finder, key: NewWindowTargetPath, type: string, value: "file://${HOME}/", state: present}
+    # Show icons for hard drives, servers, and removable media on the desktop
+    - {domain: com.apple.finder, key: ShowExternalHardDrivesOnDesktop, type: bool, value: true, state: present}
+    - {domain: com.apple.finder, key: ShowHardDrivesOnDesktop, type: bool, value: true, state: present}
+    - {domain: com.apple.finder, key: ShowMountedServersOnDesktop, type: bool, value: true, state: present}
+    - {domain: com.apple.finder, key: ShowRemovableMediaOnDesktop, type: bool, value: true, state: present}  
+    # Finder: show all filename extensions
+    - {domain: com.apple.finder, key: AppleShowAllExtensions, type: bool, value: true, state: present}  
+    # Finder: show status bar
+    - {domain: com.apple.finder, key: ShowStatusBar, type: bool, value: true, state: present}  
+    # Finder: show path bar
+    - {domain: com.apple.finder, key: ShowPathbar, type: bool, value: true, state: present}  
+    # Display full POSIX path as Finder window title
+    - {domain: com.apple.finder, key: _FXShowPosixPathInTitle, type: bool, value: true, state: present}      
+    # When performing a search, search the current folder by default
+    - {domain: com.apple.finder, key: FXDefaultSearchScope, type: string, value: SCcf, state: present}      
+    # Disable the warning when changing a file extension
+    - {domain: com.apple.finder, key: FXEnableExtensionChangeWarning, type: bool, value: false, state: present}      
+    # Use list view in all Finder windows by default
+    # Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
+    - {domain: com.apple.finder, key: FXPreferredViewStyle, type: string, value: Nlsv, state: present}      
+    # Disable the warning before emptying the Trash
+    - {domain: com.apple.finder, key: WarnOnEmptyTrash, type: bool, value: false, state: present}  
+###############################################################################
+# Dock and hot corners                                            
+###############################################################################
+    # Set the icon size of Dock items to 50 pixels
+    - {domain: com.apple.dock, key: tilesize, type: int, value: 50, state: present}          
+    # Minimize windows into their application’s icon
+    - {domain: com.apple.dock, key: minimize-to-application, type: bool, value: true, state: present}          
+    # Change minimize/maximize window effect
+    - {domain: com.apple.dock, key: mineffect, type: string, value: "genie", state: present}          
+    # Automatically hide and show the Dock 
+    - {domain: com.apple.dock, key: autohide, type: bool, value: false, state: present}          
+    # Show indicator lights for open applications in the Dock
+    - {domain: com.apple.dock, key: show-process-indicators, type: bool, value: true, state: present}          
+    # Enable highlight hover effect for the grid view of a stack (Dock)
+    - {domain: com.apple.dock, key: mouse-over-hilite-stack, type: bool, value: true, state: present}          
+    # Enable spring loading for all Dock items
+    - {domain: com.apple.dock, key: enable-spring-load-actions-on-all-items, type: bool, value: true, state: present}          
+    # Make Dock icons of hidden applications translucent
+    - {domain: com.apple.dock, key: showhidden, type: bool, value: true, state: present}              
+    # Don’t automatically rearrange Spaces based on most recent use
+    - {domain: com.apple.dock, key: mru-spaces, type: bool, value: false, state: present}              
+    # Hot corners
+    # Possible values:
+    #  0: no-op
+    #  2: Mission Control
+    #  3: Show application windows
+    #  4: Desktop
+    #  5: Start screen saver
+    #  6: Disable screen saver
+    #  7: Dashboard
+    # 10: Put display to sleep
+    # 11: Launchpad
+    # 12: Notification Center
+    # Top left screen corner → Launchpad
+    - {domain: com.apple.dock, key: wvous-tl-corner, type: int, value: 11, state: present}              
+    - {domain: com.apple.dock, key: wvous-tl-modifier, type: int, value: 0, state: present}              
+    # Top right screen corner → Desktop
+    - {domain: com.apple.dock, key: wvous-tr-corner, type: int, value: 4, state: present}              
+    - {domain: com.apple.dock, key: wvous-tr-modifier, type: int, value: 0, state: present}              
+    # Bottom right screen corner → Start screen saver
+    - {domain: com.apple.dock, key: wvous-br-corner, type: int, value: 5, state: present}              
+    - {domain: com.apple.dock, key: wvous-br-modifier, type: int, value: 0, state: present}              
+    # Bottom left screen corner → Mission Control
+    - {domain: com.apple.dock, key: wvous-bl-corner, type: int, value: 2, state: present}              
+    - {domain: com.apple.dock, key: wvous-bl-modifier, type: int, value: 0, state: present}              
+###############################################################################
+# Screen                                                                      #
+###############################################################################
+    # Require password after sleep or screen saver begins
+    - {domain: com.apple.screensaver, key: askForPassword, type: int, value: 1, state: present}              
+    - {domain: com.apple.screensaver, key: askForPasswordDelay, type: int, value: 5, state: present}              
+    # Save screenshots to the desktop
+    # Disable shadow in screenshots
+    # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
+    - {domain: com.apple.screencapture, key: location, type: string, value: "${HOME}/Desktop", state: present}                  
+    - {domain: com.apple.screencapture, key: disable-shadow, type: bool, value: true, state: present}                  
+    - {domain: com.apple.screencapture, key: type, type: string, value: "png", state: present}                  
+###############################################################################
+# Activity Monitor                                                            #
+###############################################################################
+    # Show the main window when launching Activity Monitor
+    - {domain: com.apple.ActivityMonitor, key: OpenMainWindow, type: bool, value: true, state: present}                  
+    # Visualize CPU usage in the Activity Monitor Dock icon
+    - {domain: com.apple.ActivityMonitor, key: IconType, type: int, value: 5, state: present}                  
+    # Show all processes in Activity Monitor
+    - {domain: com.apple.ActivityMonitor, key: ShowCategory, type: int, value: 0, state: present}                  
+    # Sort Activity Monitor results by CPU usage
+    - {domain: com.apple.ActivityMonitor, key: SortColumn, type: string, value: "CPUUsage", state: present}                  
+    - {domain: com.apple.ActivityMonitor, key: SortDirection, type: int, value: 0, state: present}                  
+###############################################################################
+# Software updates
+###############################################################################
+    # Enable the automatic update check
+    - {domain: com.apple.SoftwareUpdate, key: AutomaticCheckEnabled, type: bool, value: true, state: present}                
+    # Download newly available updates in background
+    - {domain: com.apple.SoftwareUpdate, key: AutomaticDownload, type: int, value: 1, state: present}                
+    # Install System data files & security updates
+    - {domain: com.apple.SoftwareUpdate, key: CriticalUpdateInstall, type: int, value: 1, state: present}                
+    # Automatically download apps purchased on other Macs
+    - {domain: com.apple.SoftwareUpdate, key: ConfigDataInstall, type: int, value: 1, state: present}                
+    # Check for software updates daily, not just once per week
+    - {domain: com.apple.SoftwareUpdate, key: ScheduleFrequency, type: int, value: 1, state: present}                
+    # Turn on app auto-update
+    - {domain: com.apple.SoftwareUpdate, key: AutoUpdate, type: bool, value: true, state: present}                
+    # Allow the App Store to reboot machine on macOS updates
+    - {domain: com.apple.SoftwareUpdate, key: AutoUpdateRestartRequired, type: bool, value: true, state: present}                
+###############################################################################
+# Photos                                                                      #
+###############################################################################
+    # Prevent Photos from opening automatically when devices are plugged in
+    - {domain: com.apple.ImageCapture, key: disableHotPlug, type: bool, value: true, state: present}                
+###############################################################################
+# Debug Menus                                                                 
+###############################################################################
+    - {domain: com.apple.addressbook, key: ABShowDebugMenu, type: bool, value: true, state: present}                
+    - {domain: com.apple.appstore, key: ShowDebugMenu, type: bool, value: true, state: present}                
+    - {domain: com.apple.appstore, key: WebKitDeveloperExtras, type: bool, value: true, state: present}                
+    - {domain: com.apple.DiskUtility, key: DUDebugMenuEnabled, type: bool, value: true, state: present}                
+    - {domain: com.apple.DiskUtility, key: advanced-image-options, type: bool, value: true, state: present}                
+    - {domain: com.apple.iCal, key: IncludeDebugMenu, type: bool, value: true, state: present}                
