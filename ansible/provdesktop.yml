@@ -20,35 +20,35 @@
     desktop_directory: "{{ local_home }}/.desktop/"
 
   tasks:
-    # # LINUX
-    # - include_role: 
-    #     name: linux-packages
-    #   when: ansible_system == 'Linux'
-    #   vars:
-    #     packages: "{{ linux_packages_yaml }}"
+    # LINUX
+    - include_role: 
+        name: linux-packages
+      when: ansible_system == 'Linux'
+      vars:
+        packages: "{{ linux_packages_yaml }}"
 
-    # # LINUX
-    # - include_role: 
-    #     name: install-docker
-    #   when: ansible_system == 'Linux'
-    #   vars:
-    #     non_root_user: "{{ ansible_user_id }}" 
+    # LINUX
+    - include_role: 
+        name: install-docker
+      when: ansible_system == 'Linux'
+      vars:
+        non_root_user: "{{ ansible_user_id }}" 
 
-    # # LINUX
-    # - include_role:
-    #     name: linux-gnome-desktop-settings
-    #   when: ansible_system == 'Linux'
-    #   vars:
-    #     gnomeSettings: "{{ linux_gnome_settings_yaml }}"
-    #     desktop_dir: "{{ desktop_directory }}"
+    # LINUX
+    - include_role:
+        name: linux-gnome-desktop-settings
+      when: ansible_system == 'Linux'
+      vars:
+        gnomeSettings: "{{ linux_gnome_settings_yaml }}"
+        desktop_dir: "{{ desktop_directory }}"
 
-    # # MAC (Darwin)
-    # - include_role:
-    #     name: macos-homebrew
-    #   when: ansible_system == 'Darwin'
-    #   vars:
-    #     macos_homebrew: "{{ macos_brew_yaml }}"
-    #     desktop_dir: "{{ desktop_directory }}"
+    # MAC (Darwin)
+    - include_role:
+        name: macos-homebrew
+      when: ansible_system == 'Darwin'
+      vars:
+        macos_homebrew: "{{ macos_brew_yaml }}"
+        desktop_dir: "{{ desktop_directory }}"
 
     # MAC (Darwin)
     - include_role:
@@ -58,16 +58,16 @@
         macos_settings: "{{ macos_configure_os_settings_yaml }}"
         desktop_dir: "{{ desktop_directory }}"
 
-    # # LINUX AND MAC (Darwin) - docker required
-    # - include_role:
-    #     name: docker-applications
-    #   when: (ansible_system == 'Linux') or (ansible_system == 'Darwin')
-    #   vars:
-    #     application_setup: "{{ docker_applications_yaml }}"
-    #     desktop_dir: "{{ desktop_directory }}"
+    # LINUX AND MAC (Darwin) - docker required
+    - include_role:
+        name: docker-applications
+      when: (ansible_system == 'Linux') or (ansible_system == 'Darwin')
+      vars:
+        application_setup: "{{ docker_applications_yaml }}"
+        desktop_dir: "{{ desktop_directory }}"
 
-    # # CUSTOM ROLE
-    # - include_role: 
-    #     name: custom-roles
-    #   vars:
-    #     custom_roles_dir: "{{ settings_home }}/custom_roles/"
+    # CUSTOM ROLE
+    - include_role: 
+        name: custom-roles
+      vars:
+        custom_roles_dir: "{{ settings_home }}/custom_roles/"
