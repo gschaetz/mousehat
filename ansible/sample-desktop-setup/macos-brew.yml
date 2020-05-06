@@ -2,10 +2,10 @@
 tap:
     installed:
         - homebrew/bundle
-        - hombrew/core
+        - homebrew/core
         - homebrew/services
         - homebrew/cask
-        - cask-versions
+        - homebrew/cask-versions
     
 brew:
     installed:

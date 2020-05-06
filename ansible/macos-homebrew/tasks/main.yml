@@ -17,7 +17,6 @@
     state: absent
   loop: "{{ query('list', mhf.tap.not_installed | default([]) ) }}" 
   when: mhf is defined and item
-  become: true
 
 ### BREWS
 # Install brews
@@ -26,7 +25,6 @@
     state: present
   loop: "{{ query('list', mhf.brew .installed  | default([]) ) }}" 
   when: mhf is defined and item 
-  become: true
 
 # Remove brews
 - homebrew: 
@@ -34,7 +32,6 @@
     state: absent
   loop: "{{ query('list', mhf.brew.not_installed  | default([]) ) }}" 
   when: mhf is defined and item 
-  become: true
 
 ### BREW CASKS
 # Install brew_cask
@@ -43,7 +40,6 @@
     state: present
   loop: "{{ lookup('list', mhf.brew_cask.installed | default([]) ) }}" 
   when: mhf is defined
-  become: true
 
 # Remove brew-cask
 - homebrew_cask: 
@@ -51,5 +47,4 @@
     state: absent
   loop: "{{ lookup('list', mhf.brew_cask.not_installed | default([]) ) }}" 
   when: mhf is defined
-  become: true
 
