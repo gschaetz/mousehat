@@ -172,7 +172,7 @@ osx_defaults:
 # Dock and hot corners                                            
 ###############################################################################
     # Set the icon size of Dock items to 50 pixels
-    - {domain: com.apple.dock, key: tilesize, type: int, value: 50, state: present}          
+    - {domain: com.apple.dock, key: tilesize, type: float, value: 50, state: present}          
     # Minimize windows into their application’s icon
     - {domain: com.apple.dock, key: minimize-to-application, type: bool, value: true, state: present}          
     # Change minimize/maximize window effect
