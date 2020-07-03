@@ -1,6 +1,6 @@
 #!/bin/bash
 verbosity="v"
-while getopts ":p:s:v:" opt; do
+while getopts ":d:p:s:v:" opt; do
   case $opt in
     v)
       echo "verbosity being set to: $OPTARG"
@@ -12,7 +12,12 @@ while getopts ":p:s:v:" opt; do
       ;;
     s)
       echo "Using desktop setting directory: $OPTARG"
+      if [ $OPTARG == "default" ]
+      then 
+      export DESKTOP_SETTINGS_DIR=defaults
+      else
       export DESKTOP_SETTINGS_DIR=$OPTARG
+      fi
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2

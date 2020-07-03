@@ -5,8 +5,7 @@
     local_home: "{{ lookup('env','HOME') }}"
 
     project_home: "{{ lookup('env','DESKTOP_PROJECT_DIR') | default(current_path,true) }}"
-    default_settings_sub: "{{current_path}}/sample-desktop-setup"
-    settings_home: "{{ lookup('env','DESKTOP_SETTINGS_DIR') | default(default_settings_sub, true) }}"
+    settings_home: "{{ lookup('env','DESKTOP_SETTINGS_DIR') }}"
 
     linux_gnome_settings_yaml: "{{ settings_home }}/linux-gnome-settings.yml"     
     linux_packages_yaml: "{{ settings_home }}/linux-packages.yml"
@@ -58,13 +57,13 @@
         macos_settings: "{{ macos_configure_os_settings_yaml }}"
         desktop_dir: "{{ desktop_directory }}"
 
-    # LINUX AND MAC (Darwin) - docker required
-    - include_role:
-        name: docker-applications
-      when: (ansible_system == 'Linux') or (ansible_system == 'Darwin')
-      vars:
-        application_setup: "{{ docker_applications_yaml }}"
-        desktop_dir: "{{ desktop_directory }}"
+    # # LINUX AND MAC (Darwin) - docker required
+    # - include_role:
+    #     name: docker-applications
+    #   when: (ansible_system == 'Linux') or (ansible_system == 'Darwin')
+    #   vars:
+    #     application_setup: "{{ docker_applications_yaml }}"
+    #     desktop_dir: "{{ desktop_directory }}"
 
     # CUSTOM ROLE
     - include_role: 
