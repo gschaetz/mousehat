@@ -22,7 +22,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Requirements - MacOS
 
-1) Install brew `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"`
+1) Install brew `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 2) Install ansible `brew install ansible`
 3) su to root `sudo su`
 4) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo. Add the following `username ALL=(ALL) NOPASSWD: ALL`
