@@ -24,8 +24,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 1) Install brew `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 2) Install ansible `brew install ansible`
-3) su to root `sudo su`
-4) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo. Add the following `username ALL=(ALL) NOPASSWD: ALL`
+3) If you are running on a M series chip run softwareupdate --install-rosetta to allow backward comptability to intel 
+4) su to root `sudo su`
+5) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo. Add the following `username ALL=(ALL) NOPASSWD: ALL`
 
 
 ## vmware
