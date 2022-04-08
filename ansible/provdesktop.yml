@@ -63,7 +63,7 @@
     # Requires Xquartz and socat 
     - include_role:
         name: docker-applications
-      when: ansible_system == 'Linux'
+      when: ansible_system == 'Darwin'
       vars:
         application_setup: "{{ macos_docker_applications_yaml }}"
         desktop_dir: "{{ desktop_directory }}"

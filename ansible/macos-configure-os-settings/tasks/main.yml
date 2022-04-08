@@ -3,35 +3,34 @@
     file: "{{ macos_settings }}"
     name: ms
 
-## DOCK SETTINGS
-# Remove All Dock Items
-- name: Remove from Dock
-  shell: dockutil --remove all 
+# ## DOCK SETTINGS
+# # Remove All Dock Items
+# - name: Remove from Dock
+#   shell: dockutil --remove all 
   
+# # Add Dock Items Apps
+# - name: Add in Dock to Persistent App section
+#   shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ item.pos }}' --section apps
+#   with_items: "{{ ms.dock.persistent_apps | default({}) }}"  
+#   when: item.type == 'app'
 
-# Add Dock Items Apps
-- name: Add in Dock to Persistent App section
-  shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ item.pos }}' --section apps
-  with_items: "{{ ms.dock.persistent_apps | default({}) }}"  
-  when: item.type == 'app'
+# # Add Dock Items Apps Folders
+# - name: Add in Dock to Persistent App section folders
+#   shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ item.pos }}' --section apps --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}'
+#   with_items: "{{ ms.dock.persistent_apps | default({}) }}"  
+#   when: item.type != 'app'
 
-# Add Dock Items Apps Folders
-- name: Add in Dock to Persistent App section folders
-  shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ item.pos }}' --section apps --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}'
-  with_items: "{{ ms.dock.persistent_apps | default({}) }}"  
-  when: item.type != 'app'
+# # Add Dock Items Others
+# - name: Add in Dock to Other app section 
+#   shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ item.pos }}' --section others
+#   with_items: "{{ ms.dock.other_apps | default({}) }}"  
+#   when: item.type == 'app'
 
-# Add Dock Items Others
-- name: Add in Dock to Other app section 
-  shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ item.pos }}' --section others
-  with_items: "{{ ms.dock.other_apps | default({}) }}"  
-  when: item.type == 'app'
-
-# Add Dock Items Apps Folders
-- name: Add in Dock to Other App section folders
-  shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ item.pos }}' --section others --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}'
-  with_items: "{{ ms.dock.other_apps | default({}) }}"  
-  when: item.type != 'app'
+# # Add Dock Items Apps Folders
+# - name: Add in Dock to Other App section folders
+#   shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ item.pos }}' --section others --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}'
+#   with_items: "{{ ms.dock.other_apps | default({}) }}"  
+#   when: item.type != 'app'
 
 ## MACOS DEFAULTS TERMINAL PLIST SETTINGS
 # Delete defaults
