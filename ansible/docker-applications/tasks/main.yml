@@ -100,13 +100,24 @@
   shell: xhost +
   when: ansible_system == 'Linux'
 
+# LINUX 
 # create docker start files 
 - name: create docker start file
   template:
     src: "{{ project_home }}/templates/app-start-docker.j2"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
     mode: 0770
-  when: item.value.implementation_type == "docker" and apps.applications is defined 
+  when: item.value.implementation_type == "docker" and apps.applications is defined and ansible_system == 'Linux'
+  with_dict: "{{ apps.applications | default({}) }}"
+
+# MAC
+# create docker start files 
+- name: create docker start file
+  template:
+    src: "{{ project_home }}/templates/app-start-docker-macos.j2"
+    dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
+    mode: 0770
+  when: item.value.implementation_type == "docker" and apps.applications is defined ansible_system == 'Darwin' 
   with_dict: "{{ apps.applications | default({}) }}"
 
 # create docker_compose file
