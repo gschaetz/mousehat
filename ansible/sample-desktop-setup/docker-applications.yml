@@ -1,29 +1,29 @@
-#OPTION                     VALUE                                       DEFAULT
-#implementation_type            docker|docker_compose                       Required    
-#docker_image                   'string: image location'                    Required
-#desktop_icon_download_url      'string: image url for download'            Required
-#menu_category                  'string: Gnome category for app'            Required
-#docker_ports                   'string: -p port1:port1 -p port2:port2'     defaults to none
-#docker_volumes                 'string: -v volume1 -v  volume2'            defaults to none
-#show_on_desktop                true|false                                  defaults to false
-#desktop_exec                   'string: executable name'                   defaults to key (e.g. firefox:)
-#desktop_name                   'string: name on desktop'                   defaults to key (e.g. firefox:)
-#desktop_icon                   'string: name of app icon'                  defaults to key with a png extension (e.g. firefox.png)
-#gui_app                        true|false                                  defaults true
-#pulse_audio                    true|false                                  defaults false
-#snd                            true|false                                  defaults false
-#docker_network                 'string: docker network'                    defaults to host
-#share_themes                   true|false                                  defaults to true
-#container_home                 'string: home path in container'            defaults to /home/user
-#app_persistent_dir             'string: container path to persist'         defaults to none
-#app_persistent_download_dir    'string: container download path persist'   defaults to none
-#extra_docker_flags             'string: any extra docker flags'            defaults to none
-#docker_sec_comp                true|false                                  defaults to false
-#docker_sec_comp_download_url   'string: url to download sec_comp'          defaults to none|required if docker_sec_comp is true
-#docker_entrypoint              'string: override docker entrypoint'        defaults to none
-#time_synchronization           true|false                                  defaults to true
-#share_host_memory              true|false                                  defaults to false
----
+#OPTION                         VALUE                                                   DEFAULT
+#implementation_type            docker|docker_compose|dockershow_on_desktop_compose     Required    
+#docker_image                   'string: image location'                                Required
+#desktop_icon_download_url      'string: image url for download'                        Required 
+#menu_category                  'string: Gnome category for app'                        Required
+#docker_ports                   'string: -p port1:port1 -p port2:port2'                 defaults to none
+#docker_volumes                 'string: -v volume1 -v  volume2'                        defaults to none
+#show_on_desktop                true|false                                              defaults to false
+#desktop_exec                   'string: executable name'                               defaults to key (e.g. firefox:)
+#desktop_name                   'string: name on desktop'                               defaults to key (e.g. firefox:)
+#desktop_icon                   'string: name of app icon'                              defaults to key with a png extension (e.g. firefox.png)
+#gui_app                        true|false                                              defaults true
+#pulse_audio                    true|false                                              defaults false
+#snd                            true|false                                              defaults false
+#docker_network                 'string: docker network'                                defaults to host
+#share_themes                   true|false                                              defaults to true
+#container_home                 'string: home path in container'                        defaults to /home/user
+#app_persistent_dir             'string: container path to persist'                     defaults to none
+#app_persistent_download_dir    'string: container download path persist'               defaults to none
+#extra_docker_flags             'string: any extra docker flags'                        defaults to none
+#docker_sec_comp                true|false                                              defaults to false
+#docker_sec_comp_download_url   'string: url to download sec_comp'                      defaults to none|required if docker_sec_comp is true
+#docker_entrypoint              'string: override docker entrypoint'                    defaults to none
+#time_synchronization           true|false                                              defaults to true
+#share_host_memory              true|false                                              defaults to false
+---         
 applications:
     firefox:
         implementation_type: docker

@@ -1,0 +1,128 @@
+{# DEFAULTS #}
+{#guiapp#}
+{% if item.value.gui_app is defined  %}
+{% set guiapp = item.value.gui_app %}
+{% else %}
+{% set guiapp = true %}
+{% endif %}
+{#pulseaudio#}
+{% if item.value.pulse_audio is defined  %}
+{% set pulseaudio = item.value.pulse_audio %}
+{% else %}
+{% set pulseaudio = false %}
+{% endif %}
+{#dockernetwork#}
+{% if item.value.docker_network is defined  %}
+{% set dockernetwork = item.value.docker_network %}
+{% else %}
+{% set dockernetwork = 'host' %}
+{% endif %}
+{#dockervolumes#}
+{% if item.value.docker_volumes is defined  %}
+{% set dockervolumes = item.value.docker_volumes %}
+{% else %}
+{% set dockervolumes = None %}
+{% endif %}
+{#apppersistentdir#}
+{% if item.value.app_persistent_dir is defined  %}
+{% set apppersistentdir = item.value.app_persistent_dir %}
+{% else %}
+{% set apppersistentdir = None %}
+{% endif %}
+{#apppersistentdownloaddir#}
+{% if item.value.app_persistent_download_dir is defined  %}
+{% set apppersistentdownloaddir = item.value.app_persistent_download_dir %}
+{% else %}
+{% set apppersistentdownloaddir = None %}
+{% endif %}
+{#extradockerflags#}
+{% if item.value.extra_docker_flags is defined  %}
+{% set extradockerflags = item.value.extra_docker_flags %}
+{% else %}
+{% set extradockerflags = None %}
+{% endif %}
+{#dockerports#}
+{% if item.value.docker_ports is defined  %}
+{% set dockerports = item.value.docker_ports %}
+{% else %}
+{% set dockerports = None %}
+{% endif %}
+{#dockerseccomp#}
+{% if item.value.docker_sec_comp is defined  %}
+{% set dockerseccomp = item.value.docker_sec_comp %}
+{% else %}
+{% set dockerseccomp = false %}
+{% endif %}
+{#dockerentrypoint#}
+{% if item.value.docker_entrypoint is defined  %}
+{% set dockerentrypoint = item.value.docker_entrypoint %}
+{% else %}
+{% set dockerentrypoint = None %}
+{% endif %}
+{#container_home#}
+{% if item.value.container_home is defined  %}
+{% set containerhome = item.value.container_home %}
+{% else %}
+{% set containerhome = '/home/user' %}
+{% endif %}
+{#container_home#}
+{% if item.value.time_synchronization is defined  %}
+{% set timesynchronization = item.value.time_synchronization %}
+{% else %}
+{% set timesynchronization = true %}
+{% endif %}
+{#END DEFAULTS#}
+
+SOCAT_RUNNING=`ps aux | grep 'socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:' | grep -v grep | wc -l`  
+if [[ $XQUARTZ_RUNNING -gt 0 ]]; then 
+    echo "socat is running on port 6000!" 
+else 
+    echo "socat is not running on port 6000... going to start it."
+    socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
+fi
+
+XQUARTZ_RUNNING=`ps aux | grep '/opt/X11/bin/Xquartz' | grep -v grep | wc -l`
+if [[ $XQUARTZ_RUNNING -gt 0 ]]; then 
+    echo "xquartz is running!" 
+else 
+    echo "xquartz is not running... going to start it."
+    open -a Xquartz
+fi
+export IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2":0"}')
+
+docker pull {{ item.value.docker_image }}
+docker rm -f {{ item.key }} 
+docker network create {{ dockernetwork }}
+
+docker run \
+--name {{ item.key }} \
+{% if guiapp == true %}
+-d \
+-e DISPLAY=$IP \
+{% endif %}
+{% if guiapp != true %}
+-it \
+{% endif %}
+{% if dockervolumes != None %}
+{{ dockervolumes }} \
+{% endif %}
+{% if apppersistentdir != None %}
+-v {{ desktop_directory }}persistent/{{ item.key }}:{{ apppersistentdir }} \
+{% endif %}
+{% if apppersistentdownloaddir != None %}
+-v {{ local_home }}/Downloads/:{{ apppersistentdownloaddir }} \
+{% endif %}
+{% if extradockerflags != None %}
+{{ extradockerflags }} \
+{% endif %}
+{% if dockerports != None %}
+{{ dockerports }} \ 
+{% endif %}
+--net {{ dockernetwork }} \
+{% if dockerseccomp == true %}
+--security-opt seccomp={{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}.json \
+{% endif %}
+{% if dockerentrypoint != None %}
+--entrypoint {{ dockerentrypoint }} \
+{% endif %}
+{{ item.value.docker_image }}

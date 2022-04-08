@@ -23,7 +23,7 @@
 - homebrew: 
     name: "{{ item }}"
     state: present
-  loop: "{{ query('list', mhf.brew .installed  | default([]) ) }}" 
+  loop: "{{ query('list', mhf.brew.installed  | default([]) ) }}" 
   when: mhf is defined and item 
 
 # Remove brews

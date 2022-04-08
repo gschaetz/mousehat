@@ -14,6 +14,7 @@
     macos_configure_os_settings_yaml: "{{ settings_home }}/macos-configure-os-settings.yml"     
     macos_brew_yaml: "{{ settings_home }}/macos-brew.yml"
 
+    macos_docker_applications_yaml:  "{{ settings_home }}/macos-docker-applications.yml"
     docker_applications_yaml:  "{{ settings_home }}/docker-applications.yml"
     custom_roles_yaml: "{{ settings_home }}/customroles.yml"
 
@@ -58,10 +59,19 @@
         macos_settings: "{{ macos_configure_os_settings_yaml }}"
         desktop_dir: "{{ desktop_directory }}"
 
-    # LINUX AND MAC (Darwin) - docker required
+    # MAC (Darwin)
+    # Requires Xquartz and socat 
     - include_role:
         name: docker-applications
-      when: (ansible_system == 'Linux') or (ansible_system == 'Darwin')
+      when: ansible_system == 'Linux'
+      vars:
+        application_setup: "{{ macos_docker_applications_yaml }}"
+        desktop_dir: "{{ desktop_directory }}"
+
+    # LINUX 
+    - include_role:
+        name: docker-applications
+      when: ansible_system == 'Linux'
       vars:
         application_setup: "{{ docker_applications_yaml }}"
         desktop_dir: "{{ desktop_directory }}"

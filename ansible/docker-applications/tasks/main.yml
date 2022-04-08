@@ -48,14 +48,15 @@
   with_dict: "{{ apps.applications | default({}) }}"
   when: apps.applications is defined
 
-# download app icons
+# LINUX
+# download app icons for linux
 - name: Download app icons
   get_url:
     url: "{{ item.value.desktop_icon_download_url }}"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_icon | default(item.key + '.png') }}"
-    mode: 0440
+    mode: 0440 
   with_dict: "{{ apps.applications | default({}) }}"
-  when: apps.applications is defined
+  when: apps.applications is defined and ansible_system == 'Linux'
 
 # download sec comps
 - name: Download sec comps
@@ -66,16 +67,18 @@
   when: apps.applications is defined and item.value.docker_sec_comp|default(false) == true
   with_dict: "{{ apps.applications | default({}) }}"
 
-# create desktop icon 
+# LINUX 
+# create desktop icon on Linux 
 - name: Create desktop icon
   template:
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
     dest: "{{ local_home }}/Desktop/{{ item.value.desktop_name | default(item.key) }}.desktop"
     mode: 0777
-  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true
+  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_system == 'Linux'
   with_dict: "{{ apps.applications | default({}) }}"
 
-# # create menu item 
+# LINUX
+# # create menu item on linux
 - name: Create menu item
   template:
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
@@ -85,6 +88,7 @@
   with_dict: "{{ apps.applications | default({}) }}"
   when: apps.applications is defined and ansible_system == 'Linux'
 
+# LINUX
 # gio those apps
 - name: gio the apps to remove untrusted
   shell: gio set {{ local_home }}/Desktop/{{ item.value.desktop_name | default(item.key) }}.desktop "metadata::trusted" yes
