@@ -23,6 +23,7 @@
 #docker_entrypoint              'string: override docker entrypoint'                    defaults to none
 #time_synchronization           true|false                                              defaults to true
 #share_host_memory              true|false                                              defaults to false
+#docker_entrypoint_command      'string: run command with docker image'                 defaults to none
 ---         
 applications:
     firefox:

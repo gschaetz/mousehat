@@ -71,6 +71,11 @@
 {% else %}
 {% set timesynchronization = true %}
 {% endif %}
+{% if item.value.docker_entrypoint_command is defined  %}
+{% set dockerentrypointcommand = item.value.docker_entrypoint_command %}
+{% else %}
+{% set dockerentrypointcommand = None %}
+{% endif %}
 {#END DEFAULTS#}
 
 SOCAT_RUNNING=`ps aux | grep 'socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:' | grep -v grep | wc -l`  
@@ -126,3 +131,6 @@ docker run \
 --entrypoint {{ dockerentrypoint }} \
 {% endif %}
 {{ item.value.docker_image }}
+{% if dockerentrypointcommand != None %}
+{{ dockerentrypointcommand }} \
+{% endif %}

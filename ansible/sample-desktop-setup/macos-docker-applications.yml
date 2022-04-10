@@ -13,6 +13,7 @@
 #docker_sec_comp                true|false                                    defaults to false
 #docker_sec_comp_download_url   'string: url to download sec_comp'            defaults to none|required if docker_sec_comp is true
 #docker_entrypoint              'string: override docker entrypoint'          defaults to none
+#docker_entrypoint_command      'string: run command with docker image'       defaults to none
 ---
 applications:
     firefox:
