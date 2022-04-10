@@ -78,6 +78,7 @@
 {% endif %}
 {#END DEFAULTS#}
 
+{% if guiapp == true %}
 SOCAT_RUNNING=`ps aux | grep 'socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:' | grep -v grep | wc -l`  
 if [[ $XQUARTZ_RUNNING -gt 0 ]]; then 
     echo "socat is running on port 6000!" 
@@ -86,7 +87,6 @@ else
     socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
 fi
 
-{% if guiapp == true %}
 XQUARTZ_RUNNING=`ps aux | grep '/opt/X11/bin/Xquartz' | grep -v grep | wc -l`
 if [[ $XQUARTZ_RUNNING -gt 0 ]]; then 
     echo "xquartz is running!" 
