@@ -86,6 +86,7 @@ else
     socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
 fi
 
+{% if guiapp == true %}
 XQUARTZ_RUNNING=`ps aux | grep '/opt/X11/bin/Xquartz' | grep -v grep | wc -l`
 if [[ $XQUARTZ_RUNNING -gt 0 ]]; then 
     echo "xquartz is running!" 
@@ -94,6 +95,7 @@ else
     open -a Xquartz
 fi
 export IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2":0"}')
+{% endif %}
 
 docker pull {{ item.value.docker_image }}
 docker rm -f {{ item.key }} 
