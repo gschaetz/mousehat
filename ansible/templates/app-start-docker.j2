@@ -97,6 +97,7 @@ docker network create {{ dockernetwork }}
 
 docker run \
 --name {{ item.key }} \
+--rm \
 {% if guiapp == true %}
 -d \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
