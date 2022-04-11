@@ -150,5 +150,10 @@ docker run \
 {% if dockerentrypoint != None %}
 --entrypoint {{ dockerentrypoint }} \
 {% endif %}
+{% if dockerentrypointcommand != None %}
+{{ item.value.docker_image }} \
+{{ dockerentrypointcommand }} 
+{% else %}
 {{ item.value.docker_image }}
+{% endif %}
 
