@@ -1,7 +1,12 @@
 #!/bin/bash
 verbosity="v"
-while getopts ":p:s:v:" opt; do
+WSL_LINUX="FALSE"
+while getopts ":p:s:v:w" opt; do
   case $opt in
+    w) 
+      echo "Setting wsl setup to true."
+      WSL_LINUX="TRUE"
+      ;;
     v)
       echo "verbosity being set to: $OPTARG"
       verbosity="$OPTARG" 
@@ -19,10 +24,15 @@ while getopts ":p:s:v:" opt; do
       exit 1
       ;;
     :)
-      echo "Option -$OPTARG requires an argument." >&2
-      exit 1
+      echo $WSL_LINUX
+      if [[ $OPTARG -eq "w" ]]; then
+        continue
+      else 
+        echo "Option -$OPTARG requires an argument." >&2
+        exit 1
+      fi
       ;;
   esac
 done
 
-ansible-playbook -$verbosity -i "localhost," -c local provdesktop.yml 
+ansible-playbook -$verbosity -i "localhost," -c local provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX"

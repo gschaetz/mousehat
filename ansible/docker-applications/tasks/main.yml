@@ -48,15 +48,15 @@
   with_dict: "{{ apps.applications | default({}) }}"
   when: apps.applications is defined
 
-# LINUX
-# download app icons for linux
+# LINUX (NOT WSL)
+# download app icons for linux but not wsl
 - name: Download app icons
   get_url:
     url: "{{ item.value.desktop_icon_download_url }}"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_icon | default(item.key + '.png') }}"
     mode: 0440 
   with_dict: "{{ apps.applications | default({}) }}"
-  when: apps.applications is defined and ansible_system == 'Linux'
+  when: apps.applications is defined and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
 
 # download sec comps
 - name: Download sec comps
@@ -67,17 +67,17 @@
   when: apps.applications is defined and item.value.docker_sec_comp|default(false) == true
   with_dict: "{{ apps.applications | default({}) }}"
 
-# LINUX 
+# LINUX (NOT WSL)
 # create desktop icon on Linux 
 - name: Create desktop icon
   template:
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
     dest: "{{ local_home }}/Desktop/{{ item.value.desktop_name | default(item.key) }}.desktop"
     mode: 0777
-  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_system == 'Linux'
+  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
   with_dict: "{{ apps.applications | default({}) }}"
 
-# LINUX
+# LINUX AND NOT WSL
 # # create menu item on linux
 - name: Create menu item
   template:
@@ -86,13 +86,13 @@
     mode: 0777
   become: true
   with_dict: "{{ apps.applications | default({}) }}"
-  when: apps.applications is defined and ansible_system == 'Linux'
+  when: apps.applications is defined and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
 
-# LINUX
+# LINUX AND NOT WSL
 # gio those apps
 - name: gio the apps to remove untrusted
   shell: gio set {{ local_home }}/Desktop/{{ item.value.desktop_name | default(item.key) }}.desktop "metadata::trusted" yes
-  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_system == 'Linux'
+  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
   with_dict: "{{ apps.applications | default({}) }}" 
 
 # add xhost + to ensure x can run 
@@ -100,9 +100,9 @@
   shell: xhost +
   when: ansible_system == 'Linux'
 
-# LINUX 
+# LINUX OR WSL
 # create docker start files 
-- name: create docker start file
+- name: Linux/WSL, create docker start file
   template:
     src: "{{ project_home }}/templates/app-start-docker.j2"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
@@ -110,9 +110,9 @@
   when: item.value.implementation_type == "docker" and apps.applications is defined and ansible_system == 'Linux'
   with_dict: "{{ apps.applications | default({}) }}"
 
-# MAC
+# MAC ONLY
 # create docker start files 
-- name: create docker start file
+- name: MAC, create docker start file
   template:
     src: "{{ project_home }}/templates/app-start-docker-macos.j2"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"

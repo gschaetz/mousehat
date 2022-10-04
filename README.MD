@@ -40,14 +40,21 @@ These instructions will get you a copy of the project up and running on your loc
 1) git clone this repo: `git clone https://github.com/gschaetz/mousehat.git`
 2) Use the built in settings to start or build your own off of mousehat/ansible/desktop-ansible/settings
 3) Run the desktop setup config.  If you want to supply your own application setting files use the -s flag.  
+For Non-WSL:
 ```
 ./runplay.sh
 
 ./runplay.sh -s /mysettings
 ```
-4) if you use my settings the ansible repo setup will have to ran twice.  The first time will fail.  Ignore and re-run.
-5) Again if you are running mine the ansible will fail on the custom role.  After it runs do the following: `sudo apt-get upgrade ansible`.  Then rerun the ansible.
-6) reboot the machine to see all the changes and start docker
+For WSL:
+```
+./runplay.sh -w
+
+./runplay.sh -s /mysettings -w
+```
+1) if you use my settings the ansible repo setup will have to ran twice.  The first time will fail.  Ignore and re-run.
+2) Again if you are running mine the ansible will fail on the custom role.  After it runs do the following: `sudo apt-get upgrade ansible`.  Then rerun the ansible.
+3) reboot the machine to see all the changes and start docker
 
 
 ## Built With

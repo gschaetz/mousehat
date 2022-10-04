@@ -89,6 +89,11 @@
 {% else %}
 {% set snd = false %}
 {% endif %}
+{% if item.value.docker_entrypoint_command is defined  %}
+{% set dockerentrypointcommand = item.value.docker_entrypoint_command %}
+{% else %}
+{% set dockerentrypointcommand = None %}
+{% endif %}
 {#END DEFAULTS#}
 
 docker pull {{ item.value.docker_image }}

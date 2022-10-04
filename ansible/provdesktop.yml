@@ -14,31 +14,31 @@
     macos_configure_os_settings_yaml: "{{ settings_home }}/macos-configure-os-settings.yml"     
     macos_brew_yaml: "{{ settings_home }}/macos-brew.yml"
 
-    macos_docker_applications_yaml:  "{{ settings_home }}/macos-docker-applications.yml"
     docker_applications_yaml:  "{{ settings_home }}/docker-applications.yml"
+    linux_docker_applications_yaml:  "{{ settings_home }}/linux-docker-applications.yml"
     custom_roles_yaml: "{{ settings_home }}/customroles.yml"
 
     desktop_directory: "{{ local_home }}/.desktop/"
 
   tasks:
-    # LINUX
+    # LINUX AND NOT WSL 
     - include_role: 
         name: linux-packages
-      when: ansible_system == 'Linux'
+      when: ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
       vars:
         packages: "{{ linux_packages_yaml }}"
 
-    # LINUX
+    # LINUX AND NOT WSL
     - include_role: 
         name: linux-install-docker
-      when: ansible_system == 'Linux'
+      when: ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
       vars:
         non_root_user: "{{ ansible_user_id }}" 
 
-    # LINUX
+    # LINUX AND NOT WSL 
     - include_role:
         name: linux-gnome-desktop-settings
-      when: ansible_system == 'Linux'
+      when: ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
       vars:
         gnomeSettings: "{{ linux_gnome_settings_yaml }}"
         desktop_dir: "{{ desktop_directory }}"
@@ -59,22 +59,24 @@
         macos_settings: "{{ macos_configure_os_settings_yaml }}"
         desktop_dir: "{{ desktop_directory }}"
 
-    # MAC (Darwin)
-    # Requires Xquartz and socat 
+    # MAC (Darwin) Requires Xquartz and socat 
+    # OR WSL
     - include_role:
         name: docker-applications
-      when: ansible_system == 'Darwin'
-      vars:
-        application_setup: "{{ macos_docker_applications_yaml }}"
-        desktop_dir: "{{ desktop_directory }}"
-
-    # LINUX 
-    - include_role:
-        name: docker-applications
-      when: ansible_system == 'Linux'
+      when: ansible_system == 'Darwin' or WSL_LINUX == 'TRUE'
       vars:
         application_setup: "{{ docker_applications_yaml }}"
         desktop_dir: "{{ desktop_directory }}"
+        WSL_LINUX: "{{ WSL_LINUX }}"
+
+    # LINUX AND NOT WSL
+    - include_role:
+        name: docker-applications
+      when: ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+      vars:
+        application_setup: "{{ linux_docker_applications_yaml }}"
+        desktop_dir: "{{ desktop_directory }}"
+        WSL_LINUX: "{{ WSL_LINUX }}"
 
     # CUSTOM ROLE
     - include_role: 
