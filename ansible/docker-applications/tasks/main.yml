@@ -95,10 +95,11 @@
   when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
   with_dict: "{{ apps.applications | default({}) }}" 
 
+# LINUX AND NOT WSL
 # add xhost + to ensure x can run 
 - name: xhost +
   shell: xhost +
-  when: ansible_system == 'Linux'
+  when: ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
 
 # LINUX OR WSL
 # create docker start files 
