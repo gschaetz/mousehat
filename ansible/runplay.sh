@@ -1,7 +1,7 @@
 #!/bin/bash
 verbosity="v"
 WSL_LINUX="FALSE"
-while getopts ":p:s:v:w" opt; do
+while getopts ":p:s:d:v:w" opt; do
   case $opt in
     w) 
       echo "Setting wsl setup to true."
@@ -18,6 +18,10 @@ while getopts ":p:s:v:w" opt; do
     s)
       echo "Using desktop setting directory: $OPTARG"
       export DESKTOP_SETTINGS_DIR=$OPTARG
+      ;;
+    d) 
+      echo "Desktop location for .desktop: $OPTARG"
+      export HOME_DESKTOP_DIR=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2

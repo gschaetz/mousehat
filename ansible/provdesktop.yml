@@ -3,6 +3,7 @@
   vars:
     current_path: "{{ lookup('env','PWD') }}"
     local_home: "{{ lookup('env','HOME') }}"
+    desktop_home: "{{ lookup('env','HOME_DESKTOP_DIR') | default(local_home,true) }}"
 
     project_home: "{{ lookup('env','DESKTOP_PROJECT_DIR') | default(current_path,true) }}"
     default_settings_sub: "{{current_path}}/sample-desktop-setup"
@@ -18,7 +19,7 @@
     linux_docker_applications_yaml:  "{{ settings_home }}/linux-docker-applications.yml"
     custom_roles_yaml: "{{ settings_home }}/customroles.yml"
 
-    desktop_directory: "{{ local_home }}/.desktop/"
+    desktop_directory: "{{ desktop_home }}/.desktop/"
 
   tasks:
     # LINUX AND NOT WSL 
