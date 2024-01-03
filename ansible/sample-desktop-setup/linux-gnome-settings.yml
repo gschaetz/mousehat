@@ -3,11 +3,7 @@ gnome_extensions:
   dashtodock:
     download_type: archive
     extension_name: dash-to-dock@micxgx.gmail.com 
-    extension_url: https://extensions.gnome.org/review/download/8355.shell-extension.zip
-  gtile:
-    download_type: git
-    extension_name: gTile@vibou
-    extension_url: https://github.com/gTile/gTile.git
+    extension_url: https://extensions.gnome.org/extension-data/dash-to-dockmicxgx.gmail.com.v71.shell-extension.zip
 gnome:
   desktop_icons:
     setting: /org/gnome/desktop/background/show-desktop-icons true
@@ -15,6 +11,8 @@ gnome:
     setting: /org/gnome/shell/enabled-extensions '["gTile@vibou","apps-menu@gnome-shell-extensions.gcampax.github.com","dash-to-dock@micxgx.gmail.com"]'
   dock_position:
     setting: /org/gnome/shell/extensions/dash-to-dock/dock-position "'BOTTOM'"
+  show_trash:
+    setting: /org/gnome/shell/extensions/dash-to-dock/show-trash false
   preferred_monitor:
     setting: /org/gnome/shell/extensions/dash-to-dock/preferred-monitor 0
   custom_theme_shrink:
@@ -22,18 +20,26 @@ gnome:
   default_zoom_level:
     setting: /org/gnome/nautilus/icon-view/default-zoom-level "'small'"
   show_apps_button:
-    setting: /org/gnome/shell/extensions/dash-to-dock/show-show-apps-button false
+    setting: /org/gnome/shell/extensions/dash-to-dock/show-show-apps-button true
   button_layout: 
     setting: /org/gnome/desktop/wm/preferences/button-layout "'appmenu:minimize,maximize,close'"
   favorite_apps: 
-    setting: /org/gnome/shell/favorite-apps '["Thunderbird-myapps.desktop","Slack-myapps.desktop","Chromium-myapps.desktop","Firefox-myapps.desktop","VScode-myapps.desktop","org.gnome.Terminal.desktop"]'
+    setting: >
+      /org/gnome/shell/favorite-apps '[
+        "slack_slack.desktop",
+        "microsoft-edge.desktop",
+        "chromium_chromium.desktop",
+        "firefox_firefox.desktop",
+        "code_code.desktop",
+        "org.gnome.Terminal.desktop",
+        "gnome-control-center.desktop"
+      ]'
   keyboard_show_desktop:
     setting: /org/gnome/desktop/wm/keybindings/show-desktop '["<Primary><Super>d"]'
   system_sounds:
     setting: /org/gnome/desktop/sound/event-sounds false
   touchpad:
-    setting: /org/gnome/desktop/peripherals/touchpad/tap-to-click true
-    
+    setting: /org/gnome/desktop/peripherals/touchpad/tap-to-click true    
 gnome_background:
     desktop_background:
       type: background

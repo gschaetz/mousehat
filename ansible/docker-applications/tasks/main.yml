@@ -56,7 +56,9 @@
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_icon | default(item.key + '.png') }}"
     mode: 0440 
   with_dict: "{{ apps.applications | default({}) }}"
-  when: apps.applications is defined and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+  when: 
+    - apps.applications is defined and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+    - item.value.show_on_desktop|default(false) == true 
 
 # download sec comps
 - name: Download sec comps
@@ -86,7 +88,9 @@
     mode: 0777
   become: true
   with_dict: "{{ apps.applications | default({}) }}"
-  when: apps.applications is defined and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+  when: 
+    - apps.applications is defined and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+    - item.value.menu_category is defined
 
 # LINUX AND NOT WSL
 # gio those apps

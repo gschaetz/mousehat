@@ -5,70 +5,62 @@ repositories:
         keyserver_url: keyserver.ubuntu.com 
         keyserver_id: 93C4A3FD7BB9C367
         repository_url: deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
+    microsoft:
+        repository_name: microsoft
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        repository_url: deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main
+snaps:
+    installed:
+        - 1password
+        - chromium
+        - code
+        - slack
+        - yq
+    uninstalled:
+        - postman
 packages:
-##INSTALLED
-    curl:   
-        package_name: curl
-        package_state: present
-    tmux:
-        package_name: tmux
-        package_state: present
-    dos2unix:
-        package_name: dos2unix
-        package_state: present
-    jsonquery:
-        package_name: jq
-        package_state: present
-    parallel:
-        package_name: parallel
-        package_state: present
-    tree:
-        package_name: tree
-        package_state: present
-    pip:
-        package_name: python3-pip
-        package_state: present
-    rclone:
-        package_name: rclone
-        package_state: present
-    cups:
-        package_name: cups
-        package_state: present
-    ansible:
-        package_name: ansible
-        package_state: present
-        
-###UNINSTALLED
-    gnome-games:
-        package_name: gnome-games 
-        package_state: absent
-    evolution:
-        package_name: evolution 
-        package_state: absent
-    cheese:
-        package_name: cheese 
-        package_state: absent
-    libreoffice:
-        package_name: libreoffice* 
-        package_state: absent
-    rhythmbox:
-        package_name: rhythmbox 
-        package_state: absent
-    polari:
-        package_name: polari 
-        package_state: absent
-    brasero:
-        package_name: brasero 
-        package_state: absent
-    gnome-music:
-        package_name: gnome-music 
-        package_state: absent
-    totem:
-        package_name: totem 
-        package_state: absent
-    gnome-sound-recorder:
-        package_name: gnome-sound-recorder 
-        package_state: absent
-    firefox-esr:
-        package_name: firefox-esr 
-        package_state: absent
+    installed: 
+        - awscli
+        - cowsay
+        - curl
+        - cups
+        - default-jdk
+        - dbus-x11
+        - dconf-cli
+        - dconf-editor
+        - dnsutils
+        - docker-compose
+        - dos2unix
+        - feh
+        - figlet
+        - gnome-keyring
+        - gnome-shell-extension-prefs
+        - jq
+        - libglib2.0-bin
+        - maven
+        - microsoft-edge-stable
+        - nmap
+        - npm
+        - ntp
+        - parallel
+        - pavucontrol
+        - pigz
+        - pip
+        - plocate
+        - rclone        
+        - tmux
+        - toilet
+        - tree
+        - vim-gtk
+        - unzip
+        - xclip
+        - zopfli
+    uninstalled:
+        - brasero
+        - cheese
+        - gnome-music
+        - gnome-sound-recorder
+        - libreoffice*
+        - polari
+        - rhythmbox
+        - totem

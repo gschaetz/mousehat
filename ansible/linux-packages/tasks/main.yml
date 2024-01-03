@@ -6,18 +6,33 @@
 
 ### START APT
 # On apt-get target
-- apt_repository: repo={{ item.value.repository_url }} state=present
-  with_dict: "{{ packages_file.repositories | default({}) }}" 
-  when: packages_file.packages is defined and (ansible_os_family == 'Debian') 
-  become: true
-
-# On apt-get target
 - name: Add an apt key by id from a keyserver
   apt_key:
     keyserver: "{{ item.value.keyserver_url }}"
     id: "{{ item.value.keyserver_id }}"
   with_dict: "{{ packages_file.repositories | default({}) }}"  
-  when: packages_file.packages is defined  and (ansible_os_family == 'Debian')
+  when: 
+    - packages_file.repositories is defined and (ansible_os_family == 'Debian')
+    - item.value.keyserver_url is defined
+  become: true
+
+# On apt-get url
+- name: Add an Apt signing key by url
+  apt_key:
+    url: "{{ item.value.url }}"
+    state: present  
+  with_dict: "{{ packages_file.repositories | default({}) }}"  
+  when: 
+    - packages_file.repositories is defined and (ansible_os_family == 'Debian')
+    - item.value.url is defined
+  become: true
+
+# On apt-get target
+- name: add apt repos
+  apt_repository: repo={{ item.value.repository_url }} state=present
+  with_dict: "{{ packages_file.repositories | default({}) }}" 
+  when: 
+    - packages_file.repositories is defined and (ansible_os_family == 'Debian')
   become: true
 
 # apt-get update
@@ -28,16 +43,52 @@
   become: true
   
 # install packages
-- apt: name={{ item.value.package_name }} state={{ item.value.package_state }}
-  with_dict: "{{ packages_file.packages  | default({}) }}"
-  when: packages_file.packages is defined and (ansible_os_family == 'Debian') 
+- apt: 
+    name: "{{ packages_file.packages.installed }}"
+    state: present
+  when: packages_file.packages.installed is defined and (ansible_os_family == 'Debian') 
+  become: true
+
+# remove packages
+- apt: 
+    name: "{{ packages_file.packages.uninstalled }}"
+    state: absent
+  when: packages_file.packages.uninstalled is defined and (ansible_os_family == 'Debian') 
   become: true
 ### END APT
 
 ### START PACMAN
 # install packages
-- pacman: name={{ item.value.package_name }} state={{ item.value.package_state }}
-  with_dict: "{{ packages_file.packages  | default({}) }}"
-  when: packages_file.packages is defined and (ansible_os_family == 'Archlinux') 
+- pacman: 
+    name: "{{ packages_file.packages.installed }}"
+    state: present
+  when: packages_file.packages.installed is defined and (ansible_os_family == 'Archl=inux') 
+  become: true
+
+# remove packages
+- pacman:
+    name: "{{ packages_file.packages.uninstalled }}"
+    state: absent
+  with_list: "{{ packages_file.packages.uninstalled  | default({}) }}"
+  when: packages_file.packages.uninstalled is defined and (ansible_os_family == 'Archlinux') 
   become: true
 ### END PACMAN
+
+# start snaps
+# install
+- community.general.snap:
+    name: "{{ item }}"
+    state: present
+  become: true
+  with_list: "{{ packages_file.snaps.installed | default({}) }}" 
+  when: 
+    - packages_file.snaps is defined and (ansible_os_family == 'Debian')
+
+# remove
+- community.general.snap:
+    name: "{{ item }}"
+    state: absent
+  become: true
+  with_list: "{{ packages_file.snaps.uninstalled | default({}) }}" 
+  when: 
+    - packages_file.snaps is defined and (ansible_os_family == 'Debian')
