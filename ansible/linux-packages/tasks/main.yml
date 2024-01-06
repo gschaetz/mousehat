@@ -77,8 +77,9 @@
 # start snaps
 # install
 - community.general.snap:
-    name: "{{ item }}"
+    name: "{{ item.name }}"
     state: present
+    classic: "{{ item.classic }}"
   become: true
   with_list: "{{ packages_file.snaps.installed | default({}) }}" 
   when: 
@@ -86,8 +87,9 @@
 
 # remove
 - community.general.snap:
-    name: "{{ item }}"
+    name: "{{ item.name }}"
     state: absent
+    classic: "{{ item.classic }}"
   become: true
   with_list: "{{ packages_file.snaps.uninstalled | default({}) }}" 
   when: 

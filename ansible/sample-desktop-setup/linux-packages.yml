@@ -11,13 +11,19 @@ repositories:
         repository_url: deb [arch=amd64] https://packages.microsoft.com/repos/edge stable main
 snaps:
     installed:
-        - 1password
-        - chromium
-        - code
-        - slack
-        - yq
+        - name: 1password
+          classic: false
+        - name: chromium
+          classic: false
+        - name: code
+          classic: true
+        - name: slack          
+          classic: false
+        - name: yq
+          classic: false
     uninstalled:
-        - postman
+        - name: postman
+          classic: false
 packages:
     installed: 
         - awscli
