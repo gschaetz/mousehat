@@ -104,6 +104,7 @@
 - name: xhost +
   shell: xhost +
   when: ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+  ignore_errors: true
 
 # LINUX OR WSL
 # create docker start files 
