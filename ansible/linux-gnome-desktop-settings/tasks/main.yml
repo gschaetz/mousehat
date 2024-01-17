@@ -87,7 +87,7 @@
     mode: 0777
   become: true
   when: 
-    - '{{ settings.x11_config }}' is defined
+    - '{{ settings.x11_config }} is defined'
     - '{{ settings.x11_config.user_x11_config_files | default(false) }}'
 
 - name: Create symbolic link for .xsession
@@ -96,7 +96,7 @@
     dest: "{{ local_home }}/.xsession"
     state: link
   when: 
-    - '{{ settings.x11_config }}' is defined
+    - '{{ settings.x11_config }} is defined'
     - '{{ settings.x11_config.user_x11_config_files | default(false) }}'
 
 - name: Create symbolic link for .xsessionrc
@@ -105,5 +105,5 @@
     dest: "{{ local_home }}/.xsessionrc"
     state: link
   when:
-    - '{{ settings.x11_config }}' is defined
+    - '{{ settings.x11_config }} is defined'
     - '{{ settings.x11_config.user_x11_config_files | default(false) }}'
