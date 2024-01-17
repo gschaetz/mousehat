@@ -87,14 +87,14 @@
     mode: 0777
   become: true
 
-- name: Create symbolic link for .xsession
-  file:
-    src: "{{ local_home }}/.xinit"
-    dest: "{{ local_home }}/.xsession"
-    state: link
+# - name: Create symbolic link for .xsession
+#   file:
+#     src: "{{ local_home }}/.xinit"
+#     dest: "{{ local_home }}/.xsession"
+#     state: link
 
-- name: Create symbolic link for .xsessionrc
-  file:
-    src: "{{ local_home }}/.xinit"
-    dest: "{{ local_home }}/.xsessionrc"
-    state: link
+# - name: Create symbolic link for .xsessionrc
+#   file:
+#     src: "{{ local_home }}/.xinit"
+#     dest: "{{ local_home }}/.xsessionrc"
+#     state: link
