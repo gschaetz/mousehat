@@ -2,9 +2,7 @@
 repositories:
     ansible:
         repository_name: ansible
-        keyserver_url: keyserver.ubuntu.com 
-        keyserver_id: 93C4A3FD7BB9C367
-        repository_url: deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
+        repository_url: ppa:ansible/ansible
     microsoft:
         repository_name: microsoft
         url: https://packages.microsoft.com/keys/microsoft.asc
