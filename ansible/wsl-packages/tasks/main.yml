@@ -97,9 +97,9 @@
   become: true
 
 - name: Make sure snapd service is running
-  systemd_service:
-    state: started
-    name: snapd
+  command:
+    - systemctl start snapd
+  become: true
 
 # install
 - name: install snaps
