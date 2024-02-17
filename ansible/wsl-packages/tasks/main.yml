@@ -43,10 +43,9 @@
   become: true
 
 # apt-get update
-- name: apt-get update and upgrade
+- name: apt-get update
   apt:
     update_cache: yes
-    upgrade: yes
   when: (ansible_os_family == 'Debian')
   become: true
   
