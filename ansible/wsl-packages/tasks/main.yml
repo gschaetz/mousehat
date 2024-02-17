@@ -97,8 +97,7 @@
   become: true
 
 - name: Make sure snapd service is running
-  command:
-    - systemctl start snapd
+  command: systemctl start snapd
   become: true
 
 # install
