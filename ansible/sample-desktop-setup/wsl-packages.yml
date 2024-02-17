@@ -1,0 +1,21 @@
+---
+repositories:
+    ansible:
+        repository_name: ansible
+        repository_url: ppa:ansible/ansible
+snaps:
+    installed:
+        - name: helm       
+          classic: true
+        - name : kubectl
+          classic: true
+        - name: yq
+          classic: false
+    uninstalled:
+        - name: postman
+          classic: false
+packages:
+    installed: 
+        - cowsay
+    uninstalled:
+        - cheese

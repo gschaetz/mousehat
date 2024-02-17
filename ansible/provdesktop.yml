@@ -12,6 +12,8 @@
     linux_gnome_settings_yaml: "{{ settings_home }}/linux-gnome-settings.yml"     
     linux_packages_yaml: "{{ settings_home }}/linux-packages.yml"
 
+    wsl_packages_yaml: "{{ settings_home }}/wsl-packages.yml"
+ 
     macos_configure_os_settings_yaml: "{{ settings_home }}/macos-configure-os-settings.yml"     
     macos_brew_yaml: "{{ settings_home }}/macos-brew.yml"
 
@@ -28,6 +30,13 @@
       when: ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
       vars:
         packages: "{{ linux_packages_yaml }}"
+
+    # WSL ONLY 
+    - include_role: 
+        name: wsl-packages
+      when: ansible_system == 'Linux' and WSL_LINUX == 'TRUE'
+      vars:
+        packages: "{{ wsl_packages_yaml }}"
 
     # LINUX AND NOT WSL
     - include_role: 
@@ -84,4 +93,3 @@
         name: custom-roles
       vars:
         custom_roles_dir: "{{ settings_home }}/custom_roles/"
-        WSL_LINUX: "{{ WSL_LINUX }}"

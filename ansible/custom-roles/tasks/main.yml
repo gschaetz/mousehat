@@ -13,10 +13,3 @@
     name: "{{ custom_roles_dir }}{{ item.value.name }}"  
   with_dict: "{{ customroles_file.roles }}"
   when: customroles_file.roles is defined
-
-- name: Custom Roles WSL
-  include_role:
-    name: "{{ custom_roles_dir }}{{ item.value.name }}"  
-  with_dict: "{{ customroles_file.wsl_roles }}"
-  when: customroles_file.wsl_roles is defined and WSL_LINUX == 'TRUE'
-  
