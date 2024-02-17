@@ -4,6 +4,14 @@
     name: packages_file
 
 ### START APT
+# install dirmngr
+- apt: 
+    name: dirmngr
+    state: present
+  when: 
+    - packages_file.snaps is defined and (ansible_os_family == 'Debian')
+  become: true
+
 # On apt-get target
 - name: Add an apt key by id from a keyserver
   apt_key:
@@ -74,7 +82,6 @@
 ### END PACMAN
 
 # start snaps
-
 # install snapd
 - apt: 
     name: snapd
