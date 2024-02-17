@@ -43,21 +43,24 @@
   become: true
 
 # apt-get update
-- name: apt-get update
+- name: apt-get update and upgrade
   apt:
     update_cache: yes
+    upgrade: yes
   when: (ansible_os_family == 'Debian')
   become: true
   
 # install packages
-- apt: 
+- name: install apt packages
+  apt: 
     name: "{{ packages_file.packages.installed }}"
     state: present
   when: packages_file.packages.installed is defined and (ansible_os_family == 'Debian') 
   become: true
 
 # remove packages
-- apt: 
+- name: remove apt packages
+  apt: 
     name: "{{ packages_file.packages.uninstalled }}"
     state: absent
   when: packages_file.packages.uninstalled is defined and (ansible_os_family == 'Debian') 
@@ -66,14 +69,16 @@
 
 ### START PACMAN
 # install packages
-- pacman: 
+- name: install pacman packages
+  pacman: 
     name: "{{ packages_file.packages.installed }}"
     state: present
   when: packages_file.packages.installed is defined and (ansible_os_family == 'Archl=inux') 
   become: true
 
 # remove packages
-- pacman:
+- name: remove pacman packages
+  pacman: 
     name: "{{ packages_file.packages.uninstalled }}"
     state: absent
   with_list: "{{ packages_file.packages.uninstalled  | default({}) }}"
@@ -83,15 +88,22 @@
 
 # start snaps
 # install snapd
-- apt: 
+- name: install snapd
+  apt: 
     name: snapd
     state: present
   when: 
     - packages_file.snaps is defined and (ansible_os_family == 'Debian')
   become: true
 
+- name: Make sure snapd service is running
+  ansible.builtin.systemd_service:
+    state: started
+    name: snapd
+
 # install
-- community.general.snap:
+- name: install snaps
+  community.general.snap:
     name: "{{ item.name }}"
     state: present
     classic: "{{ item.classic }}"
@@ -101,7 +113,8 @@
     - packages_file.snaps is defined and (ansible_os_family == 'Debian')
 
 # remove
-- community.general.snap:
+- name: remove snaps
+  community.general.snap:
     name: "{{ item.name }}"
     state: absent
     classic: "{{ item.classic }}"
