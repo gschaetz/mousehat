@@ -16,6 +16,6 @@ snaps:
           classic: false
 packages:
     installed: 
-        - ansible
+        - cowsay
     uninstalled:
         - cheese
