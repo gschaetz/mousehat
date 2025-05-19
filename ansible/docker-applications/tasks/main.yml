@@ -7,6 +7,7 @@
 # delete desktop entries
 - name: Delete all desktop files 
   shell: "rm -rf {{ local_home }}/Desktop/*.desktop"
+  become: true
 
 # # remove custom menu items
 - name: Delete all desktop files 
