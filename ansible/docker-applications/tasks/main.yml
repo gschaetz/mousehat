@@ -8,6 +8,7 @@
 - name: Delete all desktop files 
   shell: "rm -rf {{ local_home }}/Desktop/*.desktop"
   become: true
+  become_method: sudo
 
 # # remove custom menu items
 - name: Delete all desktop files 

@@ -39,4 +39,4 @@ while getopts ":p:s:d:v:w" opt; do
   esac
 done
 
-ansible-playbook -$verbosity -i "localhost," -c local provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX"
+ansible-playbook --ask-become-pass -$verbosity -i "localhost," -c local provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX"
