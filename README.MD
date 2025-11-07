@@ -1,66 +1,219 @@
 # Mousehat
 
-This project aims at setting up a your computer in an automated fashion.  This started in for just linux but now has evolved into a solution for Windows WSL, MacOs and Linux.  In all the solutions it has support for docker based applications and can support GUI Docker images.
+An automated desktop provisioning system for Linux, macOS, and Windows WSL using Ansible. Mousehat automates the setup and configuration of your development environment, including package installation, desktop environment customization, and Docker-based application deployment.
 
-Linux Supprt: Debian/Ubuntu/Arch Linux, Support GNOME 3/i3 desktop
-Windows WSL: Tested with Ubuntu WSL 2
-MacOS: Mojave
+## 🌟 Features
 
-## Getting Started
+- **Multi-Platform Support**: Linux (Debian/Ubuntu/Arch), macOS, and Windows WSL 2
+- **Desktop Environment Configuration**: GNOME and i3 desktop customization
+- **Package Management**: Automated installation via apt, Homebrew, snap, and pacman
+- **Docker Integration**: Deploy GUI and CLI applications in Docker containers
+- **Customizable**: YAML-based configuration for easy personalization
+- **Idempotent**: Safe to run multiple times
 
-These instructions will get you a copy of the project up and running on your local machine. The project contains a /testvm directory that will help you setup this project for testing and/or working out of a virtualbox vm.  
+## 📋 Supported Platforms
 
-## Requirements - Linux/WSL 2
+| Platform | Versions | Desktop Environments |
+|----------|----------|---------------------|
+| **Linux** | Debian, Ubuntu, Arch Linux | GNOME 3, i3 |
+| **macOS** | Mojave and later (Intel & Apple Silicon) | Native macOS |
+| **Windows WSL** | WSL 2 (Ubuntu) | N/A |
 
-1) su to root
-2) Install sudo `apt-get install sudo
-3) Install ansible `apt-get install ansible`
-4) Install git `apt-get install git`
-4) Add your user to sudo group `usermod -aG sudo username`
-5) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo. Add the following `username ALL=(ALL) NOPASSWD: ALL`
-6) You will need to install ansible > 2.7.  On debian the default repo has an older version of ansible that will not work with the custom_role feature.  If you want this feature you will need to install a newer feature.  I tested it on 2.7.9.  
+## 🚀 Quick Start
 
-## Requirements - MacOS
+### Prerequisites
 
-1) Install brew `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
-2) Install ansible `brew install ansible`
-3) If you are running on a M series chip run softwareupdate --install-rosetta to allow backward comptability to intel 
-4) su to root `sudo su`
-5) Add your user to /etc/sudoers to make it so they don't have a pasword to sudo. Add the following `username ALL=(ALL) NOPASSWD: ALL`
+#### Linux/WSL 2
 
+1. Switch to root user:
+   ```bash
+   sudo su
+   ```
 
-## vmware
+2. Install required packages:
+   ```bash
+   apt-get update
+   apt-get install -y sudo git ansible
+   ```
 
-1) install vmware tools: `sudo apt-get install open-vm-tools`
-2) install vmsare tools desktop: `sudo apt-get install open-vm-tools-desktop`
-3) reboot
+3. Add your user to the sudo group:
+   ```bash
+   usermod -aG sudo <username>
+   ```
 
-### Install
+4. Configure passwordless sudo by adding to `/etc/sudoers`:
+   ```
+   <username> ALL=(ALL) NOPASSWD: ALL
+   ```
 
-1) git clone this repo: `git clone https://github.com/gschaetz/mousehat.git`
-2) Use the built in settings to start or build your own off of mousehat/ansible/desktop-ansible/settings
-3) Run the desktop setup config.  If you want to supply your own application setting files use the -s flag.  
-For Non-WSL:
+5. **Important**: Ensure Ansible version ≥ 2.7 for custom role support:
+   ```bash
+   ansible --version
+   ```
+   If needed, upgrade Ansible from official repositories.
+
+#### macOS
+
+1. Install Homebrew:
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+2. Install Ansible:
+   ```bash
+   brew install ansible
+   ```
+
+3. For Apple Silicon Macs, install Rosetta 2:
+   ```bash
+   softwareupdate --install-rosetta
+   ```
+
+4. Configure passwordless sudo by editing `/etc/sudoers`:
+   ```bash
+   sudo visudo
+   ```
+   Add:
+   ```
+   <username> ALL=(ALL) NOPASSWD: ALL
+   ```
+
+#### VMware (Linux only)
+
+For VMware virtual machines, install VMware Tools:
+```bash
+sudo apt-get install -y open-vm-tools open-vm-tools-desktop
+sudo reboot
 ```
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/gschaetz/mousehat.git
+   cd mousehat/ansible
+   ```
+
+2. Run the provisioning script:
+
+   **Linux (non-WSL):**
+   ```bash
+   ./runplay.sh
+   ```
+
+   **WSL:**
+   ```bash
+   ./runplay.sh -w
+   ```
+
+   **With custom settings:**
+   ```bash
+   ./runplay.sh -s /path/to/custom/settings
+   ```
+
+3. Reboot to apply all changes:
+   ```bash
+   sudo reboot
+   ```
+
+## ⚙️ Configuration
+
+### Command Line Options
+
+The `runplay.sh` script accepts the following options:
+
+| Option | Description | Example |
+|--------|-------------|---------|
+| `-w` | Enable WSL mode | `./runplay.sh -w` |
+| `-s <path>` | Custom settings directory | `./runplay.sh -s ~/my-config` |
+| `-d <path>` | Custom desktop directory location | `./runplay.sh -d ~/Desktop` |
+| `-p <path>` | Custom project directory | `./runplay.sh -p ~/projects` |
+| `-v <level>` | Ansible verbosity (v, vv, vvv, vvvv) | `./runplay.sh -v vvv` |
+
+### Using Sample Configurations
+
+The project includes sample configurations in `ansible/sample-desktop-setup/`. You can:
+
+1. Use the provided samples as-is
+2. Copy and modify them for your needs
+3. Create your own from scratch
+
+See [ansible/sample-desktop-setup/README.md](ansible/sample-desktop-setup/README.md) for configuration details.
+
+## 📚 Documentation
+
+- [Ansible Roles Documentation](ansible/README.md) - Detailed explanation of all roles and playbooks
+- [Sample Configuration Guide](ansible/sample-desktop-setup/README.md) - How to customize your setup
+
+## 🔧 Project Structure
+
+```
+mousehat/
+├── ansible/
+│   ├── provdesktop.yml           # Main playbook
+│   ├── runplay.sh                # Execution script
+│   ├── custom-roles/             # Custom Ansible roles
+│   ├── docker-applications/      # Docker app deployment role
+│   ├── linux-gnome-desktop-settings/  # GNOME configuration role
+│   ├── linux-install-docker/     # Docker installation role
+│   ├── linux-packages/           # Linux package management role
+│   ├── macos-configure-os-settings/   # macOS settings role
+│   ├── macos-homebrew/           # Homebrew management role
+│   ├── wsl-packages/             # WSL-specific packages role
+│   ├── sample-desktop-setup/     # Sample configurations
+│   └── templates/                # Jinja2 templates
+└── testvm/
+    └── Vagrantfile               # Test VM configuration
+```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Ansible version too old:**
+```bash
+sudo apt-get update
+sudo apt-get upgrade ansible
+```
+
+**First run fails on repository setup:**
+This is expected when using the sample settings. Simply re-run the script:
+```bash
 ./runplay.sh
-
-./runplay.sh -s /mysettings
 ```
-For WSL:
+
+**Custom role errors:**
+Upgrade Ansible to version ≥ 2.7:
+```bash
+sudo apt-get upgrade ansible
+# or on macOS
+brew upgrade ansible
 ```
-./runplay.sh -w
 
-./runplay.sh -s /mysettings -w
+## 🧪 Testing
+
+Use the included Vagrant configuration to test in a virtual machine:
+
+```bash
+cd testvm
+vagrant up
 ```
-1) if you use my settings the ansible repo setup will have to ran twice.  The first time will fail.  Ignore and re-run.
-2) Again if you are running mine the ansible will fail on the custom role.  After it runs do the following: `sudo apt-get upgrade ansible`.  Then rerun the ansible.
-3) reboot the machine to see all the changes and start docker
 
+## 🛠️ Built With
 
-## Built With
+- [Ansible](https://www.ansible.com/) - Automation framework
+- [Docker](https://www.docker.com/) - Container platform
+- [Homebrew](https://brew.sh/) - macOS package manager
 
-* [Ansible](https://www.ansible.com/) - The automation framework used
+## 📄 License
 
-## License
+This project is licensed under the MIT License - see the [LICENSE.MD](LICENSE.MD) file for details.
 
-This project is licensed under the MIT License - see the LICENSE.MD file for details
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## ✨ Acknowledgments
+
+- Built with Ansible automation
+- Inspired by the need for reproducible development environments
