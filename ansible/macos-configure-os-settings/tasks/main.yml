@@ -38,7 +38,7 @@
 - name: Add in Dock to Persistent App section
   shell: |
     dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section apps
-    sleep 5
+    sleep {{ dock_operation_delay }}
   loop: "{{ ms.dock.persistent_apps|flatten(levels=1) }}"
   loop_control:
     index_var: index
@@ -50,7 +50,7 @@
 - name: Add in Dock to Persistent App section folders
   shell: |
     dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section apps --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}'
-    sleep 5
+    sleep {{ dock_operation_delay }}
   loop: "{{ ms.dock.persistent_apps|flatten(levels=1) }}"
   loop_control:
     index_var: index
@@ -62,7 +62,7 @@
 - name: Add in Dock to Other app section 
   shell: |
     dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section others
-    sleep 5
+    sleep {{ dock_operation_delay }}
   loop: "{{ ms.dock.other_apps | flatten(levels=1) }}"
   loop_control:
     index_var: index
@@ -74,7 +74,7 @@
 - name: Add in Dock to Other App section folders
   shell: |
     dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section others --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}'
-    sleep 5
+    sleep {{ dock_operation_delay }}
   loop: "{{ ms.dock.other_apps | flatten(levels=1) }}"
   loop_control:
     index_var: index
@@ -88,7 +88,7 @@
     domain: '{{ item.domain }}'
     key: '{{ item.key}}'
     state: absent
-  with_items: "{{ ms.osx_defaults | default({}) }}"
+  loop: "{{ ms.osx_defaults | default({}) }}"
   when: item.state == 'absent'
 
 # Modify (add,update) defaults
@@ -98,5 +98,5 @@
     type: '{{ item.type }}'
     value: '{{ item.value }}'
     state: present
-  with_items: "{{ ms.osx_defaults | default({}) }}"
+  loop: "{{ ms.osx_defaults | default({}) }}"
   when: item.state == 'present'

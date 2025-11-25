@@ -34,9 +34,11 @@
 
 # create persistent directories for applications
 - name: Creates persistent app directories
-  file: path={{ desktop_dir }}/persistent/{{ item.key }} state=directory mode=0777
-  #become: true
-  with_dict: "{{ apps.applications | default({}) }}"
+  file:
+    path: "{{ desktop_dir }}/persistent/{{ item.key }}"
+    state: directory
+    mode: "0777"
+  loop: "{{ apps.applications | default({}) | dict2items }}"
   when: apps.applications is defined
 
 # create resources directory
@@ -111,11 +113,12 @@
   with_dict: "{{ apps.applications | default({}) }}" 
 
 # LINUX AND NOT WSL
-# add xhost + to ensure x can run 
+# add xhost + to ensure x can run
 - name: xhost +
   shell: xhost +
   when: ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
-  ignore_errors: true
+  changed_when: false
+  failed_when: false
 
 # LINUX OR WSL
 # create docker start files 

@@ -20,8 +20,8 @@
   apt_key:
     keyserver: "{{ item.value.keyserver_url }}"
     id: "{{ item.value.keyserver_id }}"
-  with_dict: "{{ packages_file.repositories | default({}) }}"  
-  when: 
+  loop: "{{ packages_file.repositories | default({}) | dict2items }}"
+  when:
     - packages_file.repositories is defined and (ansible_os_family == 'Debian')
     - item.value.keyserver_url is defined
   become: true
@@ -30,17 +30,19 @@
 - name: Add an Apt signing key by url
   apt_key:
     url: "{{ item.value.url }}"
-    state: present  
-  with_dict: "{{ packages_file.repositories | default({}) }}"  
-  when: 
+    state: present
+  loop: "{{ packages_file.repositories | default({}) | dict2items }}"
+  when:
     - packages_file.repositories is defined and (ansible_os_family == 'Debian')
     - item.value.url is defined
   become: true
 
 # On apt-get target
-- name: add apt repos
-  apt_repository: repo={{ item.value.repository_url }} state=present
-  with_dict: "{{ packages_file.repositories | default({}) }}" 
+- name: Add apt repos
+  apt_repository:
+    repo: "{{ item.value.repository_url }}"
+    state: present
+  loop: "{{ packages_file.repositories | default({}) | dict2items }}" 
   when: 
     - packages_file.repositories is defined and (ansible_os_family == 'Debian')
   become: true
@@ -81,9 +83,9 @@
 # remove packages
 - name: Remove pacman packages
   pacman:
-    name: "{{ packages_file.packages.uninstalled }}"
+    name: "{{ item }}"
     state: absent
-  with_list: "{{ packages_file.packages.uninstalled  | default({}) }}"
+  loop: "{{ packages_file.packages.uninstalled | default([]) }}"
   when: packages_file.packages.uninstalled is defined and (ansible_os_family == 'Archlinux')
   become: true
 ### END PACMAN
@@ -119,7 +121,7 @@
     state: present
     classic: "{{ item.classic }}"
   become: true
-  with_list: "{{ packages_file.snaps.installed | default({}) }}"
+  loop: "{{ packages_file.snaps.installed | default([]) }}"
   when:
     - packages_file.snaps is defined and (ansible_os_family == 'Debian')
 
@@ -130,7 +132,7 @@
     state: absent
     classic: "{{ item.classic }}"
   become: true
-  with_list: "{{ packages_file.snaps.uninstalled | default({}) }}"
+  loop: "{{ packages_file.snaps.uninstalled | default([]) }}"
   when:
     - packages_file.snaps is defined and (ansible_os_family == 'Debian')
 ### END SNAPS

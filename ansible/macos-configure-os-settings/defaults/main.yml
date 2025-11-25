@@ -1,0 +1,8 @@
+---
+# Default variables for macos-configure-os-settings role
+
+# Delay between dock operations to allow macOS to settle
+dock_operation_delay: 5
+
+# Paths to system directories
+macos_applications_dir: "/Applications"

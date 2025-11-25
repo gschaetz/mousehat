@@ -5,46 +5,46 @@
 
 ### TAPS
 # Install taps
-- community.general.homebrew_tap.homebrew_tap: 
+- community.general.homebrew_tap:
     name: "{{ item }}"
     state: present
-  loop: "{{ query('list', mhf.tap.installed | default([]) ) }}" 
-  when: mhf is defined  and item
+  loop: "{{ mhf.tap.installed | default([]) }}"
+  when: mhf is defined and item
 
 # Remove taps
-- community.general.homebrew_tap.homebrew_tap: 
+- community.general.homebrew_tap:
     name: "{{ item }}"
     state: absent
-  loop: "{{ query('list', mhf.tap.not_installed | default([]) ) }}" 
+  loop: "{{ mhf.tap.not_installed | default([]) }}"
   when: mhf is defined and item
 
 ### BREWS
 # Install brews
-- community.general.homebrew: 
+- community.general.homebrew:
     name: "{{ item }}"
     state: present
     update_homebrew: true
-  loop: "{{ query('list', mhf.brew.installed  | default([]) ) }}" 
-  when: mhf is defined and item 
+  loop: "{{ mhf.brew.installed | default([]) }}"
+  when: mhf is defined and item
 
 # Remove brews
-- community.general.homebrew: 
+- community.general.homebrew:
     name: "{{ item }}"
     state: absent
-  loop: "{{ query('list', mhf.brew.not_installed  | default([]) ) }}" 
+  loop: "{{ mhf.brew.not_installed | default([]) }}"
   when: mhf is defined and item 
 
 ### BREW CASKS
 # Install brew_cask
-- community.general.homebrew_cask: 
+- community.general.homebrew_cask:
     name: "{{ item }}"
     state: present
-  loop: "{{ lookup('list', mhf.brew_cask.installed | default([]) ) }}" 
+  loop: "{{ mhf.brew_cask.installed | default([]) }}"
   when: mhf is defined
 
 # Remove brew-cask
 - community.general.homebrew_cask:
     name: "{{ item }}"
     state: absent
-  loop: "{{ lookup('list', mhf.brew_cask.not_installed | default([]) ) }}" 
+  loop: "{{ mhf.brew_cask.not_installed | default([]) }}"
   when: mhf is defined
