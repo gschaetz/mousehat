@@ -162,8 +162,6 @@ mousehat/
 │   ├── wsl-packages/             # WSL-specific packages role
 │   ├── sample-desktop-setup/     # Sample configurations
 │   └── templates/                # Jinja2 templates
-└── testvm/
-    └── Vagrantfile               # Test VM configuration
 ```
 
 ## 🐛 Troubleshooting
@@ -188,15 +186,6 @@ Upgrade Ansible to version ≥ 2.7:
 sudo apt-get upgrade ansible
 # or on macOS
 brew upgrade ansible
-```
-
-## 🧪 Testing
-
-Use the included Vagrant configuration to test in a virtual machine:
-
-```bash
-cd testvm
-vagrant up
 ```
 
 ## 🛠️ Built With

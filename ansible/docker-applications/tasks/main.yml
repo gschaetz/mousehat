@@ -143,7 +143,7 @@
     src: "{{ project_home }}/templates/app-start-dockercompose.j2"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
     mode: 0770
-  when: item.value.implementation_type == "dockershow_on_desktop_compose" and apps.applications is defined  
+  when: item.value.implementation_type == "docker_compose" and apps.applications is defined  
   with_dict: "{{ apps.applications | default({}) }}"
 
 # create link for command line runfile:

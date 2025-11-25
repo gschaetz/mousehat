@@ -5,7 +5,7 @@
 
 - include_vars:
     file: "{{ settings_home }}/{{ item.value.variable_file }}"
-  when: item.value.variable_file is undefined
+  when: item.value.variable_file is defined
   with_dict: "{{ customroles_file.roles }}"
      
 - name: Custom Roles

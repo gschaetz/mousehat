@@ -29,7 +29,7 @@ while getopts ":p:s:d:v:w" opt; do
       ;;
     :)
       echo $WSL_LINUX
-      if [[ $OPTARG -eq "w" ]]; then
+      if [[ $OPTARG == "w" ]]; then
         continue
       else 
         echo "Option -$OPTARG requires an argument." >&2

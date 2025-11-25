@@ -62,7 +62,7 @@
 - pacman: 
     name: "{{ packages_file.packages.installed }}"
     state: present
-  when: packages_file.packages.installed is defined and (ansible_os_family == 'Archl=inux') 
+  when: packages_file.packages.installed is defined and (ansible_os_family == 'Archlinux') 
   become: true
 
 # remove packages
