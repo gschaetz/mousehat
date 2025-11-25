@@ -1,22 +1,22 @@
 ---
 - include_vars:
     file: "{{ macos_homebrew }}"
-    name: mhf
+    name: macos_homebrew_config
 
 ### TAPS
 # Install taps
 - community.general.homebrew_tap:
     name: "{{ item }}"
     state: present
-  loop: "{{ mhf.tap.installed | default([]) }}"
-  when: mhf is defined and item
+  loop: "{{ macos_homebrew_config.tap.installed | default([]) }}"
+  when: macos_homebrew_config is defined and item
 
 # Remove taps
 - community.general.homebrew_tap:
     name: "{{ item }}"
     state: absent
-  loop: "{{ mhf.tap.not_installed | default([]) }}"
-  when: mhf is defined and item
+  loop: "{{ macos_homebrew_config.tap.not_installed | default([]) }}"
+  when: macos_homebrew_config is defined and item
 
 ### BREWS
 # Install brews
@@ -24,27 +24,27 @@
     name: "{{ item }}"
     state: present
     update_homebrew: true
-  loop: "{{ mhf.brew.installed | default([]) }}"
-  when: mhf is defined and item
+  loop: "{{ macos_homebrew_config.brew.installed | default([]) }}"
+  when: macos_homebrew_config is defined and item
 
 # Remove brews
 - community.general.homebrew:
     name: "{{ item }}"
     state: absent
-  loop: "{{ mhf.brew.not_installed | default([]) }}"
-  when: mhf is defined and item 
+  loop: "{{ macos_homebrew_config.brew.not_installed | default([]) }}"
+  when: macos_homebrew_config is defined and item 
 
 ### BREW CASKS
 # Install brew_cask
 - community.general.homebrew_cask:
     name: "{{ item }}"
     state: present
-  loop: "{{ mhf.brew_cask.installed | default([]) }}"
-  when: mhf is defined
+  loop: "{{ macos_homebrew_config.brew_cask.installed | default([]) }}"
+  when: macos_homebrew_config is defined
 
 # Remove brew-cask
 - community.general.homebrew_cask:
     name: "{{ item }}"
     state: absent
-  loop: "{{ mhf.brew_cask.not_installed | default([]) }}"
-  when: mhf is defined
+  loop: "{{ macos_homebrew_config.brew_cask.not_installed | default([]) }}"
+  when: macos_homebrew_config is defined

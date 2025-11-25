@@ -1,7 +1,7 @@
 ---
 - include_vars:
     file: "{{ macos_settings }}"
-    name: ms
+    name: macos_settings_config
 
 ## DOCK SETTINGS
 # Get current dock configuration
@@ -9,78 +9,78 @@
   shell: dockutil --list | awk -F'\t' '{print $1 "\t" $2}'
   register: current_dock_items
   changed_when: false
-  when: ms.dock is defined
+  when: macos_settings_config.dock is defined
 
 # Build expected dock configuration
 - name: Build expected dock configuration
   set_fact:
-    expected_dock_items: "{{ (ms.dock.persistent_apps | default([]) + ms.dock.other_apps | default([])) | map(attribute='name') | list }}"
-  when: ms.dock is defined
+    expected_dock_items: "{{ (macos_settings_config.dock.persistent_apps | default([]) + macos_settings_config.dock.other_apps | default([])) | map(attribute='name') | list }}"
+  when: macos_settings_config.dock is defined
 
 # Parse current dock items into a list
 - name: Parse current dock items
   set_fact:
     current_dock_names: "{{ current_dock_items.stdout_lines | map('regex_replace', '^(.*?)\\t.*$', '\\1') | list }}"
-  when: ms.dock is defined and current_dock_items.stdout_lines is defined
+  when: macos_settings_config.dock is defined and current_dock_items.stdout_lines is defined
 
 # Check if dock needs to be reconfigured
 - name: Check if dock configuration has changed
   set_fact:
     dock_needs_update: "{{ (expected_dock_items | default([]) | sort) != (current_dock_names | default([]) | sort) or (current_dock_items.stdout_lines | length) != (expected_dock_items | default([]) | length) }}"
-  when: ms.dock is defined
+  when: macos_settings_config.dock is defined
 
 # Remove All Dock Items (only if changes needed)
 - name: Remove all items from Dock
   shell: dockutil --remove all 
-  when: ms.dock is defined and dock_needs_update | default(false) | bool
+  when: macos_settings_config.dock is defined and dock_needs_update | default(false) | bool
   
 # Add Dock Items Apps
 - name: Add in Dock to Persistent App section
   shell: |
     dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section apps
     sleep {{ dock_operation_delay }}
-  loop: "{{ ms.dock.persistent_apps|flatten(levels=1) }}"
+  loop: "{{ macos_settings_config.dock.persistent_apps|flatten(levels=1) }}"
   loop_control:
     index_var: index
     extended: true
     extended_allitems: false
-  when: ms.dock.persistent_apps is defined and item.type == 'app' and dock_needs_update | default(false) | bool
+  when: macos_settings_config.dock.persistent_apps is defined and item.type == 'app' and dock_needs_update | default(false) | bool
 
 # Add Dock Items Apps Folders
 - name: Add in Dock to Persistent App section folders
   shell: |
     dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section apps --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}'
     sleep {{ dock_operation_delay }}
-  loop: "{{ ms.dock.persistent_apps|flatten(levels=1) }}"
+  loop: "{{ macos_settings_config.dock.persistent_apps|flatten(levels=1) }}"
   loop_control:
     index_var: index
     extended: true
     extended_allitems: false
-  when: ms.dock.persistent_apps is defined and item.type == 'folder' and dock_needs_update | default(false) | bool
+  when: macos_settings_config.dock.persistent_apps is defined and item.type == 'folder' and dock_needs_update | default(false) | bool
 
 # Add Dock Items Others
 - name: Add in Dock to Other app section 
   shell: |
     dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section others
     sleep {{ dock_operation_delay }}
-  loop: "{{ ms.dock.other_apps | flatten(levels=1) }}"
+  loop: "{{ macos_settings_config.dock.other_apps | flatten(levels=1) }}"
   loop_control:
     index_var: index
     extended: true
     extended_allitems: false
-  when: ms.dock.other_apps is defined and item.type == 'app' and dock_needs_update | default(false) | bool
+  when: macos_settings_config.dock.other_apps is defined and item.type == 'app' and dock_needs_update | default(false) | bool
 
 # Add Dock Items Apps Folders
 - name: Add in Dock to Other App section folders
   shell: |
     dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section others --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}'
     sleep {{ dock_operation_delay }}
-  loop: "{{ ms.dock.other_apps | flatten(levels=1) }}"
+  loop: "{{ macos_settings_config.dock.other_apps | flatten(levels=1) }}"
   loop_control:
     index_var: index
     extended: true
     extended_allitems: false
-  when: ms.dock.other_apps is defined and item.type == 'folder' and dock_needs_update | default(false) | bool
+  when: macos_settings_config.dock.other_apps is defined and item.type == 'folder' and dock_needs_update | default(false) | bool
 
 ## MACOS DEFAULTS TERMINAL PLIST SETTINGS
 # Delete defaults
@@ -88,7 +88,7 @@
     domain: '{{ item.domain }}'
     key: '{{ item.key}}'
     state: absent
-  loop: "{{ ms.osx_defaults | default({}) }}"
+  loop: "{{ macos_settings_config.osx_defaults | default({}) }}"
   when: item.state == 'absent'
 
 # Modify (add,update) defaults
@@ -98,5 +98,5 @@
     type: '{{ item.type }}'
     value: '{{ item.value }}'
     state: present
-  loop: "{{ ms.osx_defaults | default({}) }}"
+  loop: "{{ macos_settings_config.osx_defaults | default({}) }}"
   when: item.state == 'present'

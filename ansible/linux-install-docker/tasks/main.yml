@@ -1,66 +1,95 @@
 # tasks file to install docker on debian
 ---
-- apt: name=curl state=present
-  when: (ansible_os_family == 'Debian')  
-  become: true
+- name: Install Docker on Debian
+  block:
+    - name: Install required packages
+      apt:
+        name:
+          - curl
+          - apt-transport-https
+          - ca-certificates
+          - gnupg2
+          - software-properties-common
+        state: present
+      become: true
 
-- apt: name=apt-transport-https state=present
-  when: (ansible_os_family == 'Debian')  
-  become: true
+    - name: Add Docker GPG key
+      shell: 'curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | sudo apt-key add -'
+      become: true
+      changed_when: false
 
-- apt: name=ca-certificates state=present
-  when: (ansible_os_family == 'Debian')  
-  become: true
+    - name: Add Docker apt repository
+      shell: 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") $(lsb_release -cs) stable"'
+      become: true
 
-- apt: name=gnupg2 state=present
-  when: (ansible_os_family == 'Debian')  
-  become: true
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      become: true
 
-- apt: name=software-properties-common state=present
-  when: (ansible_os_family == 'Debian')  
-  become: true
+    - name: Install Docker CE
+      apt:
+        name: docker-ce
+        state: present
+      become: true
 
-- name: add docker gpg key
-  shell: 'curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | sudo apt-key add -'
-  when: (ansible_os_family == 'Debian')  
-  become: true
+  rescue:
+    - name: Display Docker installation error
+      debug:
+        msg: "Failed to install Docker on Debian. Please check repository configuration and network connectivity."
 
-- name: add docker apt repo
-  shell: 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") $(lsb_release -cs) stable"'
-  when: (ansible_os_family == 'Debian')  
-  become: true
+    - name: Fail with detailed message
+      fail:
+        msg: "Docker installation failed. Check that the Docker repository is accessible and your system is supported."
 
-- name: apt update
-  apt: update_cache=yes
-  when: (ansible_os_family == 'Debian')  
-  become: true
-
-- apt: name=docker-ce state=present
-  when: (ansible_os_family == 'Debian')  
-  become: true
+  when: (ansible_os_family == 'Debian')
 
 ### pacman
-- pacman: name=curl state=present
-  when: (ansible_os_family == 'Archlinux')  
-  become: true
+- name: Install Docker on Arch Linux
+  block:
+    - name: Install curl
+      pacman:
+        name: curl
+        state: present
+      become: true
 
-- pacman: name=docker state=present update_cache=yes
+    - name: Install Docker
+      pacman:
+        name: docker
+        state: present
+        update_cache: yes
+      become: true
+
+    - name: Enable and start docker service
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+      become: true
+
+  rescue:
+    - name: Display Docker installation error
+      debug:
+        msg: "Failed to install Docker on Arch Linux. Please check package availability."
+
+    - name: Fail with detailed message
+      fail:
+        msg: "Docker installation failed on Arch Linux. Check your pacman configuration and network."
+
   when: (ansible_os_family == 'Archlinux')
-  become: true
-
-- name: Enable and start docker service
-  systemd:
-    name: docker
-    enabled: yes
-    state: started
-  when: (ansible_os_family == 'Archlinux')  
-  become: true
 
 ## end env
 
 - name: Add user to docker group
-  user:
-    name: "{{ non_root_user }}"
-    groups: docker
-    append: yes
-  become: true
+  block:
+    - name: Add user to docker group
+      user:
+        name: "{{ non_root_user }}"
+        groups: docker
+        append: yes
+      become: true
+
+  rescue:
+    - name: Warn about docker group failure
+      debug:
+        msg: "Warning: Could not add user {{ non_root_user }} to docker group. User may need to log out and back in, or the group may not exist yet."

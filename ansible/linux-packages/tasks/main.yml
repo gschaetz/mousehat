@@ -16,36 +16,43 @@
   become: true
 
 # On apt-get target
-- name: Add an apt key by id from a keyserver
-  apt_key:
-    keyserver: "{{ item.value.keyserver_url }}"
-    id: "{{ item.value.keyserver_id }}"
-  loop: "{{ packages_file.repositories | default({}) | dict2items }}"
-  when:
-    - packages_file.repositories is defined and (ansible_os_family == 'Debian')
-    - item.value.keyserver_url is defined
-  become: true
+- name: Add apt keys and repositories
+  block:
+    - name: Add an apt key by id from a keyserver
+      apt_key:
+        keyserver: "{{ item.value.keyserver_url }}"
+        id: "{{ item.value.keyserver_id }}"
+      loop: "{{ packages_file.repositories | default({}) | dict2items }}"
+      when:
+        - packages_file.repositories is defined
+        - item.value.keyserver_url is defined
+      become: true
 
-# On apt-get url
-- name: Add an Apt signing key by url
-  apt_key:
-    url: "{{ item.value.url }}"
-    state: present
-  loop: "{{ packages_file.repositories | default({}) | dict2items }}"
-  when:
-    - packages_file.repositories is defined and (ansible_os_family == 'Debian')
-    - item.value.url is defined
-  become: true
+    - name: Add an Apt signing key by url
+      apt_key:
+        url: "{{ item.value.url }}"
+        state: present
+      loop: "{{ packages_file.repositories | default({}) | dict2items }}"
+      when:
+        - packages_file.repositories is defined
+        - item.value.url is defined
+      become: true
 
-# On apt-get target
-- name: Add apt repos
-  apt_repository:
-    repo: "{{ item.value.repository_url }}"
-    state: present
-  loop: "{{ packages_file.repositories | default({}) | dict2items }}" 
-  when: 
-    - packages_file.repositories is defined and (ansible_os_family == 'Debian')
-  become: true
+    - name: Add apt repos
+      apt_repository:
+        repo: "{{ item.value.repository_url }}"
+        state: present
+      loop: "{{ packages_file.repositories | default({}) | dict2items }}"
+      when:
+        - packages_file.repositories is defined
+      become: true
+
+  rescue:
+    - name: Warn about repository setup failure
+      debug:
+        msg: "Warning: Failed to add some repositories or keys. Continuing with available repositories."
+
+  when: (ansible_os_family == 'Debian')
 
 # apt-get update
 - name: apt-get update
