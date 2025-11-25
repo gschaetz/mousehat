@@ -24,19 +24,12 @@
     desktop_directory: "{{ desktop_home }}/.desktop/"
 
   tasks:
-    # LINUX AND NOT WSL 
-    - include_role: 
+    # LINUX (includes WSL support)
+    - include_role:
         name: linux-packages
-      when: ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+      when: ansible_system == 'Linux'
       vars:
-        packages: "{{ linux_packages_yaml }}"
-
-    # WSL ONLY 
-    - include_role: 
-        name: wsl-packages
-      when: ansible_system == 'Linux' and WSL_LINUX == 'TRUE'
-      vars:
-        packages: "{{ wsl_packages_yaml }}"
+        packages: "{{ wsl_packages_yaml if WSL_LINUX == 'TRUE' else linux_packages_yaml }}"
 
     # LINUX AND NOT WSL
     - include_role: 

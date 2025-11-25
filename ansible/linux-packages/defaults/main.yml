@@ -1,0 +1,9 @@
+---
+# Default variables for linux-packages role
+# These can be overridden in the playbook or group_vars
+
+# Path to packages configuration file (must be provided by playbook)
+# packages: "{{ settings_home }}/packages.yml"
+
+# WSL mode flag (passed from playbook)
+WSL_LINUX: "FALSE"

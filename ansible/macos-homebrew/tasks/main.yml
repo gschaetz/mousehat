@@ -43,8 +43,8 @@
   when: mhf is defined
 
 # Remove brew-cask
-- community.general.homebrew_cask: 
-    msg: "{{ item }}"
+- community.general.homebrew_cask:
+    name: "{{ item }}"
     state: absent
   loop: "{{ lookup('list', mhf.brew_cask.not_installed | default([]) ) }}" 
   when: mhf is defined

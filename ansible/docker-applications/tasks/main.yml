@@ -5,15 +5,24 @@
     name: apps
 
 # delete desktop entries
-- name: Delete all desktop files 
-  shell: "rm -rf {{ local_home }}/Desktop/*.desktop"
+- name: Delete all desktop files
+  file:
+    path: "{{ local_home }}/Desktop/"
+    state: directory
   become: true
-  become_method: sudo
+  register: desktop_dir_check
+
+- name: Remove myapps desktop files from Desktop
+  shell: "rm -f {{ local_home }}/Desktop/*.desktop"
+  become: true
+  when: desktop_dir_check is succeeded
+  failed_when: false
 
 # # remove custom menu items
-- name: Delete all desktop files 
-  shell: "rm -rf /usr/share/applications/*-myapps.desktop"
+- name: Remove myapps menu items
+  shell: "rm -f /usr/share/applications/*-myapps.desktop"
   become: true
+  failed_when: false
 
 # remove main directory
 - name: Remove main directory
@@ -72,12 +81,12 @@
   with_dict: "{{ apps.applications | default({}) }}"
 
 # LINUX (NOT WSL)
-# create desktop icon on Linux 
+# create desktop icon on Linux
 - name: Create desktop icon
   template:
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
     dest: "{{ local_home }}/Desktop/{{ item.value.desktop_name | default(item.key) }}.desktop"
-    mode: 0777
+    mode: 0755
   when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
   with_dict: "{{ apps.applications | default({}) }}"
 
@@ -87,7 +96,7 @@
   template:
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
     dest: "/usr/share/applications/{{ item.value.desktop_name | default(item.key) }}-myapps.desktop"
-    mode: 0777
+    mode: 0755
   become: true
   with_dict: "{{ apps.applications | default({}) }}"
   when: 

@@ -3,8 +3,18 @@
     file: "{{ packages }}"
     name: packages_file
 
-
 ### START APT
+# install dirmngr for WSL snap support
+- name: Install dirmngr for snap support
+  apt:
+    name: dirmngr
+    state: present
+  when:
+    - packages_file.snaps is defined
+    - ansible_os_family == 'Debian'
+    - WSL_LINUX == 'TRUE'
+  become: true
+
 # On apt-get target
 - name: Add an apt key by id from a keyserver
   apt_key:
@@ -43,54 +53,84 @@
   become: true
   
 # install packages
-- apt: 
+- name: Install apt packages
+  apt:
     name: "{{ packages_file.packages.installed }}"
     state: present
-  when: packages_file.packages.installed is defined and (ansible_os_family == 'Debian') 
+  when: packages_file.packages.installed is defined and (ansible_os_family == 'Debian')
   become: true
 
 # remove packages
-- apt: 
+- name: Remove apt packages
+  apt:
     name: "{{ packages_file.packages.uninstalled }}"
     state: absent
-  when: packages_file.packages.uninstalled is defined and (ansible_os_family == 'Debian') 
+  when: packages_file.packages.uninstalled is defined and (ansible_os_family == 'Debian')
   become: true
 ### END APT
 
 ### START PACMAN
 # install packages
-- pacman: 
+- name: Install pacman packages
+  pacman:
     name: "{{ packages_file.packages.installed }}"
     state: present
-  when: packages_file.packages.installed is defined and (ansible_os_family == 'Archlinux') 
+  when: packages_file.packages.installed is defined and (ansible_os_family == 'Archlinux')
   become: true
 
 # remove packages
-- pacman:
+- name: Remove pacman packages
+  pacman:
     name: "{{ packages_file.packages.uninstalled }}"
     state: absent
   with_list: "{{ packages_file.packages.uninstalled  | default({}) }}"
-  when: packages_file.packages.uninstalled is defined and (ansible_os_family == 'Archlinux') 
+  when: packages_file.packages.uninstalled is defined and (ansible_os_family == 'Archlinux')
   become: true
 ### END PACMAN
 
-# start snaps
-# install
-- community.general.snap:
+### START SNAPS
+# install snapd on WSL
+- name: Install snapd on WSL
+  apt:
+    name: snapd
+    state: present
+  when:
+    - packages_file.snaps is defined
+    - ansible_os_family == 'Debian'
+    - WSL_LINUX == 'TRUE'
+  become: true
+
+# start snapd service on WSL
+- name: Start and enable snapd service on WSL
+  systemd:
+    name: snapd
+    state: started
+    enabled: yes
+  when:
+    - packages_file.snaps is defined
+    - ansible_os_family == 'Debian'
+    - WSL_LINUX == 'TRUE'
+  become: true
+
+# install snaps
+- name: Install snaps
+  community.general.snap:
     name: "{{ item.name }}"
     state: present
     classic: "{{ item.classic }}"
   become: true
-  with_list: "{{ packages_file.snaps.installed | default({}) }}" 
-  when: 
+  with_list: "{{ packages_file.snaps.installed | default({}) }}"
+  when:
     - packages_file.snaps is defined and (ansible_os_family == 'Debian')
 
-# remove
-- community.general.snap:
+# remove snaps
+- name: Remove snaps
+  community.general.snap:
     name: "{{ item.name }}"
     state: absent
     classic: "{{ item.classic }}"
   become: true
-  with_list: "{{ packages_file.snaps.uninstalled | default({}) }}" 
-  when: 
+  with_list: "{{ packages_file.snaps.uninstalled | default({}) }}"
+  when:
     - packages_file.snaps is defined and (ansible_os_family == 'Debian')
+### END SNAPS

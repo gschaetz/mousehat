@@ -1,0 +1,26 @@
+---
+galaxy_info:
+  author: Gary Schaetz
+  description: Install Docker CE on Debian and Arch Linux
+  license: MIT
+  min_ansible_version: "2.9"
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+    - name: Debian
+      versions:
+        - bullseye
+        - bookworm
+    - name: Archlinux
+      versions:
+        - all
+
+  galaxy_tags:
+    - docker
+    - containers
+    - linux
+
+dependencies: []

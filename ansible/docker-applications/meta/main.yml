@@ -1,0 +1,31 @@
+---
+galaxy_info:
+  author: Gary Schaetz
+  description: Deploy Docker containers as desktop applications with GUI integration
+  license: MIT
+  min_ansible_version: "2.9"
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+    - name: Debian
+      versions:
+        - bullseye
+        - bookworm
+    - name: Archlinux
+      versions:
+        - all
+    - name: macOS
+      versions:
+        - all
+
+  galaxy_tags:
+    - docker
+    - desktop
+    - containers
+    - gui
+    - applications
+
+dependencies: []

@@ -76,7 +76,7 @@
   template:
     src: "{{ project_home }}/templates/start-script-gnome.j2"
     dest: "/usr/local/bin/startup.sh"
-    mode: 0777
+    mode: 0755
   become: true
 
 # added .xinit for all window managers
@@ -84,7 +84,7 @@
   template:
     src: "{{ project_home }}/templates/xinit.j2"
     dest: "{{ local_home }}/.xinit"
-    mode: 0777
+    mode: 0755
   become: true
   when: 
     - settings['x11_config'] is defined

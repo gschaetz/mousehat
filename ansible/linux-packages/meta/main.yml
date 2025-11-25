@@ -1,0 +1,28 @@
+---
+galaxy_info:
+  author: Gary Schaetz
+  description: Manage Linux packages via APT, Pacman, and Snap
+  license: MIT
+  min_ansible_version: "2.9"
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+    - name: Debian
+      versions:
+        - bullseye
+        - bookworm
+    - name: Archlinux
+      versions:
+        - all
+
+  galaxy_tags:
+    - packaging
+    - apt
+    - pacman
+    - snap
+    - linux
+
+dependencies: []

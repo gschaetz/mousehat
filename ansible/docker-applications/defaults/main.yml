@@ -1,0 +1,29 @@
+---
+# Default variables for docker-applications role
+# These can be overridden in the playbook or group_vars
+
+# Directory for persistent application data
+app_persistent_base_dir: "/mnt/persistent"
+
+# Directory for application scripts and resources
+app_desktop_dir: "{{ desktop_directory }}"
+
+# myapps symlink directory
+myapps_bin_dir: "/usr/local/bin/myapps"
+
+# System applications directory (for .desktop files)
+system_applications_dir: "/usr/share/applications"
+
+# Desktop file suffix for myapps applications
+desktop_file_suffix: "-myapps"
+
+# Default file permissions
+script_mode: "0770"
+desktop_file_mode: "0755"
+icon_mode: "0440"
+
+# Docker network default
+default_docker_network: "host"
+
+# Templates directory (typically overridden by playbook)
+templates_dir: "{{ project_home }}/templates"

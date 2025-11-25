@@ -1,0 +1,8 @@
+---
+# Default variables for linux-install-docker role
+
+# Docker repository URL base
+docker_repo_url: "https://download.docker.com/linux"
+
+# User to add to docker group (must be provided by playbook)
+# non_root_user: "{{ ansible_user }}"

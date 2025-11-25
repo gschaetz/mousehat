@@ -58,6 +58,9 @@
 
 ## end env
 
-- name: add user mod
-  command: sudo usermod -aG docker {{non_root_user}}
+- name: Add user to docker group
+  user:
+    name: "{{ non_root_user }}"
+    groups: docker
+    append: yes
   become: true
