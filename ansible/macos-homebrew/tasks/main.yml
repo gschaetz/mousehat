@@ -9,30 +9,30 @@
     name: "{{ item }}"
     state: present
   loop: "{{ macos_homebrew_config.tap.installed | default([]) }}"
-  when: macos_homebrew_config is defined and item
+  when: macos_homebrew_config is defined
 
 # Remove taps
 - community.general.homebrew_tap:
     name: "{{ item }}"
     state: absent
   loop: "{{ macos_homebrew_config.tap.not_installed | default([]) }}"
-  when: macos_homebrew_config is defined and item
+  when: macos_homebrew_config is defined
 
 ### BREWS
 # Install brews
 - community.general.homebrew:
     name: "{{ item }}"
     state: present
-    update_homebrew: true
+    update_homebrew: false
   loop: "{{ macos_homebrew_config.brew.installed | default([]) }}"
-  when: macos_homebrew_config is defined and item
+  when: macos_homebrew_config is defined
 
 # Remove brews
 - community.general.homebrew:
     name: "{{ item }}"
     state: absent
   loop: "{{ macos_homebrew_config.brew.not_installed | default([]) }}"
-  when: macos_homebrew_config is defined and item 
+  when: macos_homebrew_config is defined 
 
 ### BREW CASKS
 # Install brew_cask
