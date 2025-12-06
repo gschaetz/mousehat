@@ -39,4 +39,18 @@ while getopts ":p:s:d:v:w" opt; do
   esac
 done
 
-ansible-playbook --ask-become-pass -$verbosity -i "localhost," -c local provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX"
+# Check if settings directory was specified, if not ask for confirmation
+if [ -z "$DESKTOP_SETTINGS_DIR" ]; then
+  echo ""
+  echo "WARNING: No custom settings directory specified (-s flag not used)."
+  echo "This will use the default sample settings from ansible/sample-desktop-setup/"
+  echo ""
+  read -p "Are you sure you want to continue? (y/N): " -n 1 -r
+  echo ""
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Aborted."
+    exit 1
+  fi
+fi
+
+ansible-playbook --ask-become-pass -$verbosity -i "localhost," -c local ansible/provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX"

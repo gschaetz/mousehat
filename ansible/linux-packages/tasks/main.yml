@@ -11,7 +11,7 @@
     state: present
   when:
     - packages_file.snaps is defined
-    - ansible_os_family == 'Debian'
+    - ansible_facts["os_family"] == 'Debian'
     - WSL_LINUX == 'TRUE'
   become: true
 
@@ -52,13 +52,13 @@
       debug:
         msg: "Warning: Failed to add some repositories or keys. Continuing with available repositories."
 
-  when: (ansible_os_family == 'Debian')
+  when: (ansible_facts["os_family"] == 'Debian')
 
 # apt-get update
 - name: apt-get update
   apt:
     update_cache: yes
-  when: (ansible_os_family == 'Debian')
+  when: (ansible_facts["os_family"] == 'Debian')
   become: true
   
 # install packages
@@ -66,7 +66,7 @@
   apt:
     name: "{{ packages_file.packages.installed }}"
     state: present
-  when: packages_file.packages.installed is defined and (ansible_os_family == 'Debian')
+  when: packages_file.packages.installed is defined and (ansible_facts["os_family"] == 'Debian')
   become: true
 
 # remove packages
@@ -74,7 +74,7 @@
   apt:
     name: "{{ packages_file.packages.uninstalled }}"
     state: absent
-  when: packages_file.packages.uninstalled is defined and (ansible_os_family == 'Debian')
+  when: packages_file.packages.uninstalled is defined and (ansible_facts["os_family"] == 'Debian')
   become: true
 ### END APT
 
@@ -84,7 +84,7 @@
   pacman:
     name: "{{ packages_file.packages.installed }}"
     state: present
-  when: packages_file.packages.installed is defined and (ansible_os_family == 'Archlinux')
+  when: packages_file.packages.installed is defined and (ansible_facts["os_family"] == 'Archlinux')
   become: true
 
 # remove packages
@@ -93,7 +93,7 @@
     name: "{{ item }}"
     state: absent
   loop: "{{ packages_file.packages.uninstalled | default([]) }}"
-  when: packages_file.packages.uninstalled is defined and (ansible_os_family == 'Archlinux')
+  when: packages_file.packages.uninstalled is defined and (ansible_facts["os_family"] == 'Archlinux')
   become: true
 ### END PACMAN
 
@@ -105,7 +105,7 @@
     state: present
   when:
     - packages_file.snaps is defined
-    - ansible_os_family == 'Debian'
+    - ansible_facts["os_family"] == 'Debian'
     - WSL_LINUX == 'TRUE'
   become: true
 
@@ -117,7 +117,7 @@
     enabled: yes
   when:
     - packages_file.snaps is defined
-    - ansible_os_family == 'Debian'
+    - ansible_facts["os_family"] == 'Debian'
     - WSL_LINUX == 'TRUE'
   become: true
 
@@ -130,7 +130,7 @@
   become: true
   loop: "{{ packages_file.snaps.installed | default([]) }}"
   when:
-    - packages_file.snaps is defined and (ansible_os_family == 'Debian')
+    - packages_file.snaps is defined and (ansible_facts["os_family"] == 'Debian')
 
 # remove snaps
 - name: Remove snaps
@@ -141,5 +141,5 @@
   become: true
   loop: "{{ packages_file.snaps.uninstalled | default([]) }}"
   when:
-    - packages_file.snaps is defined and (ansible_os_family == 'Debian')
+    - packages_file.snaps is defined and (ansible_facts["os_family"] == 'Debian')
 ### END SNAPS

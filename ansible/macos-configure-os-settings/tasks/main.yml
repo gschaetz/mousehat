@@ -4,30 +4,40 @@
     name: macos_settings_config
 
 ## DOCK SETTINGS
-# Get current dock configuration
+# Get current dock configuration with positions
 - name: Get current dock items
-  shell: dockutil --list | awk -F'\t' '{print $1 "\t" $2}'
+  shell: dockutil --list | awk -F'\t' '{print $1}'
   register: current_dock_items
   changed_when: false
   when: macos_settings_config.dock is defined
 
-# Build expected dock configuration
+# Build expected dock configuration as ordered list
 - name: Build expected dock configuration
   set_fact:
     expected_dock_items: "{{ (macos_settings_config.dock.persistent_apps | default([]) + macos_settings_config.dock.other_apps | default([])) | map(attribute='name') | list }}"
   when: macos_settings_config.dock is defined
 
-# Parse current dock items into a list
+# Parse current dock items into a list (preserving order)
 - name: Parse current dock items
   set_fact:
-    current_dock_names: "{{ current_dock_items.stdout_lines | map('regex_replace', '^(.*?)\\t.*$', '\\1') | list }}"
+    current_dock_names: "{{ current_dock_items.stdout_lines | map('trim') | list }}"
   when: macos_settings_config.dock is defined and current_dock_items.stdout_lines is defined
 
-# Check if dock needs to be reconfigured
-- name: Check if dock configuration has changed
+# Check if all expected items are in their correct positions
+- name: Check if expected items are in correct positions
   set_fact:
-    dock_needs_update: "{{ (expected_dock_items | default([]) | sort) != (current_dock_names | default([]) | sort) or (current_dock_items.stdout_lines | length) != (expected_dock_items | default([]) | length) }}"
+    dock_needs_update: "{{ expected_dock_items | difference(current_dock_names[:expected_dock_items | length]) | length > 0 or expected_dock_items | length > current_dock_names | length }}"
   when: macos_settings_config.dock is defined
+
+# Debug dock configuration (optional - set macos_dock_debug: true to enable)
+- name: Debug dock configuration
+  debug:
+    msg:
+      - "Expected items ({{ expected_dock_items | length }}): {{ expected_dock_items }}"
+      - "Current items in expected positions ({{ current_dock_names[:expected_dock_items | length] | length }}): {{ current_dock_names[:expected_dock_items | length] }}"
+      - "All current items ({{ current_dock_names | length }}): {{ current_dock_names }}"
+      - "Needs update: {{ dock_needs_update | default(false) }}"
+  when: macos_settings_config.dock is defined and (macos_dock_debug | default(false) | bool)
 
 # Remove All Dock Items (only if changes needed)
 - name: Remove all items from Dock

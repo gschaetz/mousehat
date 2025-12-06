@@ -42,7 +42,7 @@
       fail:
         msg: "Docker installation failed. Check that the Docker repository is accessible and your system is supported."
 
-  when: (ansible_os_family == 'Debian')
+  when: (ansible_facts["os_family"] == 'Debian')
 
 ### pacman
 - name: Install Docker on Arch Linux
@@ -76,7 +76,7 @@
       fail:
         msg: "Docker installation failed on Arch Linux. Check your pacman configuration and network."
 
-  when: (ansible_os_family == 'Archlinux')
+  when: (ansible_facts["os_family"] == 'Archlinux')
 
 ## end env
 

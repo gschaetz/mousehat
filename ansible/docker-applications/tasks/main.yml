@@ -9,12 +9,10 @@
   file:
     path: "{{ local_home }}/Desktop/"
     state: directory
-  become: true
   register: desktop_dir_check
 
 - name: Remove myapps desktop files from Desktop
   shell: "rm -f {{ local_home }}/Desktop/*.desktop"
-  become: true
   when: desktop_dir_check is succeeded
   failed_when: false
 
@@ -70,7 +68,7 @@
     mode: 0440 
   with_dict: "{{ apps.applications | default({}) }}"
   when: 
-    - apps.applications is defined and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+    - apps.applications is defined and ansible_facts["system"] == 'Linux' and WSL_LINUX == 'FALSE'
     - item.value.show_on_desktop|default(false) == true 
 
 # download sec comps
@@ -89,7 +87,7 @@
     src: "{{ project_home }}/templates/gnome-desktop-template.j2"
     dest: "{{ local_home }}/Desktop/{{ item.value.desktop_name | default(item.key) }}.desktop"
     mode: 0755
-  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_facts["system"] == 'Linux' and WSL_LINUX == 'FALSE'
   with_dict: "{{ apps.applications | default({}) }}"
 
 # LINUX AND NOT WSL
@@ -102,21 +100,21 @@
   become: true
   with_dict: "{{ apps.applications | default({}) }}"
   when: 
-    - apps.applications is defined and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+    - apps.applications is defined and ansible_facts["system"] == 'Linux' and WSL_LINUX == 'FALSE'
     - item.value.menu_category is defined
 
 # LINUX AND NOT WSL
 # gio those apps
 - name: gio the apps to remove untrusted
   shell: gio set {{ local_home }}/Desktop/{{ item.value.desktop_name | default(item.key) }}.desktop "metadata::trusted" yes
-  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+  when: apps.applications is defined and item.value.show_on_desktop|default(false) == true and ansible_facts["system"] == 'Linux' and WSL_LINUX == 'FALSE'
   with_dict: "{{ apps.applications | default({}) }}" 
 
 # LINUX AND NOT WSL
 # add xhost + to ensure x can run
 - name: xhost +
   shell: xhost +
-  when: ansible_system == 'Linux' and WSL_LINUX == 'FALSE'
+  when: ansible_facts["system"] == 'Linux' and WSL_LINUX == 'FALSE'
   changed_when: false
   failed_when: false
 
@@ -127,7 +125,7 @@
     src: "{{ project_home }}/templates/app-start-docker.j2"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
     mode: 0770
-  when: item.value.implementation_type == "docker" and apps.applications is defined and ansible_system == 'Linux'
+  when: item.value.implementation_type == "docker" and apps.applications is defined and ansible_facts["system"] == 'Linux'
   with_dict: "{{ apps.applications | default({}) }}"
 
 # MAC ONLY
@@ -137,7 +135,7 @@
     src: "{{ project_home }}/templates/app-start-docker-macos.j2"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}"
     mode: 0770
-  when: item.value.implementation_type == "docker" and apps.applications is defined and ansible_system == 'Darwin' 
+  when: item.value.implementation_type == "docker" and apps.applications is defined and ansible_facts["system"] == 'Darwin' 
   with_dict: "{{ apps.applications | default({}) }}"
 
 # create docker_compose file
@@ -171,7 +169,7 @@
 - name: Creates /etc/profile.d directory
   file: path='/etc/profile.d/' state=directory
   become: true
-  when: ansible_system == 'Darwin'
+  when: ansible_facts["system"] == 'Darwin'
 
 # create a file in /etc/profile.d
 - name: create file in path for env 

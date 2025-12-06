@@ -291,17 +291,24 @@ The `templates/` directory contains Jinja2 templates used by roles:
 
 ## Running the Playbook
 
+**Note**: The `runplay.sh` script is located in the main repository directory (one level up from ansible/).
+
 ### Basic Usage
 
+From the main repository directory:
 ```bash
 ./runplay.sh
 ```
+
+**Warning**: Running without the `-s` flag will prompt for confirmation, as it uses the default sample settings.
 
 ### With Custom Settings
 
 ```bash
 ./runplay.sh -s /path/to/settings
 ```
+
+This is the recommended way to run the playbook with your own configuration.
 
 ### WSL Mode
 
@@ -343,38 +350,39 @@ when: ansible_system == 'Darwin'                           # macOS
 ## Directory Structure
 
 ```
-ansible/
-├── provdesktop.yml              # Main playbook
-├── runplay.sh                   # Execution script
-├── .gitignore
-├── custom-roles/                # User custom roles
-│   └── tasks/
-│       └── main.yml
-├── docker-applications/         # Docker app deployment
-│   └── tasks/
-│       └── main.yml
-├── linux-gnome-desktop-settings/
-│   └── tasks/
-│       └── main.yml
-├── linux-install-docker/
-│   └── tasks/
-│       └── main.yml
-├── linux-packages/
-│   └── tasks/
-│       └── main.yml
-├── macos-configure-os-settings/
-│   └── tasks/
-│       └── main.yml
-├── macos-homebrew/
-│   └── tasks/
-│       └── main.yml
-├── wsl-packages/
-│   └── tasks/
-│       └── main.yml
-├── sample-desktop-setup/        # Sample configurations
-│   └── *.yml
-└── templates/                   # Jinja2 templates
-    └── *.j2
+mousehat/
+├── runplay.sh                   # Execution script (run from here)
+└── ansible/
+    ├── provdesktop.yml          # Main playbook
+    ├── .gitignore
+    ├── custom-roles/            # User custom roles
+    │   └── tasks/
+    │       └── main.yml
+    ├── docker-applications/     # Docker app deployment
+    │   └── tasks/
+    │       └── main.yml
+    ├── linux-gnome-desktop-settings/
+    │   └── tasks/
+    │       └── main.yml
+    ├── linux-install-docker/
+    │   └── tasks/
+    │       └── main.yml
+    ├── linux-packages/
+    │   └── tasks/
+    │       └── main.yml
+    ├── macos-configure-os-settings/
+    │   └── tasks/
+    │       └── main.yml
+    ├── macos-homebrew/
+    │   └── tasks/
+    │       └── main.yml
+    ├── wsl-packages/
+    │   └── tasks/
+    │       └── main.yml
+    ├── sample-desktop-setup/    # Sample configurations
+    │   └── *.yml
+    └── templates/               # Jinja2 templates
+        └── *.j2
 ```
 
 ## Troubleshooting
