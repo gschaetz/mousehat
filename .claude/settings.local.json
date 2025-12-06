@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(rm:*)",
-      "Bash(ls -la \"/Users/garyschaetz/development/github/mousehat/ansible/docker-applications/\\`/\")"
+      "Bash(ls -la \"/Users/garyschaetz/development/github/mousehat/ansible/docker-applications/\\`/\")",
+      "Bash(dockutil --list:*)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []

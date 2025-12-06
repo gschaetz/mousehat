@@ -2,7 +2,9 @@
 repositories:
     ansible:
         repository_name: ansible
-        repository_url: ppa:ansible/ansible
+        keyserver_url: keyserver.ubuntu.com 
+        keyserver_id: 93C4A3FD7BB9C367
+        repository_url: deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
     microsoft:
         repository_name: microsoft
         url: https://packages.microsoft.com/keys/microsoft.asc
@@ -25,6 +27,7 @@ snaps:
 packages:
     installed: 
         - awscli
+        - chrome-gnome-shell
         - cowsay
         - curl
         - cups

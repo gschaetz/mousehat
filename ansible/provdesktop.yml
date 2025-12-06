@@ -5,8 +5,10 @@
     local_home: "{{ lookup('env','HOME') }}"
     desktop_home: "{{ lookup('env','HOME_DESKTOP_DIR') | default(local_home,true) }}"
 
-    project_home: "{{ lookup('env','DESKTOP_PROJECT_DIR') | default(current_path,true) }}"
-    default_settings_sub: "{{current_path}}/sample-desktop-setup"
+    # Project home points to ansible directory where templates and roles are located
+    ansible_dir: "{{ current_path }}/ansible"
+    project_home: "{{ lookup('env','DESKTOP_PROJECT_DIR') | default(ansible_dir,true) }}"
+    default_settings_sub: "{{ ansible_dir }}/sample-desktop-setup"
     settings_home: "{{ lookup('env','DESKTOP_SETTINGS_DIR') | default(default_settings_sub, true) }}"
 
     linux_gnome_settings_yaml: "{{ settings_home }}/linux-gnome-settings.yml"     

@@ -4,91 +4,74 @@ dock:
 # type: app,folder,stack
 # folder_sort: name,dateadded,datemodified,datecreated,kind
     persistent_apps:
-        - name: Launchpad
-          path: "/System/Applications/Launchpad.app" 
-          pos: 1
+        - name: Apps
+          path: "/System/Applications/Apps.app"
           type: app
         - name: Mission Control
-          path: "/System/Applications/Mission Control.app" 
-          pos: 2
+          path: "/System/Applications/Mission Control.app"
           type: app
         - name: Safari
-          path: "/Applications/Safari.app" 
-          pos: 3
-          type: app
-        - name: Firefox
-          path: "/Applications/Firefox.app" 
-          pos: 4
+          path: "/Applications/Safari.app"
           type: app
         - name: Chrome
-          path: "/Applications/Google Chrome.app" 
-          pos: 5
+          path: "/Applications/Google Chrome.app"
           type: app
-        - name: iTerm
-          path: "/Applications/iTerm.app" 
-          pos: 6
+        - name: Firefox
+          path: "/Applications/Firefox.app"
+          type: app
+        - name: Antigravity
+          path: "/Applications/Antigravity.app"
           type: app
         - name: Visual Studio Code
           path: "/Applications/Visual Studio Code.app" 
-          pos: 7
+          type: app
+        - name: Xcode
+          path: "/Applications/Xcode.app"
           type: app
         - name: Slack
           path: "/Applications/Slack.app" 
-          pos: 8
           type: app
         - name: Microsoft One Note
           path: "/Applications/Microsoft OneNote.app" 
-          pos: 9
           type: app
         - name: Steam
           path: "/Applications/Steam.app" 
-          pos: 10
           type: app
         - name: 1Password
-          path: "/Applications/1Password 7.app" 
-          pos: 11
+          path: "/Applications/1Password.app" 
           type: app
         - name: Messages
           path: "/System/Applications/Messages.app" 
-          pos: 12
           type: app
         - name: Mail
           path: "/System/Applications/Mail.app" 
-          pos: 13
           type: app
         - name: Photos
           path: "/System/Applications/Photos.app" 
-          pos: 14
           type: app
         - name: Music
           path: "/System/Applications/Music.app" 
-          pos: 15
           type: app
         - name: TV
           path: "/System/Applications/TV.app" 
-          pos: 16
           type: app
         - name: App Store
           path: "/System/Applications/App Store.app" 
-          pos: 17
           type: app
         - name: System Preferences
-          path: "/System/Applications/System Preferences.app" 
-          pos: 18
+          path: "/System/Applications/System Settings.app" 
           type: app
-        - name: 'Development'
-          path: '~/development'
-          folder_style: grid 
-          folder_sort: name
-          type: folder
-          pos: 19            
+        - name: "Development"
+          path: "~/development"
+          folder_style: "grid"
+          folder_sort: "name"
+          type: "folder"
     other_apps:
-        - name: 'Downloads'
-          path: '~/Downloads'
-          folder_style: grid 
-          folder_sort: dateadded
-          type: folder
-          pos: 1
+        - name: "Downloads"
+          path: "~/Downloads"
+          folder_style: "grid"
+          folder_sort: "dateadded"
+          type: "folder"
 osx_defaults:
 ###############################################################################
 ## GENERAL CONFIGURATION
@@ -123,8 +106,8 @@ osx_defaults:
     - {domain: com.apple.desktopservices, key: DSDontWriteNetworkStores, type: bool, value: true, state: present}
     ### Trackpad
     # tap to click (all these are related to tap to click)
-    - {domain: com.apple.AppleMultitouchTrackpad, key: Clicking, type: bool, value: true, state: present}
-    - {domain: com.apple.driver.AppleBluetoothMultitouch.trackpad, key: Clicking, type: bool, value: true, state: present}
+    - {domain: com.apple.AppleMultitouchTrackpad, key: Clicking, type: int, value: 1, state: present}
+    - {domain: com.apple.driver.AppleBluetoothMultitouch.trackpad, key: Clicking, type: int, value: 1, state: present}
     - {domain: NSGlobalDomain, key: com.apple.mouse.tapBehavior, type: int, value: 1, state: present}
     # force click
     - {domain: NSGlobalDomain, key: com.apple.trackpad.forceClick, type: int, value: 1, state: present}
@@ -202,7 +185,7 @@ osx_defaults:
     # 11: Launchpad
     # 12: Notification Center
     # Top left screen corner → Launchpad
-    - {domain: com.apple.dock, key: wvous-tl-corner, type: int, value: 11, state: present}              
+    - {domain: com.apple.dock, key: wvous-tl-corner, type: int, value: 0, state: present}              
     - {domain: com.apple.dock, key: wvous-tl-modifier, type: int, value: 0, state: present}              
     # Top right screen corner → Desktop
     - {domain: com.apple.dock, key: wvous-tr-corner, type: int, value: 4, state: present}              
@@ -262,7 +245,7 @@ osx_defaults:
 ###############################################################################
 # Debug Menus                                                                 
 ###############################################################################
-    - {domain: com.apple.addressbook, key: ABShowDebugMenu, type: bool, value: true, state: present}                
+  #  - {domain: com.apple.addressbook, key: ABShowDebugMenu, type: booaysl, value: true, state: present}
     - {domain: com.apple.appstore, key: ShowDebugMenu, type: bool, value: true, state: present}                
     - {domain: com.apple.appstore, key: WebKitDeveloperExtras, type: bool, value: true, state: present}                
     - {domain: com.apple.DiskUtility, key: DUDebugMenuEnabled, type: bool, value: true, state: present}                

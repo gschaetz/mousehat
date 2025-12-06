@@ -1,4 +1,5 @@
 ---
 roles:
-    test:
-        name: test
+    dotfiles:
+        name: dotfiles
+        variable_file:

@@ -16,44 +16,86 @@
 #docker_entrypoint_command      'string: run command with docker image'       defaults to none
 ---
 applications:
+    asciiquarium:
+        implementation_type: docker
+        docker_image: gschaetz/fun-and-games:latest
+        docker_entrypoint: asciiquarium
+        gui_app: false
+    awscli-docker:
+        implementation_type: docker
+        docker_image: gschaetz/awscli:latest
+        docker_volumes: -v ~/:/host_drive 
+        gui_app: false
+        docker_entrypoint: /bin/bash
+    chromium:
+        implementation_type: docker
+        docker_image: gschaetz/browsers:latest
+        app_persistent_dir: /home/developer
+        app_persistent_download_dir: /home/developer/Downloads
+        docker_entrypoint_command: chromium-browser --no-sandbox
+        docker_volumes: -v ~/:/host_drive 
+    cmatrix:
+        implementation_type: docker
+        docker_image: gschaetz/fun-and-games:latest
+        docker_entrypoint: cmatrix
+        gui_app: false
+    cool-retro-term:
+        implementation_type: docker
+        docker_image: gschaetz/fun-and-games:latest
+        docker_entrypoint: cool-retro-term
+        docker_volumes: -v ~/:/host_drive 
     firefox:
         implementation_type: docker
-        docker_image: jess/firefox:latest
-        docker_volumes: -v /:/host_drive
-        extra_docker_flags: --cpus 2
-        app_persistent_dir: /home/user
-        app_persistent_download_dir: /home/user/Downloads
-    wargames:
+        docker_image: gschaetz/browsers:latest
+        docker_entrypoint: firefox
+        app_persistent_dir: /home/developer
+        app_persistent_download_dir: /home/developer/Downloads
+        docker_volumes: -v ~/:/host_drive 
+    iac-docker:
         implementation_type: docker
-        docker_image: jess/wargames:latest
+        docker_image: gschaetz/iac-tooling:latest
+        docker_volumes: -v ~/:/host_drive 
         gui_app: false
-    wordpress_compose:
-        implementation_type: docker_compose
-        gui_app: true
-        compose_version: "version: '2'"
-        compose_network: dev
-        compose_definition:
-            services:
-                db:
-                    image: mysql:5.7
-                    volumes:
-                        - dbdata:/var/lib/mysql
-                    restart: always
-                    environment:
-                        MYSQL_ROOT_PASSWORD: somewordpress
-                        MYSQL_DATABASE: wordpress
-                        MYSQL_USER: wordpress
-                        MYSQL_PASSWORD: wordpress
-                wordpress:
-                    depends_on:
-                        - db
-                    image: wordpress:latest
-                    ports:
-                        - "8000:80"
-                    restart: always
-                    environment:
-                        WORDPRESS_DB_HOST: db:3306
-                        WORDPRESS_DB_USER: wordpress
-                        WORDPRESS_DB_PASSWORD: wordpress
-            volumes:
-                dbdata:
+        docker_entrypoint: /bin/bash
+    gimp:
+        implementation_type: docker
+        docker_image: gschaetz/image-utilities:latest
+        docker_entrypoint: gimp
+        docker_volumes: -v ~/:/host_drive 
+        app_persistent_dir: /home/developer/Pictures
+    imagemagick:
+        implementation_type: docker
+        docker_image: gschaetz/image-utilities:latest
+        docker_volumes: -v ~/:/host_drive 
+        gui_app: false
+        docker_entrypoint: /bin/bash
+    python-docker:
+        implementation_type: docker
+        docker_image: gschaetz/python:latest
+        docker_volumes: -v ~/:/host_drive 
+        gui_app: false
+        docker_entrypoint: /bin/bash
+    sl:
+        implementation_type: docker
+        docker_image: gschaetz/fun-and-games:latest
+        docker_entrypoint: sl
+        gui_app: false
+    zork1:
+        implementation_type: docker
+        docker_image: gschaetz/fun-and-games:latest
+        gui_app: false
+        docker_entrypoint_command: ash -c "stty cols $(tput cols) rows $(tput lines) && frotz /home/developer/games/zork/ZORKI"
+        app_persistent_dir: /home/developer/games/saves
+    zork2:
+        implementation_type: docker
+        docker_image: gschaetz/fun-and-games:latest
+        gui_app: false
+        docker_entrypoint_command: ash -c "stty cols $(tput cols) rows $(tput lines) && frotz /home/developer/games/zork/ZORKII"
+        app_persistent_dir: /home/developer/games/saves
+    zork3:
+        implementation_type: docker
+        docker_image: gschaetz/fun-and-games:latest
+        gui_app: false
+        docker_entrypoint_command: ash -c "stty cols $(tput cols) rows $(tput lines) && frotz /home/developer/games/zork/ZORKIII"
+        app_persistent_dir: /home/developer/games/saves
+

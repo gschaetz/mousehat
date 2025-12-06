@@ -2,24 +2,27 @@
 tap:
     installed:
         - homebrew/bundle
-        - homebrew/core
         - homebrew/services
-        - homebrew/cask
-        - homebrew/cask-versions
-        - homebrew/cask-drivers
-    
+        - domt4/autoupdate
+
 brew:
     installed:
         ## dockutil required
         - dockutil
+        ## mas required for mac app store
+        - mas 
+        - awscli
         - ack
         - bash-completion
         - coreutils
+        - cowsay
+        - docker-compose
         - dos2unix 
         - fzf
         - go
         - graphviz
         - htop
+        - hugo
         - imagemagick
         - jq
         - lua
@@ -27,34 +30,53 @@ brew:
         - ngrep
         - nmap
         - node
+        - openvpn-connect
+        - pinentry-mac
+        - pyenv-virtualenv
         - readline
         - ripgrep
+        - ruby
         - rust
         - sleepwatcher
-        ## socat required for gui apps
+        ## socat required for gui
         - socat
         - ssh-copy-id
         - the_silver_searcher
+        - tcl-tk
         - tmux
-        - unrar
+        - unar
         - watchman
         - wget
+        - yq
         - zsh
-
 brew_cask:
     installed:
+        - antigravity
         - 1password
         - amethyst
-        - google-chrome
+        - canva
+        - chatgpt
         - cleanmymac
         - docker
+        - duet
         - firefox
+        - freecad
+        - godot
+        - google-chrome
+        - google-drive
         - iterm2
+        - keka
+        - kensingtonworks
+        - logitech-options
         - macvim
-        - microsoft-office
+        - raspberry-pi-imager
         - slack
         - steam
+        - surfshark
+        - synology-image-assistant
         - visual-studio-code
-        ## xquartz required for gui 
+        - ultimaker-cura
+        ## xquartz required for gui
         - xquartz
+        - zoom
         
