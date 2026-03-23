@@ -1,9 +1,13 @@
 #!/bin/bash
 verbosity="v"
 WSL_LINUX="FALSE"
-while getopts ":p:s:d:v:w" opt; do
+ASK_BECOME_PASS=""
+while getopts ":p:s:d:v:wK" opt; do
   case $opt in
-    w) 
+    K)
+      ASK_BECOME_PASS="--ask-become-pass"
+      ;;
+    w)
       echo "Setting wsl setup to true."
       WSL_LINUX="TRUE"
       ;;
@@ -53,4 +57,4 @@ if [ -z "$DESKTOP_SETTINGS_DIR" ]; then
   fi
 fi
 
-ansible-playbook --ask-become-pass -$verbosity -i "localhost," -c local ansible/provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX"
+ansible-playbook $ASK_BECOME_PASS -$verbosity -i "localhost," -c local ansible/provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX"
