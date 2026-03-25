@@ -2,7 +2,8 @@
 verbosity="v"
 WSL_LINUX="FALSE"
 ASK_BECOME_PASS=""
-while getopts ":p:s:d:v:wK" opt; do
+ROLE_TAGS=""
+while getopts ":p:s:d:v:r:wK" opt; do
   case $opt in
     K)
       ASK_BECOME_PASS="--ask-become-pass"
@@ -23,9 +24,13 @@ while getopts ":p:s:d:v:wK" opt; do
       echo "Using desktop setting directory: $OPTARG"
       export DESKTOP_SETTINGS_DIR=$OPTARG
       ;;
-    d) 
+    d)
       echo "Desktop location for .desktop: $OPTARG"
       export HOME_DESKTOP_DIR=$OPTARG
+      ;;
+    r)
+      echo "Running only role: $OPTARG"
+      ROLE_TAGS="--tags $OPTARG"
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -57,4 +62,4 @@ if [ -z "$DESKTOP_SETTINGS_DIR" ]; then
   fi
 fi
 
-ansible-playbook $ASK_BECOME_PASS -$verbosity -i "localhost," -c local ansible/provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX"
+ansible-playbook $ASK_BECOME_PASS -$verbosity -i "localhost," -c local ansible/provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX" $ROLE_TAGS

@@ -11,12 +11,12 @@
     default_settings_sub: "{{ ansible_dir }}/sample-desktop-setup"
     settings_home: "{{ lookup('env','DESKTOP_SETTINGS_DIR') | default(default_settings_sub, true) }}"
 
-    linux_gnome_settings_yaml: "{{ settings_home }}/linux-gnome-settings.yml"     
+    linux_gnome_settings_yaml: "{{ settings_home }}/linux-gnome-settings.yml"
     linux_packages_yaml: "{{ settings_home }}/linux-packages.yml"
 
     wsl_packages_yaml: "{{ settings_home }}/wsl-packages.yml"
- 
-    macos_configure_os_settings_yaml: "{{ settings_home }}/macos-configure-os-settings.yml"     
+
+    macos_configure_os_settings_yaml: "{{ settings_home }}/macos-configure-os-settings.yml"
     macos_brew_yaml: "{{ settings_home }}/macos-brew.yml"
 
     docker_applications_yaml:  "{{ settings_home }}/docker-applications.yml"
@@ -29,62 +29,86 @@
     # LINUX (includes WSL support)
     - include_role:
         name: linux-packages
+        apply:
+          tags: linux-packages
       when: ansible_facts["system"] == 'Linux'
       vars:
         packages: "{{ wsl_packages_yaml if WSL_LINUX == 'TRUE' else linux_packages_yaml }}"
+      tags: linux-packages
 
     # LINUX AND NOT WSL
     - include_role:
         name: linux-install-docker
+        apply:
+          tags: linux-install-docker
       when: ansible_facts["system"] == 'Linux' and WSL_LINUX == 'FALSE'
       vars:
         non_root_user: "{{ ansible_facts['user_id'] }}"
+      tags: linux-install-docker
 
     # LINUX AND NOT WSL
     - include_role:
         name: linux-gnome-desktop-settings
+        apply:
+          tags: linux-gnome-desktop-settings
       when: ansible_facts["system"] == 'Linux' and WSL_LINUX == 'FALSE'
       vars:
         gnomeSettings: "{{ linux_gnome_settings_yaml }}"
         desktop_dir: "{{ desktop_directory }}"
+      tags: linux-gnome-desktop-settings
 
     # MAC (Darwin)
     - include_role:
         name: macos-homebrew
+        apply:
+          tags: macos-homebrew
       when: ansible_facts["system"] == 'Darwin'
       vars:
         macos_homebrew: "{{ macos_brew_yaml }}"
         desktop_dir: "{{ desktop_directory }}"
+      tags: macos-homebrew
 
     # MAC (Darwin)
     - include_role:
         name: macos-configure-os-settings
+        apply:
+          tags: macos-configure-os-settings
       when: ansible_facts["system"] == 'Darwin'
       vars:
         macos_settings: "{{ macos_configure_os_settings_yaml }}"
         desktop_dir: "{{ desktop_directory }}"
+      tags: macos-configure-os-settings
 
     # MAC (Darwin) Requires Xquartz and socat
     # OR WSL
     - include_role:
         name: docker-applications
+        apply:
+          tags: docker-applications
       when: ansible_facts["system"] == 'Darwin' or WSL_LINUX == 'TRUE'
       vars:
         application_setup: "{{ docker_applications_yaml }}"
         desktop_dir: "{{ desktop_directory }}"
         WSL_LINUX: "{{ WSL_LINUX }}"
+      tags: docker-applications
 
     # LINUX AND NOT WSL
     - include_role:
         name: docker-applications
+        apply:
+          tags: docker-applications
       when: ansible_facts["system"] == 'Linux' and WSL_LINUX == 'FALSE'
       vars:
         application_setup: "{{ linux_docker_applications_yaml }}"
         desktop_dir: "{{ desktop_directory }}"
         WSL_LINUX: "{{ WSL_LINUX }}"
+      tags: docker-applications
 
     # CUSTOM ROLE
-    - include_role: 
+    - include_role:
         name: custom-roles
+        apply:
+          tags: custom-roles
       vars:
         custom_roles_dir: "{{ settings_home }}/custom_roles/"
+      tags: custom-roles

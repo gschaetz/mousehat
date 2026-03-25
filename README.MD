@@ -129,6 +129,31 @@ The `runplay.sh` script accepts the following options:
 | `-d <path>` | Custom desktop directory location | `./runplay.sh -d ~/Desktop` |
 | `-p <path>` | Custom project directory | `./runplay.sh -p ~/projects` |
 | `-v <level>` | Ansible verbosity (v, vv, vvv, vvvv) | `./runplay.sh -v vvv` |
+| `-r <role>` | Run a specific role only | `./runplay.sh -r macos-homebrew` |
+| `-K` | Prompt for sudo password | `./runplay.sh -K` |
+
+### Running a Specific Role
+
+Use the `-r` flag to run a single role instead of the full playbook:
+
+```bash
+./runplay.sh -r macos-homebrew
+./runplay.sh -r macos-configure-os-settings
+./runplay.sh -r docker-applications
+./runplay.sh -r custom-roles
+```
+
+Available roles:
+
+| Role | Platform |
+|------|----------|
+| `linux-packages` | Linux (including WSL) |
+| `linux-install-docker` | Linux (non-WSL) |
+| `linux-gnome-desktop-settings` | Linux (non-WSL) |
+| `macos-homebrew` | macOS |
+| `macos-configure-os-settings` | macOS |
+| `docker-applications` | macOS, WSL, Linux (non-WSL) |
+| `custom-roles` | All platforms |
 
 ### Using Sample Configurations
 
