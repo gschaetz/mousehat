@@ -4,7 +4,12 @@
       "Bash(rm:*)",
       "Bash(ls -la \"/Users/garyschaetz/development/github/mousehat/ansible/docker-applications/\\`/\")",
       "Bash(dockutil --list:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(brew info:*)",
+      "Bash(find /Users/gschaetz -name anyclaude* -not -path */.*)",
+      "Bash(pip show:*)",
+      "Bash(npm list:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [],
     "ask": []
