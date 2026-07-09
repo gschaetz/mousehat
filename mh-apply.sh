@@ -5,6 +5,33 @@ ASK_BECOME_PASS=""
 ROLE_TAGS=""
 FORCE=false
 
+if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+  cat <<'HELP'
+mh-apply — apply your Mousehat settings to this machine
+
+Usage:
+  mh-apply [options]
+
+Options:
+  -s <path>   Path to your settings directory (saved after first use)
+  -f          Force a full run even if settings are unchanged
+  -r <role>   Run only a specific role (by tag)
+  -w          Enable WSL mode
+  -K          Prompt for sudo password (ansible --ask-become-pass)
+  -p <path>   Override desktop project directory
+  -d <path>   Override home desktop directory
+  -v <level>  Ansible verbosity level (default: v)
+  -h, --help  Show this help
+
+Examples:
+  mh-apply -s ~/my-settings    # first run, set settings directory
+  mh-apply                     # subsequent runs, uses saved settings
+  mh-apply -f                  # force full run even if nothing changed
+  mh-apply -r macos-brew       # run only the macos-brew role
+HELP
+  exit 0
+fi
+
 while getopts ":p:s:d:v:r:wKf" opt; do
   case $opt in
     K)

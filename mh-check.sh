@@ -1,7 +1,36 @@
 #!/bin/bash
 set -e
 
-# Find settings dir: env var takes priority, then last-used path saved by runplay.sh
+if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+  cat <<'HELP'
+mh-check — show packages installed but not tracked in your settings
+
+Usage:
+  mh-check [options]
+
+Options:
+  -h, --help  Show this help
+
+Settings directory is read from $DESKTOP_SETTINGS_DIR or the path
+saved by mh-apply on last run (~/.config/mousehat/settings_dir).
+
+Checks:
+  macOS  — brew formulae (brew leaves), casks, taps vs macos-brew.yml
+  Linux  — apt packages, snaps vs linux-packages.yml
+  WSL    — apt packages, snaps vs wsl-packages.yml
+
+Output:
+  + package   installed but not in config (consider adding it)
+  - package   in config but not installed (will be installed on next mh-apply)
+
+Examples:
+  mh-check                         # check drift on current machine
+  DESKTOP_SETTINGS_DIR=~/cfg mh-check  # use a specific settings directory
+HELP
+  exit 0
+fi
+
+# Find settings dir: env var takes priority, then last-used path saved by mh-apply
 SETTINGS_DIR="${DESKTOP_SETTINGS_DIR}"
 if [ -z "$SETTINGS_DIR" ] && [ -f ~/.config/mousehat/settings_dir ]; then
   SETTINGS_DIR="$(cat ~/.config/mousehat/settings_dir)"
