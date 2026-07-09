@@ -3,7 +3,9 @@ verbosity="v"
 WSL_LINUX="FALSE"
 ASK_BECOME_PASS=""
 ROLE_TAGS=""
-while getopts ":p:s:d:v:r:wK" opt; do
+FORCE=false
+
+while getopts ":p:s:d:v:r:wKf" opt; do
   case $opt in
     K)
       ASK_BECOME_PASS="--ask-become-pass"
@@ -14,11 +16,11 @@ while getopts ":p:s:d:v:r:wK" opt; do
       ;;
     v)
       echo "verbosity being set to: $OPTARG"
-      verbosity="$OPTARG" 
-      ;; 
+      verbosity="$OPTARG"
+      ;;
     p)
       echo "Using desktop directory: $OPTARG"
-      export DESKTOP_PROJECT_DIR=$OPTARG 
+      export DESKTOP_PROJECT_DIR=$OPTARG
       ;;
     s)
       echo "Using desktop setting directory: $OPTARG"
@@ -32,6 +34,9 @@ while getopts ":p:s:d:v:r:wK" opt; do
       echo "Running only role: $OPTARG"
       ROLE_TAGS="--tags $OPTARG"
       ;;
+    f)
+      FORCE=true
+      ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
       exit 1
@@ -40,7 +45,7 @@ while getopts ":p:s:d:v:r:wK" opt; do
       echo $WSL_LINUX
       if [[ $OPTARG == "w" ]]; then
         continue
-      else 
+      else
         echo "Option -$OPTARG requires an argument." >&2
         exit 1
       fi
@@ -67,4 +72,21 @@ if [ -z "$DESKTOP_SETTINGS_DIR" ]; then
   exit 1
 fi
 
+# Skip if settings haven't changed since last successful run
+CHECKSUM_FILE=~/.config/mousehat/settings.md5
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  CURRENT_MD5=$(find "$DESKTOP_SETTINGS_DIR" \( -name "*.yml" -o -name "*.yaml" \) | sort | xargs md5 -q | md5 -q)
+else
+  CURRENT_MD5=$(find "$DESKTOP_SETTINGS_DIR" \( -name "*.yml" -o -name "*.yaml" \) | sort | xargs md5sum | md5sum | cut -d' ' -f1)
+fi
+
+if [[ "$FORCE" != "true" ]] && [ -f "$CHECKSUM_FILE" ] && [ "$CURRENT_MD5" = "$(cat $CHECKSUM_FILE)" ]; then
+  echo "Settings unchanged since last run. Use -f to force."
+  exit 0
+fi
+
 ansible-playbook $ASK_BECOME_PASS -$verbosity -i "localhost," -c local ansible/provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX" $ROLE_TAGS
+
+if [ $? -eq 0 ]; then
+  echo "$CURRENT_MD5" > "$CHECKSUM_FILE"
+fi

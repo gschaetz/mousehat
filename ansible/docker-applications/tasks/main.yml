@@ -65,7 +65,8 @@
   get_url:
     url: "{{ item.value.desktop_icon_download_url }}"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.value.desktop_icon | default(item.key + '.png') }}"
-    mode: 0440 
+    mode: 0440
+    force: no
   with_dict: "{{ apps.applications | default({}) }}"
   when: 
     - apps.applications is defined and ansible_facts["system"] == 'Linux' and WSL_LINUX == 'FALSE'
@@ -77,6 +78,7 @@
     url: "{{ item.value.docker_sec_comp_download_url }}"
     dest: "{{ desktop_dir }}/apps/{{ item.key }}/{{ item.key }}.json"
     mode: 0440
+    force: no
   when: apps.applications is defined and item.value.docker_sec_comp|default(false) == true
   with_dict: "{{ apps.applications | default({}) }}"
 
