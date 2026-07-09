@@ -409,14 +409,10 @@
     <details class="settings-callout">
       <summary>What is a settings directory?</summary>
       <p>A settings directory is just a folder of plain-text YAML files — simple lists describing the apps and preferences you want on your machine. It looks like this:</p>
-      <p>
-        <code style="display:block;background:#d8e0f0;padding:0.75rem 1rem;border-radius:8px;font-size:0.82rem;line-height:1.8">
-          macos-brew.yml &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← your Homebrew apps<br>
-          macos-configure-os-settings.yml &nbsp;← dock, finder, shortcuts<br>
-          linux-packages.yml &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Linux/WSL packages<br>
-          customroles.yml &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← any extra automation
-        </code>
-      </p>
+      <pre style="background:#d8e0f0;padding:0.75rem 1rem;border-radius:8px;font-size:0.82rem;line-height:1.8;overflow-x:auto;white-space:pre-wrap;word-break:break-word">macos-brew.yml                  ← Homebrew apps
+macos-configure-os-settings.yml ← dock &amp; system settings
+linux-packages.yml              ← Linux/WSL packages
+customroles.yml                 ← extra automation</pre>
       <p>Keep it in a private git repo and you'll have a permanent backup you can use on any new machine. Not sure where to start? <a href="https://github.com/gschaetz/mousehat/tree/master/ansible/sample-desktop-setup" target="_blank" rel="noopener">Browse the sample settings →</a></p>
     </details>
   </div>
