@@ -48,24 +48,23 @@ while getopts ":p:s:d:v:r:wK" opt; do
   esac
 done
 
-# Persist settings dir so check-packages.sh can find it in future sessions
+# Fall back to previously saved settings dir if -s was not provided
+if [ -z "$DESKTOP_SETTINGS_DIR" ] && [ -f ~/.config/mousehat/settings_dir ]; then
+  export DESKTOP_SETTINGS_DIR="$(cat ~/.config/mousehat/settings_dir)"
+  echo "Using saved settings directory: $DESKTOP_SETTINGS_DIR"
+fi
+
+# Persist settings dir for future runs
 if [ -n "$DESKTOP_SETTINGS_DIR" ]; then
   mkdir -p ~/.config/mousehat
   echo "$DESKTOP_SETTINGS_DIR" > ~/.config/mousehat/settings_dir
 fi
 
-# Check if settings directory was specified, if not ask for confirmation
+# No settings dir at all — require -s on first run
 if [ -z "$DESKTOP_SETTINGS_DIR" ]; then
-  echo ""
-  echo "WARNING: No custom settings directory specified (-s flag not used)."
-  echo "This will use the default sample settings from ansible/sample-desktop-setup/"
-  echo ""
-  read -p "Are you sure you want to continue? (y/N): " -n 1 -r
-  echo ""
-  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    echo "Aborted."
-    exit 1
-  fi
+  echo "Error: No settings directory found. Use -s on first run to set it." >&2
+  echo "  ./mh-apply.sh -s /path/to/settings" >&2
+  exit 1
 fi
 
 ansible-playbook $ASK_BECOME_PASS -$verbosity -i "localhost," -c local ansible/provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX" $ROLE_TAGS
