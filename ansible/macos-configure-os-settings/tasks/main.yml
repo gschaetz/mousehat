@@ -42,7 +42,7 @@
 
 # Remove All Dock Items (only if changes needed)
 - name: Remove all items from Dock
-  shell: dockutil --remove all 
+  shell: dockutil --remove all --no-restart
   when: macos_settings_config.dock is defined and dock_needs_update | default(false) | bool
   
 # Add Dock Items Apps
