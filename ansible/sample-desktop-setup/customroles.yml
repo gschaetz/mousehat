@@ -1,5 +1,21 @@
 ---
 roles:
+    # Each role corresponds to a directory under custom_roles/ containing tasks/main.yml.
+    # Roles are run in the order listed here.
+    #
+    # Example: install aider (AI coding assistant) via uv
+    # aider:
+    #     name: aider
+    #
+    # Example: configure Homebrew auto-update as a LaunchAgent
+    # brew_autoupdate:
+    #     name: brew_autoupdate
+    #
+    # Example: role that needs extra variables
+    # my_role:
+    #     name: my_role
+    #     variable_file: ~/my-vars.yml   # path to a YAML file of extra vars for this role
+    #
     dotfiles:
         name: dotfiles
-        variable_file:
+        # variable_file: ~/dotfiles-vars.yml  # uncomment if your dotfiles role needs extra vars

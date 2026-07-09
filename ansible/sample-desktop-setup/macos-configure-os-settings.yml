@@ -135,7 +135,9 @@ osx_defaults:
     - {domain: com.apple.finder, key: ShowMountedServersOnDesktop, type: bool, value: true, state: present}
     - {domain: com.apple.finder, key: ShowRemovableMediaOnDesktop, type: bool, value: true, state: present}  
     # Finder: show all filename extensions
-    - {domain: com.apple.finder, key: AppleShowAllExtensions, type: bool, value: true, state: present}  
+    - {domain: com.apple.finder, key: AppleShowAllExtensions, type: bool, value: true, state: present}
+    # Finder: show hidden files (dotfiles, Library, etc.)
+    - {domain: com.apple.finder, key: AppleShowAllFiles, type: bool, value: true, state: present}
     # Finder: show status bar
     - {domain: com.apple.finder, key: ShowStatusBar, type: bool, value: true, state: present}  
     # Finder: show path bar

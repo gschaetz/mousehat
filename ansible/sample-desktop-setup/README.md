@@ -371,23 +371,77 @@ General Docker applications (works on both Linux and macOS).
 
 #### `customroles.yml`
 
-Defines custom Ansible roles to execute.
+Defines custom Ansible roles to execute from the `custom_roles/` directory in your settings repo.
 
 **Structure**:
 ```yaml
-custom_roles:
-  - name: <role_name>
-    enabled: <true|false>
+roles:
+  <role_key>:
+    name: <role_directory_name>
+    variable_file: <optional_path_to_vars_yml>
 ```
 
 **Example**:
 ```yaml
-custom_roles:
-  - name: my-custom-setup
-    enabled: true
-  - name: experimental-role
-    enabled: false
+roles:
+  dotfiles:
+    name: dotfiles
+  aider:
+    name: aider
+  my_tool:
+    name: my_tool
+    variable_file: ~/my-tool-vars.yml
 ```
+
+Each key under `roles:` maps to a directory under `custom_roles/` in your settings repo. That directory must contain `tasks/main.yml`. The optional `variable_file` path points to a YAML file of extra variables passed to the role.
+
+## Custom Roles
+
+Custom roles let you extend Mousehat with your own Ansible tasks — install a tool, configure dotfiles, or run any automation you need.
+
+### Structure
+
+In your settings directory, create a `custom_roles/` folder:
+
+```
+my-settings/
+├── macos-brew.yml
+├── customroles.yml
+└── custom_roles/
+    ├── dotfiles/
+    │   └── tasks/
+    │       └── main.yml
+    └── aider/
+        └── tasks/
+            └── main.yml
+```
+
+Each role directory contains `tasks/main.yml` — a standard Ansible tasks file.
+
+### Enabling a Role
+
+Add the role to `customroles.yml`:
+
+```yaml
+roles:
+  dotfiles:
+    name: dotfiles
+  aider:
+    name: aider
+```
+
+### Passing Variables to a Role
+
+If your role needs configuration, point it at a variables file:
+
+```yaml
+roles:
+  my_tool:
+    name: my_tool
+    variable_file: ~/my-tool-vars.yml
+```
+
+The file at `variable_file` is loaded as extra vars for that role's playbook run.
 
 ## Creating Custom Configurations
 
@@ -403,7 +457,7 @@ custom_roles:
 3. Run with custom settings:
    ```bash
    cd ansible
-   ./runplay.sh -s ~/my-config
+   ./mh-apply.sh -s ~/my-config
    ```
 
 ### Method 2: Create from Scratch
@@ -421,7 +475,7 @@ custom_roles:
 3. Run with your settings:
    ```bash
    cd ansible
-   ./runplay.sh -s ~/my-config
+   ./mh-apply.sh -s ~/my-config
    ```
 
 ### Method 3: Minimal Configuration
@@ -481,7 +535,6 @@ brew:
 1. **Dock Apps**: Verify application paths exist before adding to dock
 2. **Defaults**: Test `osx_defaults` values manually first using `defaults write`
 3. **Restart Required**: Many macOS settings require logout/restart
-4. **Rosetta**: Don't forget Rosetta for Apple Silicon Macs
 
 ## Environment Variables
 
@@ -491,13 +544,13 @@ You can override default locations using environment variables:
 export DESKTOP_SETTINGS_DIR=~/my-config
 export HOME_DESKTOP_DIR=~/Documents
 export DESKTOP_PROJECT_DIR=~/projects/mousehat
-./runplay.sh
+./mh-apply.sh
 ```
 
 Or use command-line flags:
 
 ```bash
-./runplay.sh -s ~/my-config -d ~/Documents -p ~/projects/mousehat
+./mh-apply.sh -s ~/my-config -d ~/Documents -p ~/projects/mousehat
 ```
 
 ## Troubleshooting

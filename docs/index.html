@@ -208,6 +208,57 @@
       background: rgba(26,58,143,0.1); color: var(--blue);
     }
 
+    /* ── Quick Install band ── */
+    .install-band {
+      background: var(--navy);
+      color: var(--white);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .install-band p {
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .install-command {
+      display: inline-flex; align-items: center; gap: 1rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 0.9rem 1.4rem;
+      font-family: "SF Mono", "Fira Code", monospace;
+      font-size: clamp(0.78rem, 2vw, 0.95rem);
+      color: var(--gold);
+      cursor: pointer;
+      transition: background 0.2s;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    .install-command:hover { background: rgba(255,255,255,0.1); }
+    .copy-hint { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 0.6rem; }
+
+    /* ── Settings callout ── */
+    .settings-callout {
+      background: #e8edf8;
+      border: 1.5px solid rgba(26,58,143,0.15);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-top: 2.5rem;
+      max-width: 680px;
+    }
+    .settings-callout summary {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--blue);
+      cursor: pointer;
+      list-style: none;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .settings-callout summary::before { content: '▶'; font-size: 0.7rem; transition: transform 0.2s; }
+    .settings-callout[open] summary::before { transform: rotate(90deg); }
+    .settings-callout p { color: var(--muted); font-size: 0.92rem; margin-top: 1rem; margin-bottom: 0.6rem; }
+    .settings-callout a { color: var(--blue2); }
+
     /* ── Footer ── */
     footer {
       background: var(--navy);
@@ -256,6 +307,16 @@
     </div>
   </div>
 </section>
+
+<!-- Quick Install -->
+<div class="install-band">
+  <p>One command installs everything — no technical setup required.</p>
+  <div class="install-command" onclick="navigator.clipboard.writeText('curl -fsSL https://mousehat.dev/install.sh | bash').then(()=>this.querySelector('.cmd-text').textContent='Copied!').catch(()=>{})">
+    <span class="cmd-text">curl -fsSL https://mousehat.dev/install.sh | bash</span>
+    <span style="opacity:0.5;font-size:0.8rem">⎘</span>
+  </div>
+  <p class="copy-hint">Click to copy &nbsp;·&nbsp; macOS · Linux · WSL</p>
+</div>
 
 <!-- What is Mousehat -->
 <section class="what" id="what">
@@ -318,27 +379,46 @@
 <section class="getting-started" id="start">
   <div class="section-inner">
     <div class="section-label">Getting Started</div>
-    <h2 class="section-title">From new machine to fully set up in three steps.</h2>
-    <p class="section-sub">No technical knowledge required — just a terminal and a few minutes.</p>
+    <h2 class="section-title">From new machine to fully set up in four steps.</h2>
+    <p class="section-sub">No deep technical knowledge required. If you can open a terminal, you can run Mousehat.</p>
     <div class="steps">
       <div class="step">
         <div class="step-number">1</div>
-        <h3>Clone Mousehat</h3>
-        <p>Download Mousehat onto your new machine using Git.</p>
-        <code>git clone github.com/gschaetz/mousehat</code>
+        <h3>Run the installer</h3>
+        <p>Open Terminal and paste this command. It installs Mousehat and all its requirements automatically.</p>
+        <code>curl -fsSL https://mousehat.dev/install.sh | bash</code>
       </div>
       <div class="step">
         <div class="step-number">2</div>
-        <h3>Point it at your config</h3>
-        <p>Tell Mousehat where your personal settings live — a folder with your list of apps and preferences.</p>
-        <code>./mh-apply.sh -s ~/my-config</code>
+        <h3>Set up your settings</h3>
+        <p>The installer asks where your settings are. Choose to use the built-in sample to get started quickly, or point it at your own private git repo.</p>
       </div>
       <div class="step">
         <div class="step-number">3</div>
         <h3>Let it run</h3>
-        <p>Sit back. Mousehat installs your apps, applies your settings, and sets up your dock. When it's done, your computer is ready.</p>
+        <p>Mousehat installs your apps, sets your preferences, and arranges your dock. Grab a coffee — it handles everything.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <h3>Re-run any time</h3>
+        <p>Add a new app to your settings file and run Mousehat again. It skips what's already in place and only applies what changed.</p>
+        <code>cd ~/mousehat &amp;&amp; ./mh-apply.sh</code>
       </div>
     </div>
+
+    <details class="settings-callout">
+      <summary>What is a settings directory?</summary>
+      <p>A settings directory is just a folder of plain-text YAML files — simple lists describing the apps and preferences you want on your machine. It looks like this:</p>
+      <p>
+        <code style="display:block;background:#d8e0f0;padding:0.75rem 1rem;border-radius:8px;font-size:0.82rem;line-height:1.8">
+          macos-brew.yml &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← your Homebrew apps<br>
+          macos-configure-os-settings.yml &nbsp;← dock, finder, shortcuts<br>
+          linux-packages.yml &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Linux/WSL packages<br>
+          customroles.yml &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← any extra automation
+        </code>
+      </p>
+      <p>Keep it in a private git repo and you'll have a permanent backup you can use on any new machine. Not sure where to start? <a href="https://github.com/gschaetz/mousehat/tree/master/ansible/sample-desktop-setup" target="_blank" rel="noopener">Browse the sample settings →</a></p>
+    </details>
   </div>
 </section>
 
