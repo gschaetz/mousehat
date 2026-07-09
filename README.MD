@@ -64,12 +64,7 @@ An automated desktop provisioning system for Linux, macOS, and Windows WSL using
    brew install ansible
    ```
 
-3. For Apple Silicon Macs, install Rosetta 2:
-   ```bash
-   softwareupdate --install-rosetta
-   ```
-
-4. Configure passwordless sudo by editing `/etc/sudoers`:
+3. Configure passwordless sudo by editing `/etc/sudoers`:
    ```bash
    sudo visudo
    ```
@@ -91,24 +86,24 @@ sudo reboot
 1. Clone the repository:
    ```bash
    git clone https://github.com/gschaetz/mousehat.git
-   cd mousehat/ansible
+   cd mousehat
    ```
 
-2. Run the provisioning script:
+2. Apply your configuration:
 
    **Linux (non-WSL):**
    ```bash
-   ./runplay.sh
+   ./mh-apply.sh
    ```
 
    **WSL:**
    ```bash
-   ./runplay.sh -w
+   ./mh-apply.sh -w
    ```
 
    **With custom settings:**
    ```bash
-   ./runplay.sh -s /path/to/custom/settings
+   ./mh-apply.sh -s /path/to/custom/settings
    ```
 
 3. Reboot to apply all changes:
@@ -120,27 +115,27 @@ sudo reboot
 
 ### Command Line Options
 
-The `runplay.sh` script accepts the following options:
+The `mh-apply.sh` script accepts the following options:
 
 | Option | Description | Example |
 |--------|-------------|---------|
-| `-w` | Enable WSL mode | `./runplay.sh -w` |
-| `-s <path>` | Custom settings directory | `./runplay.sh -s ~/my-config` |
-| `-d <path>` | Custom desktop directory location | `./runplay.sh -d ~/Desktop` |
-| `-p <path>` | Custom project directory | `./runplay.sh -p ~/projects` |
-| `-v <level>` | Ansible verbosity (v, vv, vvv, vvvv) | `./runplay.sh -v vvv` |
-| `-r <role>` | Run a specific role only | `./runplay.sh -r macos-homebrew` |
-| `-K` | Prompt for sudo password | `./runplay.sh -K` |
+| `-w` | Enable WSL mode | `./mh-apply.sh -w` |
+| `-s <path>` | Custom settings directory | `./mh-apply.sh -s ~/my-config` |
+| `-d <path>` | Custom desktop directory location | `./mh-apply.sh -d ~/Desktop` |
+| `-p <path>` | Custom project directory | `./mh-apply.sh -p ~/projects` |
+| `-v <level>` | Ansible verbosity (v, vv, vvv, vvvv) | `./mh-apply.sh -v vvv` |
+| `-r <role>` | Run a specific role only | `./mh-apply.sh -r macos-homebrew` |
+| `-K` | Prompt for sudo password | `./mh-apply.sh -K` |
 
 ### Running a Specific Role
 
 Use the `-r` flag to run a single role instead of the full playbook:
 
 ```bash
-./runplay.sh -r macos-homebrew
-./runplay.sh -r macos-configure-os-settings
-./runplay.sh -r docker-applications
-./runplay.sh -r custom-roles
+./mh-apply.sh -r macos-homebrew
+./mh-apply.sh -r macos-configure-os-settings
+./mh-apply.sh -r docker-applications
+./mh-apply.sh -r custom-roles
 ```
 
 Available roles:
@@ -154,6 +149,16 @@ Available roles:
 | `macos-configure-os-settings` | macOS |
 | `docker-applications` | macOS, WSL, Linux (non-WSL) |
 | `custom-roles` | All platforms |
+
+### Checking for Untracked Packages
+
+`mh-check.sh` compares your system's installed packages against your settings config and reports any drift — packages installed but not tracked, or tracked but not installed.
+
+```bash
+./mh-check.sh
+```
+
+The settings directory is remembered automatically after the first `mh-apply.sh -s` run. On macOS it checks brew formulae, casks, and taps. On Linux/WSL it checks apt (manually installed) and snap.
 
 ### Using Sample Configurations
 
@@ -174,9 +179,10 @@ See [ansible/sample-desktop-setup/README.md](ansible/sample-desktop-setup/README
 
 ```
 mousehat/
+├── mh-apply.sh                   # Apply configuration to the machine
+├── mh-check.sh                   # Check for untracked/missing packages
 ├── ansible/
 │   ├── provdesktop.yml           # Main playbook
-│   ├── runplay.sh                # Execution script
 │   ├── custom-roles/             # Custom Ansible roles
 │   ├── docker-applications/      # Docker app deployment role
 │   ├── linux-gnome-desktop-settings/  # GNOME configuration role
@@ -202,7 +208,7 @@ sudo apt-get upgrade ansible
 **First run fails on repository setup:**
 This is expected when using the sample settings. Simply re-run the script:
 ```bash
-./runplay.sh
+./mh-apply.sh
 ```
 
 **Custom role errors:**
