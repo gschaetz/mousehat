@@ -47,9 +47,7 @@
   
 # Add Dock Items Apps
 - name: Add in Dock to Persistent App section
-  shell: |
-    dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section apps
-    sleep {{ dock_operation_delay }}
+  shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section apps --no-restart
   loop: "{{ macos_settings_config.dock.persistent_apps|flatten(levels=1) }}"
   loop_control:
     index_var: index
@@ -59,9 +57,7 @@
 
 # Add Dock Items Apps Folders
 - name: Add in Dock to Persistent App section folders
-  shell: |
-    dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section apps --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}'
-    sleep {{ dock_operation_delay }}
+  shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section apps --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}' --no-restart
   loop: "{{ macos_settings_config.dock.persistent_apps|flatten(levels=1) }}"
   loop_control:
     index_var: index
@@ -70,10 +66,8 @@
   when: macos_settings_config.dock.persistent_apps is defined and item.type == 'folder' and dock_needs_update | default(false) | bool
 
 # Add Dock Items Others
-- name: Add in Dock to Other app section 
-  shell: |
-    dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section others
-    sleep {{ dock_operation_delay }}
+- name: Add in Dock to Other app section
+  shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section others --no-restart
   loop: "{{ macos_settings_config.dock.other_apps | flatten(levels=1) }}"
   loop_control:
     index_var: index
@@ -81,17 +75,20 @@
     extended_allitems: false
   when: macos_settings_config.dock.other_apps is defined and item.type == 'app' and dock_needs_update | default(false) | bool
 
-# Add Dock Items Apps Folders
+# Add Dock Items Folders (others section)
 - name: Add in Dock to Other App section folders
-  shell: |
-    dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section others --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}'
-    sleep {{ dock_operation_delay }}
+  shell: dockutil --add '{{ item.path }}' --label '{{ item.name }}' --position '{{ ansible_loop.index }}' --section others --view '{{ item.folder_style }}' --display '{{ item.type }}' --sort '{{ item.folder_sort }}' --no-restart
   loop: "{{ macos_settings_config.dock.other_apps | flatten(levels=1) }}"
   loop_control:
     index_var: index
     extended: true
     extended_allitems: false
   when: macos_settings_config.dock.other_apps is defined and item.type == 'folder' and dock_needs_update | default(false) | bool
+
+# Restart Dock once after all items are added
+- name: Restart Dock to apply changes
+  shell: killall Dock
+  when: dock_needs_update | default(false) | bool
 
 ## MACOS DEFAULTS TERMINAL PLIST SETTINGS
 # Delete defaults
