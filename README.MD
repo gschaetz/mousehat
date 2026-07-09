@@ -1,5 +1,7 @@
 # Mousehat
 
+**[mousehat.dev](https://mousehat.dev)** — docs, getting started, and one-line install
+
 An automated desktop provisioning system for Linux, macOS, and Windows WSL using Ansible. Mousehat automates the setup and configuration of your development environment, including package installation, desktop environment customization, and Docker-based application deployment.
 
 ## 🌟 Features
