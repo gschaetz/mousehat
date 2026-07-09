@@ -53,6 +53,16 @@ while getopts ":p:s:d:v:r:wKf" opt; do
   esac
 done
 
+# Symlink all mh-* scripts into /usr/local/bin so they're available anywhere
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+for script in "$SCRIPT_DIR"/mh-*.sh; do
+  cmd="/usr/local/bin/$(basename "${script%.sh}")"
+  if [ ! -L "$cmd" ] || [ "$(readlink "$cmd")" != "$script" ]; then
+    sudo ln -sf "$script" "$cmd"
+    echo "Linked $(basename "$cmd") → $cmd"
+  fi
+done
+
 # Fall back to previously saved settings dir if -s was not provided
 if [ -z "$DESKTOP_SETTINGS_DIR" ] && [ -f ~/.config/mousehat/settings_dir ]; then
   export DESKTOP_SETTINGS_DIR="$(cat ~/.config/mousehat/settings_dir)"
