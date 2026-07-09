@@ -112,8 +112,18 @@ if [[ -z "$ANSIBLE_MAJOR" ]] || [[ "$ANSIBLE_MAJOR" -lt 2 ]] || { [[ "$ANSIBLE_M
   exit 1
 fi
 
+# Resolve the real script location, following symlinks — mh-apply is normally
+# invoked via the /usr/local/bin symlink from an arbitrary directory, so
+# ${BASH_SOURCE[0]} alone would point at /usr/local/bin, not this repo.
+SCRIPT_SOURCE="${BASH_SOURCE[0]}"
+while [ -L "$SCRIPT_SOURCE" ]; do
+  SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_SOURCE")" && pwd)"
+  SCRIPT_SOURCE="$(readlink "$SCRIPT_SOURCE")"
+  [[ "$SCRIPT_SOURCE" != /* ]] && SCRIPT_SOURCE="$SCRIPT_DIR/$SCRIPT_SOURCE"
+done
+SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_SOURCE")" && pwd)"
+
 # Symlink all mh-* scripts into /usr/local/bin so they're available anywhere
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 for script in "$SCRIPT_DIR"/mh-*.sh; do
   cmd="/usr/local/bin/$(basename "${script%.sh}")"
   if [ ! -L "$cmd" ] || [ "$(readlink "$cmd")" != "$script" ]; then
@@ -153,6 +163,11 @@ if [[ "$FORCE" != "true" ]] && [ -f "$CHECKSUM_FILE" ] && [ "$CURRENT_MD5" = "$(
   echo "Settings unchanged since last run. Use -f to force."
   exit 0
 fi
+
+# Run from the mousehat repo dir so the relative playbook path below, and
+# Ansible's own $PWD-based project_home lookup, resolve correctly no matter
+# where mh-apply was invoked from.
+cd "$SCRIPT_DIR" || exit 1
 
 ansible-playbook $ASK_BECOME_PASS -$verbosity -i "localhost," -c local ansible/provdesktop.yml --extra-vars "WSL_LINUX=$WSL_LINUX" $ROLE_TAGS
 
