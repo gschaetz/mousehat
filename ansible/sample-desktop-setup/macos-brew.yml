@@ -7,10 +7,6 @@ tap:
 
 brew:
     installed:
-        ## dockutil required
-        - dockutil
-        ## mas required for mac app store
-        - mas 
         - awscli
         - ack
         - bash-completion
@@ -38,8 +34,6 @@ brew:
         - ruby
         - rust
         - sleepwatcher
-        ## socat required for gui
-        - socat
         - ssh-copy-id
         - the_silver_searcher
         - tcl-tk
@@ -76,7 +70,5 @@ brew_cask:
         - synology-image-assistant
         - visual-studio-code
         - ultimaker-cura
-        ## xquartz required for gui
-        - xquartz
         - zoom
         

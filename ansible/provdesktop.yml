@@ -79,7 +79,7 @@
         desktop_dir: "{{ desktop_directory }}"
       tags: macos-configure-os-settings
 
-    # MAC (Darwin) Requires Xquartz and socat
+    # MAC (Darwin) installs Xquartz and socat itself when needed
     # OR WSL
     - include_role:
         name: docker-applications

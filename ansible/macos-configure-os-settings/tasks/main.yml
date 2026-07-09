@@ -4,6 +4,14 @@
     name: macos_settings_config
 
 ## DOCK SETTINGS
+# dockutil is required to read/write the dock configuration below
+- name: Install dockutil for dock configuration
+  community.general.homebrew:
+    name: dockutil
+    state: present
+    update_homebrew: false
+  when: macos_settings_config.dock is defined
+
 # Get current dock configuration (excluding recentApps which macOS adds automatically)
 - name: Get current dock items
   shell: dockutil --list | grep -v "recentApps" | awk -F'\t' '{print $1}'

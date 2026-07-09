@@ -4,6 +4,21 @@
     file: "{{ application_setup }}"
     name: apps
 
+# MAC ONLY
+# X11-forwarding tools required by app-start-docker-macos.j2 for GUI docker apps
+- name: MAC, install socat for X11 forwarding
+  community.general.homebrew:
+    name: socat
+    state: present
+    update_homebrew: false
+  when: ansible_facts["system"] == 'Darwin' and apps.applications is defined and apps.applications | dict2items | selectattr('value.implementation_type', 'equalto', 'docker') | list | length > 0
+
+- name: MAC, install XQuartz for X11 forwarding
+  community.general.homebrew_cask:
+    name: xquartz
+    state: present
+  when: ansible_facts["system"] == 'Darwin' and apps.applications is defined and apps.applications | dict2items | selectattr('value.implementation_type', 'equalto', 'docker') | list | length > 0
+
 # delete desktop entries
 - name: Delete all desktop files
   file:

@@ -80,6 +80,38 @@ while getopts ":p:s:d:v:r:wKf" opt; do
   esac
 done
 
+# Ensure git and ansible are present, installing them if this is a fresh machine
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  if ! command -v brew &>/dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    if [[ -f /opt/homebrew/bin/brew ]]; then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    fi
+  fi
+
+  for pkg in git ansible; do
+    if ! command -v "$pkg" &>/dev/null; then
+      echo "Installing $pkg..."
+      brew install "$pkg"
+    fi
+  done
+elif [[ "$OSTYPE" == "linux"* ]]; then
+  if ! command -v git &>/dev/null || ! command -v ansible &>/dev/null; then
+    echo "Installing git and ansible..."
+    sudo apt-get update -qq
+    sudo apt-get install -y git ansible
+  fi
+fi
+
+ANSIBLE_VERSION=$(ansible --version 2>/dev/null | head -1 | grep -oE '[0-9]+\.[0-9]+' | head -1)
+ANSIBLE_MAJOR=$(echo "$ANSIBLE_VERSION" | cut -d. -f1)
+ANSIBLE_MINOR=$(echo "$ANSIBLE_VERSION" | cut -d. -f2)
+if [[ -z "$ANSIBLE_MAJOR" ]] || [[ "$ANSIBLE_MAJOR" -lt 2 ]] || { [[ "$ANSIBLE_MAJOR" -eq 2 ]] && [[ "$ANSIBLE_MINOR" -lt 7 ]]; }; then
+  echo "Error: Ansible 2.7+ is required (found ${ANSIBLE_VERSION:-none})" >&2
+  exit 1
+fi
+
 # Symlink all mh-* scripts into /usr/local/bin so they're available anywhere
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 for script in "$SCRIPT_DIR"/mh-*.sh; do

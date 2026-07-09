@@ -90,6 +90,12 @@ def print_report(section, untracked, missing):
             print(f"    - {p}")
 
 # ── macOS ──────────────────────────────────────────────────────────────────────
+# Installed directly by ansible roles (not user config) — see docker-applications
+# and macos-configure-os-settings roles. Excluded from drift so mh-check doesn't
+# flag them as "untracked" every run.
+ROLE_MANAGED_FORMULAE = {"dockutil", "socat"}
+ROLE_MANAGED_CASKS = {"xquartz"}
+
 def check_macos():
     yml = settings_dir / "macos-brew.yml"
     if not yml.exists():
@@ -102,12 +108,12 @@ def check_macos():
     tracked = {formula_name(p) for p in tracked_raw}
     leaves = {formula_name(p) for p in run(["brew", "leaves"])}
     all_installed = {formula_name(p) for p in run(["brew", "list", "--formula"])}
-    print_report("brew formulae", leaves - tracked, tracked - all_installed)
+    print_report("brew formulae", leaves - tracked - ROLE_MANAGED_FORMULAE, tracked - all_installed)
 
     # Casks
     tracked_casks = load_yaml_list(yml, "brew_cask", "installed")
     installed_casks = set(run(["brew", "list", "--cask"]))
-    print_report("brew casks", installed_casks - tracked_casks, tracked_casks - installed_casks)
+    print_report("brew casks", installed_casks - tracked_casks - ROLE_MANAGED_CASKS, tracked_casks - installed_casks)
 
     # Taps
     tracked_taps = load_yaml_list(yml, "tap", "installed")
