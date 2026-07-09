@@ -48,6 +48,12 @@ while getopts ":p:s:d:v:r:wK" opt; do
   esac
 done
 
+# Persist settings dir so check-packages.sh can find it in future sessions
+if [ -n "$DESKTOP_SETTINGS_DIR" ]; then
+  mkdir -p ~/.config/mousehat
+  echo "$DESKTOP_SETTINGS_DIR" > ~/.config/mousehat/settings_dir
+fi
+
 # Check if settings directory was specified, if not ask for confirmation
 if [ -z "$DESKTOP_SETTINGS_DIR" ]; then
   echo ""
