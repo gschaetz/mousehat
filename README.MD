@@ -162,6 +162,8 @@ Available roles:
 
 The settings directory is remembered automatically after the first `mh-apply.sh -s` run. On macOS it checks brew formulae, casks, and taps. On Linux/WSL it checks apt (manually installed) and snap.
 
+For each package installed but not tracked, `mh-check.sh` prompts you to add it to the relevant config file. Answering `y` inserts it into the matching list in place, without reformatting the rest of the file.
+
 ### Using Sample Configurations
 
 The project includes sample configurations in `ansible/sample-desktop-setup/`. You can:
