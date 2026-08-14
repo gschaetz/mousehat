@@ -2,6 +2,19 @@
 ---
 - name: Install Docker on Debian
   block:
+    - name: Remove conflicting distro-packaged Docker alternatives
+      apt:
+        name:
+          - docker.io
+          - docker-doc
+          - docker-compose
+          - docker-compose-v2
+          - podman-docker
+          - containerd
+          - runc
+        state: absent
+      become: true
+
     - name: Install required packages
       apt:
         name:
