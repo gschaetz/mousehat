@@ -1,0 +1,22 @@
+---
+# Applies every key under one domain from the osx_defaults hierarchy.
+# domain_item is {key: <domain>, value: {<key>: {type, value, state}, ...}},
+# produced by the dict2items loop in main.yml.
+
+- name: "Delete defaults: {{ domain_item.key }}"
+  osx_defaults:
+    domain: '{{ domain_item.key }}'
+    key: '{{ item.key }}'
+    state: absent
+  loop: "{{ domain_item.value | dict2items }}"
+  when: item.value.state == 'absent'
+
+- name: "Modify (add,update) defaults: {{ domain_item.key }}"
+  osx_defaults:
+    domain: '{{ domain_item.key }}'
+    key: '{{ item.key }}'
+    type: '{{ item.value.type }}'
+    value: '{{ item.value.value }}'
+    state: present
+  loop: "{{ domain_item.value | dict2items }}"
+  when: item.value.state == 'present'

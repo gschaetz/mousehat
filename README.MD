@@ -154,15 +154,15 @@ Available roles:
 
 ### Checking for Untracked Packages
 
-`mh-check.sh` compares your system's installed packages against your settings config and reports any drift — packages installed but not tracked, or tracked but not installed.
+`mh-check.py` compares your system's installed packages and (on macOS) `defaults` settings against your settings config and reports any drift — installed/set but not tracked, tracked but not installed/set, or tracked with a value that no longer matches the live system.
 
 ```bash
-./mh-check.sh
+./mh-check.py
 ```
 
-The settings directory is remembered automatically after the first `mh-apply.sh -s` run. On macOS it checks brew formulae, casks, and taps. On Linux/WSL it checks apt (manually installed) and snap.
+The settings directory is remembered automatically after the first `mh-apply.sh -s` run. On macOS it checks brew formulae, casks, taps, and `osx_defaults` against mousehat's catalog of commonly-tweaked settings — `known-defaults.yml` in your own settings directory if you have one, otherwise the bundled `ansible/macos-configure-os-settings/known-defaults.yml`. Drop your own `known-defaults.yml` alongside your other settings files to add or remove entries from the catalog without editing mousehat itself. On Linux/WSL it checks apt (manually installed) and snap.
 
-For each package installed but not tracked, `mh-check.sh` prompts you to add it to the relevant config file. Answering `y` inserts it into the matching list in place, without reformatting the rest of the file.
+For each item installed but not tracked, `mh-check.py` prompts you to add it to the relevant config file. For each tracked `osx_defaults` value that's drifted from the live system (e.g. you changed it in System Settings), it prompts you to update the config to match. Answering `y` edits the file in place, without reformatting the rest of it.
 
 ### Using Sample Configurations
 
@@ -184,7 +184,7 @@ See [ansible/sample-desktop-setup/README.md](ansible/sample-desktop-setup/README
 ```
 mousehat/
 ├── mh-apply.sh                   # Apply configuration to the machine
-├── mh-check.sh                   # Check for untracked/missing packages
+├── mh-check.py                   # Check for untracked/missing packages and osx_defaults drift
 ├── ansible/
 │   ├── provdesktop.yml           # Main playbook
 │   ├── custom-roles/             # Custom Ansible roles

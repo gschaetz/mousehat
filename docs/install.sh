@@ -201,7 +201,7 @@ print_next_steps() {
     echo "What's next:"
     echo "  • Edit your settings: $SETTINGS_DIR"
     echo "  • Re-apply anytime:   cd $MOUSEHAT_DIR && ./mh-apply.sh"
-    echo "  • Check for drift:    cd $MOUSEHAT_DIR && ./mh-check.sh"
+    echo "  • Check for drift:    cd $MOUSEHAT_DIR && ./mh-check.py"
     echo "  • Docs:               https://mousehat.dev"
     echo ""
 }

@@ -1,0 +1,205 @@
+# Catalog of commonly-tweaked macOS `defaults` settings that mh-check knows
+# how to look for on a live machine. This is reference data, not a desired
+# configuration — no `value`/`state` here, just `domain`/`key`/`type` (for
+# reading/writing the setting) and a human `description`.
+#
+# mh-check uses this to "import" settings you've already customized via
+# System Settings into your tracked macos-configure-os-settings.yml, without
+# having to scan every key of every domain (most of which are noise).
+#
+# The ~/.../sample-desktop-setup/macos-configure-os-settings.yml starter
+# config's osx_defaults section is a curated subset of this catalog with
+# opinionated values already chosen.
+---
+NSGlobalDomain:
+    AppleShowScrollBars: {type: string, description: "Scrollbar visibility (WhenScrolling/Automatic/Always)"}
+    AppleShowAllExtensions: {type: bool, description: "Show all filename extensions everywhere"}
+    NSAutomaticQuoteSubstitutionEnabled: {type: bool, description: "Smart quotes"}
+    NSAutomaticDashSubstitutionEnabled: {type: bool, description: "Smart dashes"}
+    NSAutomaticSpellingCorrectionEnabled: {type: bool, description: "Automatic spelling correction"}
+    NSAutomaticCapitalizationEnabled: {type: bool, description: "Automatic capitalization"}
+    NSAutomaticPeriodSubstitutionEnabled: {type: bool, description: "Double-space-to-period substitution"}
+    NSTableViewDefaultSizeMode: {type: int, description: "Sidebar icon size (1=small, 2=medium, 3=large)"}
+    ApplePressAndHoldEnabled: {type: bool, description: "Press-and-hold accent picker vs key repeat"}
+    InitialKeyRepeat: {type: int, description: "Delay before key repeat starts"}
+    KeyRepeat: {type: int, description: "Key repeat rate"}
+    AppleLanguages: {type: array, description: "Preferred languages"}
+    AppleMeasurementUnits: {type: string, description: "Measurement units"}
+    AppleMetricUnits: {type: bool, description: "Use metric units"}
+    AppleTemperatureUnit: {type: string, description: "Temperature unit (Celsius/Fahrenheit)"}
+    AppleICUForce24HourTime: {type: bool, description: "24-hour time"}
+    AppleInterfaceStyle: {type: string, description: "Dark mode ('Dark' when enabled, unset when light)"}
+    AppleAccentColor: {type: int, description: "System accent color"}
+    AppleShowScrollBarsSetting: {type: string, description: "Legacy scrollbar setting"}
+    com.apple.springing.enabled: {type: bool, description: "Spring loading for directories"}
+    com.apple.springing.delay: {type: float, description: "Spring loading delay"}
+    com.apple.trackpad.scaling: {type: float, description: "Trackpad tracking speed"}
+    com.apple.trackpad.forceClick: {type: int, description: "Force click and haptic feedback"}
+    com.apple.mouse.tapBehavior: {type: int, description: "Tap to click"}
+    com.apple.swipescrolldirection: {type: bool, description: "Natural (inverted) scroll direction"}
+    com.apple.sound.beep.feedback: {type: int, description: "Play sound on volume change"}
+    com.apple.trackpad.enableSecondaryClick: {type: bool, description: "Secondary click (right-click) on trackpad"}
+    # Custom menu-item keyboard shortcuts scoped to "All Applications" in
+    # System Settings > Keyboard > Keyboard Shortcuts > App Shortcuts, e.g.
+    # {"Delete Conversation...": "@d"} maps that menu item to Cmd+D. A
+    # shortcut scoped to one specific app instead lives under that app's own
+    # domain (its bundle ID) rather than NSGlobalDomain — track those directly
+    # in your own macos-configure-os-settings.yml since there's no single
+    # domain to list here.
+    NSUserKeyEquivalents: {type: dict, description: "Custom keyboard shortcuts for All Applications"}
+    _HIHideMenuBar: {type: bool, description: "Auto-hide the menu bar"}
+
+com.apple.desktopservices:
+    DSDontWriteNetworkStores: {type: bool, description: "Avoid .DS_Store files on network volumes"}
+    DSDontWriteUSBStores: {type: bool, description: "Avoid .DS_Store files on USB volumes"}
+
+com.apple.AppleMultitouchTrackpad:
+    Clicking: {type: int, description: "Tap to click"}
+    TrackpadThreeFingerDrag: {type: bool, description: "Three finger drag"}
+    TrackpadFourFingerHorizSwipeGesture: {type: int, description: "Four finger horizontal swipe (desktop switch)"}
+    TrackpadThreeFingerHorizSwipeGesture: {type: int, description: "Three finger horizontal swipe"}
+    TrackpadFourFingerVertSwipeGesture: {type: int, description: "Four finger vertical swipe (App Exposé)"}
+    TrackpadThreeFingerVertSwipeGesture: {type: int, description: "Three finger vertical swipe"}
+    TrackpadRightClick: {type: bool, description: "Right click via trackpad corner/two-finger"}
+
+com.apple.driver.AppleBluetoothMultitouch.trackpad:
+    Clicking: {type: int, description: "Tap to click (Bluetooth trackpad)"}
+
+com.apple.finder:
+    QuitMenuItem: {type: bool, description: "Allow quitting Finder via Cmd+Q"}
+    NewWindowTarget: {type: string, description: "Default location for new Finder windows"}
+    NewWindowTargetPath: {type: string, description: "Path used when NewWindowTarget is a custom folder"}
+    ShowExternalHardDrivesOnDesktop: {type: bool, description: "Show external drives on desktop"}
+    ShowHardDrivesOnDesktop: {type: bool, description: "Show internal drives on desktop"}
+    ShowMountedServersOnDesktop: {type: bool, description: "Show mounted servers on desktop"}
+    ShowRemovableMediaOnDesktop: {type: bool, description: "Show removable media on desktop"}
+    AppleShowAllFiles: {type: bool, description: "Show hidden files"}
+    ShowStatusBar: {type: bool, description: "Show status bar"}
+    ShowPathbar: {type: bool, description: "Show path bar"}
+    _FXShowPosixPathInTitle: {type: bool, description: "Show full POSIX path in window title"}
+    FXDefaultSearchScope: {type: string, description: "Default search scope"}
+    FXEnableExtensionChangeWarning: {type: bool, description: "Warn when changing a file extension"}
+    FXPreferredViewStyle: {type: string, description: "Default Finder view style (icnv/clmv/Flwv/Nlsv)"}
+    FXRemoveOldTrashItems: {type: bool, description: "Auto-empty trash after 30 days"}
+    WarnOnEmptyTrash: {type: bool, description: "Warn before emptying the Trash"}
+    CreateDesktop: {type: bool, description: "Show icons on the desktop at all"}
+    SidebarWidth: {type: int, description: "Finder sidebar width"}
+    DisableAllAnimations: {type: bool, description: "Disable Finder animations"}
+
+com.apple.dock:
+    tilesize: {type: float, description: "Dock icon size in pixels"}
+    largesize: {type: float, description: "Dock icon magnified size"}
+    magnification: {type: bool, description: "Dock icon magnification on hover"}
+    minimize-to-application: {type: bool, description: "Minimize windows into app icon"}
+    mineffect: {type: string, description: "Minimize/maximize window effect (genie/scale/suck)"}
+    autohide: {type: bool, description: "Auto-hide and show the Dock"}
+    autohide-delay: {type: float, description: "Delay before the Dock shows"}
+    autohide-time-modifier: {type: float, description: "Dock show/hide animation speed"}
+    orientation: {type: string, description: "Dock position on screen (bottom/left/right)"}
+    show-process-indicators: {type: bool, description: "Show indicator lights for open apps"}
+    mouse-over-hilite-stack: {type: bool, description: "Highlight hover effect for stacks"}
+    enable-spring-load-actions-on-all-items: {type: bool, description: "Spring loading for all Dock items"}
+    showhidden: {type: bool, description: "Translucent icons for hidden apps"}
+    mru-spaces: {type: bool, description: "Auto-rearrange Spaces by most recent use"}
+    launchanim: {type: bool, description: "Animate opening applications"}
+    show-recents: {type: bool, description: "Show recent applications in Dock"}
+    expose-group-apps: {type: bool, description: "Group windows by application in Mission Control"}
+    wvous-tl-corner: {type: int, description: "Top-left hot corner action"}
+    wvous-tl-modifier: {type: int, description: "Top-left hot corner modifier key"}
+    wvous-tr-corner: {type: int, description: "Top-right hot corner action"}
+    wvous-tr-modifier: {type: int, description: "Top-right hot corner modifier key"}
+    wvous-bl-corner: {type: int, description: "Bottom-left hot corner action"}
+    wvous-bl-modifier: {type: int, description: "Bottom-left hot corner modifier key"}
+    wvous-br-corner: {type: int, description: "Bottom-right hot corner action"}
+    wvous-br-modifier: {type: int, description: "Bottom-right hot corner modifier key"}
+
+com.apple.screensaver:
+    askForPassword: {type: int, description: "Require password after sleep/screen saver"}
+    askForPasswordDelay: {type: int, description: "Delay (seconds) before password is required"}
+
+com.apple.screencapture:
+    location: {type: string, description: "Screenshot save location"}
+    disable-shadow: {type: bool, description: "Disable window shadow in screenshots"}
+    type: {type: string, description: "Screenshot file format (png/jpg/pdf/tiff/bmp/gif)"}
+    include-date: {type: bool, description: "Include date in screenshot filenames"}
+
+com.apple.ActivityMonitor:
+    OpenMainWindow: {type: bool, description: "Show main window on launch"}
+    IconType: {type: int, description: "Dock icon visualization"}
+    ShowCategory: {type: int, description: "Which processes are shown"}
+    SortColumn: {type: string, description: "Column results are sorted by"}
+    SortDirection: {type: int, description: "Sort direction (0=descending, 1=ascending)"}
+
+com.apple.SoftwareUpdate:
+    AutomaticCheckEnabled: {type: bool, description: "Automatically check for updates"}
+    AutomaticDownload: {type: int, description: "Download updates automatically"}
+    CriticalUpdateInstall: {type: int, description: "Install system data files & security updates"}
+    ConfigDataInstall: {type: int, description: "Install system data files"}
+    ScheduleFrequency: {type: int, description: "Check frequency (1=daily)"}
+    AutoUpdate: {type: bool, description: "App auto-update"}
+    AutoUpdateRestartRequired: {type: bool, description: "Allow App Store to reboot for updates"}
+
+com.apple.ImageCapture:
+    disableHotPlug: {type: bool, description: "Prevent Photos opening automatically on device plug-in"}
+
+com.apple.appstore:
+    ShowDebugMenu: {type: bool, description: "Show App Store Debug menu"}
+    WebKitDeveloperExtras: {type: bool, description: "Enable App Store WebKit dev tools"}
+
+com.apple.DiskUtility:
+    DUDebugMenuEnabled: {type: bool, description: "Show Disk Utility Debug menu"}
+    advanced-image-options: {type: bool, description: "Show advanced image options in Disk Utility"}
+
+com.apple.iCal:
+    IncludeDebugMenu: {type: bool, description: "Show Calendar Debug menu"}
+
+# Keyboard: function keys / input
+com.apple.keyboard.fnState:
+    # NSGlobalDomain equivalent for standalone keyboards; kept separate since
+    # it's written under its own domain on some macOS versions
+    fn: {type: bool, description: "Use F1-F12 as standard function keys"}
+
+# Menu bar / clock
+com.apple.menuextra.clock:
+    DateFormat: {type: string, description: "Menu bar clock date/time format"}
+    FlashDateSeparators: {type: bool, description: "Flash the time separators"}
+    IsAnalog: {type: bool, description: "Show an analog clock in the menu bar"}
+
+# Safari
+com.apple.Safari:
+    IncludeDevelopMenu: {type: bool, description: "Show Safari's Develop menu"}
+    WebKitDeveloperExtrasEnabledPreferenceKey: {type: bool, description: "Enable Web Inspector context menu item"}
+    ShowFullURLInSmartSearchField: {type: bool, description: "Show full URL in the address bar"}
+    HomePage: {type: string, description: "New window home page"}
+    AutoOpenSafeDownloads: {type: bool, description: "Automatically open 'safe' downloads"}
+    UniversalSearchEnabled: {type: bool, description: "Send search queries to Apple"}
+    SuppressSearchSuggestions: {type: bool, description: "Suppress search suggestions"}
+
+# Terminal
+com.apple.Terminal:
+    StringEncodings: {type: array, description: "Enabled text encodings"}
+    ShowLineMarks: {type: int, description: "Show line marks"}
+
+# TextEdit
+com.apple.TextEdit:
+    RichText: {type: int, description: "Use plain text as the default format"}
+    PlainTextEncoding: {type: int, description: "Plain text file encoding when opening"}
+    PlainTextEncodingForWrite: {type: int, description: "Plain text file encoding when saving"}
+
+# Energy saver / power management (system-wide, applied via `pmset` normally,
+# but exposed here in case you track them through defaults too)
+com.apple.screensaver.desktop:
+    DidPresentContinuityPromo: {type: bool, description: "Screen saver continuity promo shown"}
+
+# Login window
+com.apple.loginwindow:
+    GuestEnabled: {type: bool, description: "Guest account enabled"}
+    SHOWFULLNAME: {type: bool, description: "Show name/password fields instead of user list"}
+
+# Messages
+com.apple.messageshelper.MessageController:
+    SOInputLineCount: {type: int, description: "Number of lines in the Messages input field"}
+
+# Mission Control / Spaces
+com.apple.spaces:
+    spans-displays: {type: bool, description: "Displays have separate Spaces"}
