@@ -100,7 +100,7 @@ def formula_name(pkg):
 def print_report(section, untracked, missing):
     print(f"\n── {section} {'─' * (50 - len(section))}")
     if untracked:
-        print("  Installed but not in config:")
+        print("  Installed but not in config (y adds it, N/Enter skips):")
         for p in sorted(untracked):
             print(f"    + {p}")
     else:
@@ -174,8 +174,6 @@ def offer_add(yml, keys, untracked, snap=False):
     if not untracked:
         return
     top_key, sub_key = keys
-    print(f"\n  y adds the package to {yml.name} ({top_key}.{sub_key}); N/Enter skips it for now "
-          "(it'll show up here again next run):")
     for pkg in sorted(untracked):
         if not confirm(f"    Add '{pkg}' to {yml.name} ({top_key}.{sub_key})?"):
             continue
@@ -433,7 +431,7 @@ def check_macos_defaults(settings_dir):
         print("  All tracked settings match the live system.")
 
     if changed:
-        print("  Changed (tracked value differs from live system):")
+        print("  Changed (tracked value differs from live system; y updates config, N/Enter skips):")
         for e, live in sorted(changed, key=lambda x: (x[0]["domain"], x[0]["key"])):
             print(f"    ~ {e['domain']}:{e['key']}  config={e.get('value')!r}  live={live!r}")
     if not_applied:
@@ -445,12 +443,10 @@ def check_macos_defaults(settings_dir):
         for e in sorted(still_present, key=lambda x: (x["domain"], x["key"])):
             print(f"    - {e['domain']}:{e['key']}")
     if new_known:
-        print("  Known settings not tracked (found live, mousehat knows this one):")
+        print("  Known settings not tracked (found live; y tracks it, N/Enter skips):")
         for c, live in sorted(new_known, key=lambda x: (x[0]["domain"], x[0]["key"])):
             print(f"    + {c['domain']}:{c['key']} = {live!r}")
 
-    if changed:
-        print(f"\n  y updates {yml.name} to the live value shown above; N/Enter leaves it tracked as-is:")
     for e, live in sorted(changed, key=lambda x: (x[0]["domain"], x[0]["key"])):
         if confirm(f"    Update '{e['domain']}:{e['key']}' in {yml.name} to match live value "
                    f"(config: {e.get('value')!r}, live: {live!r})?"):
@@ -460,9 +456,6 @@ def check_macos_defaults(settings_dir):
             except ValueError as err:
                 print(f"      failed to update {e['domain']}:{e['key']}: {err}")
 
-    if new_known:
-        print(f"\n  y tracks the setting in {yml.name} going forward; N/Enter skips it for now "
-              "(it'll show up here again next run):")
     for c, live in sorted(new_known, key=lambda x: (x[0]["domain"], x[0]["key"])):
         if confirm(f"    Add '{c['domain']}:{c['key']}' = {live!r} to {yml.name} (osx_defaults)?"):
             try:
