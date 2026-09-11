@@ -447,7 +447,7 @@ def check_macos_defaults(settings_dir):
         for c, live in sorted(new_known, key=lambda x: (x[0]["domain"], x[0]["key"])):
             print(f"    + {c['domain']}:{c['key']} = {live!r}")
 
-    for e, live in changed:
+    for e, live in sorted(changed, key=lambda x: (x[0]["domain"], x[0]["key"])):
         if confirm(f"    Update '{e['domain']}:{e['key']}' in {yml.name} to match live value "
                    f"(config: {e.get('value')!r}, live: {live!r})?"):
             try:
@@ -456,7 +456,7 @@ def check_macos_defaults(settings_dir):
             except ValueError as err:
                 print(f"      failed to update {e['domain']}:{e['key']}: {err}")
 
-    for c, live in new_known:
+    for c, live in sorted(new_known, key=lambda x: (x[0]["domain"], x[0]["key"])):
         if confirm(f"    Add '{c['domain']}:{c['key']}' = {live!r} to {yml.name} (osx_defaults)?"):
             try:
                 yaml_insert_under_domain(
