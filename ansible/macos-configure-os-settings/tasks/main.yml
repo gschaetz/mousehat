@@ -99,20 +99,11 @@
   when: dock_needs_update | default(false) | bool
 
 ## MACOS DEFAULTS TERMINAL PLIST SETTINGS
-# Delete defaults
-- osx_defaults:
-    domain: '{{ item.domain }}'
-    key: '{{ item.key}}'
-    state: absent
-  loop: "{{ macos_settings_config.osx_defaults | default({}) }}"
-  when: item.state == 'absent'
-
-# Modify (add,update) defaults
-- osx_defaults:
-    domain: '{{ item.domain }}'
-    key: '{{ item.key }}'
-    type: '{{ item.type }}'
-    value: '{{ item.value }}'
-    state: present
-  loop: "{{ macos_settings_config.osx_defaults | default({}) }}"
-  when: item.state == 'present'
+# osx_defaults config is structured as a hierarchy (domain -> key -> {type, value, state})
+# for readability; flatten one domain at a time via include_tasks since the osx_defaults
+# module only understands a single domain/key/value at a time.
+- name: Apply osx_defaults per domain
+  include_tasks: apply_osx_defaults_domain.yml
+  loop: "{{ macos_settings_config.osx_defaults | default({}) | dict2items }}"
+  loop_control:
+    loop_var: domain_item

@@ -124,8 +124,10 @@ done
 SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_SOURCE")" && pwd)"
 
 # Symlink all mh-* scripts into /usr/local/bin so they're available anywhere
-for script in "$SCRIPT_DIR"/mh-*.sh; do
-  cmd="/usr/local/bin/$(basename "${script%.sh}")"
+for script in "$SCRIPT_DIR"/mh-*.sh "$SCRIPT_DIR"/mh-*.py; do
+  [ -e "$script" ] || continue
+  base="$(basename "$script")"
+  cmd="/usr/local/bin/${base%.*}"
   if [ ! -L "$cmd" ] || [ "$(readlink "$cmd")" != "$script" ]; then
     sudo ln -sf "$script" "$cmd"
     echo "Linked $(basename "$cmd") → $cmd"
