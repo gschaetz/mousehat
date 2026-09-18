@@ -48,12 +48,6 @@ An automated desktop provisioning system for Linux, macOS, and Windows WSL using
    <username> ALL=(ALL) NOPASSWD: ALL
    ```
 
-5. **Important**: Ensure Ansible version ≥ 2.7 for custom role support:
-   ```bash
-   ansible --version
-   ```
-   If needed, upgrade Ansible from official repositories.
-
 #### macOS
 
 1. Install Homebrew:
@@ -213,14 +207,6 @@ sudo apt-get upgrade ansible
 This is expected when using the sample settings. Simply re-run the script:
 ```bash
 ./mh-apply.sh
-```
-
-**Custom role errors:**
-Upgrade Ansible to version ≥ 2.7:
-```bash
-sudo apt-get upgrade ansible
-# or on macOS
-brew upgrade ansible
 ```
 
 ## 🛠️ Built With
