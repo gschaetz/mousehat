@@ -221,7 +221,9 @@
       font-size: 0.95rem;
     }
     .install-command {
-      display: inline-flex; align-items: center; gap: 1rem;
+      display: flex; align-items: center; gap: 1rem;
+      width: 100%;
+      box-sizing: border-box;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.15);
       border-radius: 12px;
@@ -232,9 +234,16 @@
       cursor: pointer;
       transition: background 0.2s;
       max-width: 100%;
-      overflow-x: auto;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
     .install-command:hover { background: rgba(255,255,255,0.1); }
+    .cmd-text {
+      flex: 1 1 auto;
+      min-width: 0;
+      word-break: break-all;
+      overflow-wrap: break-word;
+    }
     .copy-hint { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 0.6rem; }
 
     /* ── Settings callout ── */
