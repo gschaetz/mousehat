@@ -181,7 +181,9 @@
     .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
     .step p { color: var(--muted); font-size: 0.92rem; }
     .step code {
-      display: inline-block; margin-top: 0.75rem;
+      display: block; width: 100%; margin-top: 0.75rem;
+      box-sizing: border-box; word-break: break-word; overflow-wrap: break-word;
+      white-space: pre-wrap;
       background: #e8edf8; color: var(--blue);
       padding: 0.3rem 0.6rem; border-radius: 6px;
       font-size: 0.82rem; font-family: "SF Mono", "Fira Code", monospace;
