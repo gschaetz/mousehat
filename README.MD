@@ -241,3 +241,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 - Built with Ansible automation
 - Inspired by the need for reproducible development environments
+
+## 💡 Got feedback or found mousehat helpful?
+
+If mousehat helps you, give it a star ⭐
+
+[![GitHub](https://img.shields.io/github/stars/gschaetz/mousehat?style=social)](https://github.com/gschaetz/mousehat)
