@@ -13,3 +13,15 @@
     name: "{{ custom_roles_dir }}{{ item.value.name }}"
   loop: "{{ customroles_file.roles | dict2items }}"
   when: customroles_file.roles is defined
+  # Tried adding a per-item tags: ["{{ item.key }}"] here 2026-09-17 to let `mh-apply -r
+  # <role-name>` target a single custom role -- reverted, doesn't work: Ansible resolves a
+  # task's tags before a loop's items exist, so a loop variable can't appear in `tags:`.
+  # `--tags <role-name>` (mh-apply -r <role-name>) silently matches nothing as a result
+  # (confirmed empirically -- the whole task is excluded, not a no-op). Not actually needed
+  # for per-account isolation though: each custom role only touches whichever account
+  # actually runs `mh-apply` (there's no host/user targeting in this tool at all -- every
+  # machine runs it against itself) -- a role like openclaw that's been parameterized to
+  # target a DIFFERENT account via its own vars (see desktop repo's
+  # openclaw_run_as_user) does so independently of this loop; the other roles (aider,
+  # dotfiles, etc.) never see or care about that var. `-r custom-roles` (the existing,
+  # working tag on the whole block below) is sufficient either way.
