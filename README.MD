@@ -227,3 +227,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 - Built with Ansible automation
 - Inspired by the need for reproducible development environments
+
+## 💙 Enjoying Mousehat?
+
+Setting up a new machine shouldn't be a chore — glad mousehat could help make it a one-liner instead. If it saved you some time, spread the word and help others find it too.
+
+If mousehat helps you, give it a star ⭐ on [GitHub](https://github.com/gschaetz/mousehat/stargazers) — it really does make a difference!
