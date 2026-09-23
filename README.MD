@@ -227,3 +227,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 - Built with Ansible automation
 - Inspired by the need for reproducible development environments
+
+## 💜 Found mousehat useful?
+
+If mousehat saved you a weekend of dotfile wrangling, feed the repo a star ⭐️ — it takes two seconds and it genuinely helps others find the project.
+
+[⭐ Star gschaetz/mousehat on GitHub](https://github.com/gschaetz/mousehat/stargazers)
