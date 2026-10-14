@@ -222,6 +222,7 @@ This project is licensed under the MIT License - see the [LICENSE.MD](LICENSE.MD
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+Open issues are a good place to find something to work on.
 
 ## ✨ Acknowledgments
 
