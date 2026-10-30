@@ -3,48 +3,85 @@
     file: "{{ macos_homebrew }}"
     name: macos_homebrew_config
 
+# Each list item below may be a plain string (installed/removed on every host, the
+# original behavior -- every existing settings file across every project using this role
+# keeps working unchanged) or a dict {name, except_hosts, only_hosts} to vary by machine,
+# matching the ansible_facts['nodename'] gating convention settings repos already use for
+# their own custom_roles. except_hosts and only_hosts both take a list of hostnames
+# (ansible_facts['nodename']) -- except_hosts skips the listed hosts, only_hosts installs
+# ONLY on the listed hosts; a plain string skips this check entirely.
+#
+# This same `item_name`/`item_enabled` pattern is repeated identically across all 6
+# loops below rather than factored into one shared variable, since Ansible has no clean
+# way to define a reusable Jinja macro/filter scoped to just this role without a separate
+# filter_plugins/ module -- cheap duplication beats that added complexity here.
+
 ### TAPS
 # Install taps
 - community.general.homebrew_tap:
-    name: "{{ item }}"
+    name: "{{ item if item is string else item.name }}"
     state: present
   loop: "{{ macos_homebrew_config.tap.installed | default([]) }}"
-  when: macos_homebrew_config is defined
+  when: >
+    macos_homebrew_config is defined and
+    (item is string or
+     (item.except_hosts is not defined or ansible_facts['nodename'] not in item.except_hosts) and
+     (item.only_hosts is not defined or ansible_facts['nodename'] in item.only_hosts))
 
 # Remove taps
 - community.general.homebrew_tap:
-    name: "{{ item }}"
+    name: "{{ item if item is string else item.name }}"
     state: absent
   loop: "{{ macos_homebrew_config.tap.not_installed | default([]) }}"
-  when: macos_homebrew_config is defined
+  when: >
+    macos_homebrew_config is defined and
+    (item is string or
+     (item.except_hosts is not defined or ansible_facts['nodename'] not in item.except_hosts) and
+     (item.only_hosts is not defined or ansible_facts['nodename'] in item.only_hosts))
 
 ### BREWS
 # Install brews
 - community.general.homebrew:
-    name: "{{ item }}"
+    name: "{{ item if item is string else item.name }}"
     state: present
     update_homebrew: false
   loop: "{{ macos_homebrew_config.brew.installed | default([]) }}"
-  when: macos_homebrew_config is defined
+  when: >
+    macos_homebrew_config is defined and
+    (item is string or
+     (item.except_hosts is not defined or ansible_facts['nodename'] not in item.except_hosts) and
+     (item.only_hosts is not defined or ansible_facts['nodename'] in item.only_hosts))
 
 # Remove brews
 - community.general.homebrew:
-    name: "{{ item }}"
+    name: "{{ item if item is string else item.name }}"
     state: absent
   loop: "{{ macos_homebrew_config.brew.not_installed | default([]) }}"
-  when: macos_homebrew_config is defined 
+  when: >
+    macos_homebrew_config is defined and
+    (item is string or
+     (item.except_hosts is not defined or ansible_facts['nodename'] not in item.except_hosts) and
+     (item.only_hosts is not defined or ansible_facts['nodename'] in item.only_hosts))
 
 ### BREW CASKS
 # Install brew_cask
 - community.general.homebrew_cask:
-    name: "{{ item }}"
+    name: "{{ item if item is string else item.name }}"
     state: present
   loop: "{{ macos_homebrew_config.brew_cask.installed | default([]) }}"
-  when: macos_homebrew_config is defined
+  when: >
+    macos_homebrew_config is defined and
+    (item is string or
+     (item.except_hosts is not defined or ansible_facts['nodename'] not in item.except_hosts) and
+     (item.only_hosts is not defined or ansible_facts['nodename'] in item.only_hosts))
 
 # Remove brew-cask
 - community.general.homebrew_cask:
-    name: "{{ item }}"
+    name: "{{ item if item is string else item.name }}"
     state: absent
   loop: "{{ macos_homebrew_config.brew_cask.not_installed | default([]) }}"
-  when: macos_homebrew_config is defined
+  when: >
+    macos_homebrew_config is defined and
+    (item is string or
+     (item.except_hosts is not defined or ansible_facts['nodename'] not in item.except_hosts) and
+     (item.only_hosts is not defined or ansible_facts['nodename'] in item.only_hosts))
