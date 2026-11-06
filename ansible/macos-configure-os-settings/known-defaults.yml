@@ -165,16 +165,6 @@ com.apple.menuextra.clock:
     FlashDateSeparators: {type: bool, description: "Flash the time separators"}
     IsAnalog: {type: bool, description: "Show an analog clock in the menu bar"}
 
-# Safari
-com.apple.Safari:
-    IncludeDevelopMenu: {type: bool, description: "Show Safari's Develop menu"}
-    WebKitDeveloperExtrasEnabledPreferenceKey: {type: bool, description: "Enable Web Inspector context menu item"}
-    ShowFullURLInSmartSearchField: {type: bool, description: "Show full URL in the address bar"}
-    HomePage: {type: string, description: "New window home page"}
-    AutoOpenSafeDownloads: {type: bool, description: "Automatically open 'safe' downloads"}
-    UniversalSearchEnabled: {type: bool, description: "Send search queries to Apple"}
-    SuppressSearchSuggestions: {type: bool, description: "Suppress search suggestions"}
-
 # Terminal
 com.apple.Terminal:
     StringEncodings: {type: array, description: "Enabled text encodings"}
