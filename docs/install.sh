@@ -122,7 +122,7 @@ setup_settings() {
     echo "  2) Use the sample settings to get started (you can customise later)"
     echo ""
     ask "Enter 1 or 2:"
-    read -r SETTINGS_CHOICE
+    read -r SETTINGS_CHOICE < /dev/tty
 
     case "$SETTINGS_CHOICE" in
         1)
@@ -141,7 +141,7 @@ setup_settings() {
 clone_settings_repo() {
     echo ""
     ask "Settings repo URL (HTTPS, e.g. https://github.com/you/my-settings):"
-    read -r REPO_URL
+    read -r REPO_URL < /dev/tty
 
     echo ""
     echo "A Personal Access Token lets this script clone your private repository."
@@ -149,7 +149,7 @@ clone_settings_repo() {
     echo "Or for GitLab: https://gitlab.com/-/user_settings/personal_access_tokens (scope: read_repository)"
     echo ""
     ask "Personal Access Token (leave blank if the repo is public):"
-    read -rs PAT
+    read -rs PAT < /dev/tty
     echo ""
 
     if [[ -n "$PAT" ]]; then
@@ -177,7 +177,7 @@ copy_sample_settings() {
     echo "    customroles.yml             — Custom roles for extra automation"
     echo ""
     ask "Press Enter to run Mousehat now (you can always re-run after editing)..."
-    read -r _
+    read -r _ < /dev/tty
 }
 
 ###############################################################################
